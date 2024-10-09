@@ -217,7 +217,7 @@
 
     <div class="image-section">
         <h1 class="logo">
-            <span class="tanam">Tanam.</span><span class="in">in</span>
+            <span class="tanam">Tanamin.</span><span class="in">in</span>
         </h1>
     </div>
     <div class="form-section">
