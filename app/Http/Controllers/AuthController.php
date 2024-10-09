@@ -71,7 +71,7 @@ class AuthController extends Controller
                 }
             } else {
                 // Jika password salah
-                session()->flash('msg', 'Password salah');
+                session()->flash('msg', 'Password tidak sesuai');
                 return redirect()->route('login.login');
             }
         } else {
