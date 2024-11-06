@@ -4,233 +4,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tanamin</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .header {
-            background-color: #f0f0f0;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
-
-        .search-bar {
-            max-width: 600px;
-            margin: 0 auto 20px auto;
-        }
-
-        .search-bar input[type="search"] {
-            width: 100%;
-            max-width: 500px;
-            margin-right: 10px;
-        }
-
-        .product-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            margin: 20px;
-        }
-
-        .product {
-            width: 300px;
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #fff;
-        }
-
-        .product img {
-            width: 100%;
-            height: auto;
-        }
-
-        .footer {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .dropdown-menu-right {
-            right: 0;
-            left: auto;
-        }
-
-        .hamburger-menu {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-        }
-    </style>
+    <title>HomePage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
+<style>
+    body {
+        font-family: 'Poppins';
+    }
+
+    /* Navbar */
+    .navbar {
+        background-color: white;
+        padding: 20px 80px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 0;
+        /* Ensure there is no margin at the bottom */
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #000;
+    }
+
+    /* untuk tulisan .in */
+    .navbar-brand .highlight {
+        color: #4B553D;
+    }
+
+    .navbar-nav .nav-link {
+        color: #333;
+        margin-right: 20px;
+    }
+
+    /* Banner Section */
+    .banner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f5f7f0;
+        padding: 80px 100px;
+        margin: 0;
+        width: 100%;
+        /* Mengatur lebar banner 100% dari elemen induknya */
+        height: 400px;
+        /* Menentukan tinggi spesifik */
+    }
+
+    .banner h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #243a56;
+    }
+
+    .banner p {
+        font-size: 1.2rem;
+        margin-top: 15px;
+        margin-bottom: 30px;
+        color: #555;
+    }
+
+    .banner img {
+        max-width: 250px;
+        height: auto;
+    }
+
+    .btn-custom {
+        background-color: #4B553D;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 5px;
+        font-size: 1rem;
+        border: none;
+    }
+
+    .btn-custom:hover {
+        background-color: gray;
+    }
+
+    /* Plant Gallery */
+    .plant-gallery {
+        display: flex;
+        overflow-x: scroll;
+        scroll-behavior: smooth;
+        padding: 10px;
+        white-space: nowrap;
+    }
+
+    .plant-card {
+        display: inline-block;
+        margin-right: 15px;
+        border: 1px solid #ccc;
+        /* Menambahkan border di sekeliling kotak */
+        border-radius: 10px;
+        /* Membuat sudut sedikit membulat */
+        padding: 10px;
+        /* Memberikan ruang antara gambar dan tepi kotak */
+        background-color: #fff;
+        /* Warna latar belakang kotak */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        /* Opsional: bayangan untuk efek 3D */
+    }
+
+    .plant-card img {
+        width: 100%;
+        /* Membuat gambar responsif dan sesuai ukuran asli */
+        height: auto;
+        /* Menjaga rasio gambar */
+        max-width: 150px;
+        /* Membatasi ukuran maksimum gambar */
+        border-radius: 10px;
+        /* Opsional: membuat gambar sedikit membulat */
+    }
+
+    .plant-card h3 {
+        font-size: 14px;
+        /* Ukuran teks lebih kecil */
+        margin-top: 10px;
+        font-weight: normal;
+        color: #333;
+    }
+
+
+    /* Navbar Icons */
+    .navbar-icons {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+
+    .navbar-icons a {
+        margin-left: 20px;
+        color: #333;
+        font-size: 1.2rem;
+    }
+
+    .topnav {
+        position: relative;
+    }
+
+    #myLinks {
+        position: absolute;
+        top: 60px;
+        /* Sesuaikan dengan tinggi navbar Anda */
+        right: 0;
+        /* Memposisikan menu di sisi kanan */
+        background-color: #333;
+        border-radius: 5px;
+        /* Menambahkan sudut membulat */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        /* Menambahkan bayangan */
+        z-index: 1000;
+        /* Pastikan menu berada di atas elemen lain */
+        font-size: 14px;
+    }
+
+    #myLinks a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    #myLinks a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+</style>
+
 <body>
-    <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" style="color: #333; font-size: 20px; font-weight: bold;">Tanam.In</a>
-            <form class="d-flex" method="GET" action="" role="search" style="margin-right: 50px;">
-                <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#"><span>Tanam</span><span class="highlight">.in</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Tentang Kami</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Tanaman Saya</a></li>
+            </ul>
+        </div>
+        <div class="navbar-icons d-flex align-items-center">
+            <!-- Search Icon -->
+            <a href="#" class="nav-link">
+                <i class="fa fa-search"></i>
+            </a>
+
+            <!-- Shopping Cart Icon -->
+            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#cartModal">
+                <i class="fa fa-shopping-cart"></i> 
+            </a>
+            <!-- User Icon -->
+            <div class="topnav">
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <i class="fa fa-bars"></i> 
+                </a>
+                <div id="myLinks" style="display: none;">
+                    <a href="{{ route('profile') }}" class="nav-link">
+                        <i class="fa fa-user"></i> {{ session('usernameCust') }}
+                    </a>
+                    <a href="#" style="font-size: 1rem;">Ubah Password</a>
+                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                </div>
+            </div>
+
         </div>
     </nav>
-
-    <div class="dropdown hamburger-menu">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            ☰
-        </button>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#"><strong>Username:</strong> <span id="username"><?= session()->get('username') ?></span></a>
-            <a class="dropdown-item" href="#"><strong>Email:</strong> <span id="email"><?= session()->get('email') ?></span></a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{{ route('logout') }}" id="logout" onclick="return confirmLogout()">Logout</a>
+    <!-- Session Message -->
+    @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+    <!-- Search Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchModalLabel">Pencarian</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" placeholder="Cari tanaman...">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-primary">Cari</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="product-container">
-        <?php
-        // Data tanaman dalam bentuk array asosiatif
-        $plants = [
-            [
-                'name' => 'Anthurium Andraeanum',
-                'description' => 'Tanaman Anthurium andraeanum memiliki daun besar, mengkilap bentuk hati dan bunga mencolok, terdiri atas warna warni dan spadix',
-                'price' => '50000',
-                'image_url' => 'https://i.pinimg.com/564x/71/7d/f3/717df3b830d0c9cc6ccd2a408b4b4075.jpg'
-            ],
+    <!-- Cart Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Keranjang Belanja</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Keranjang Anda kosong.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-primary">Lanjutkan ke Pembayaran</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            [
-                'name' => 'Pilea Peperomioides',
-                'description' => 'Tanaman Pilea peperomioides adalah tanaman berbunga dalam keluarga jelatang Uticaceae, asli provinsi Yunnan dan Sichuan di Tiongkok Selatan',
-                'price' => '100000',
-                'image_url' => 'https://i.pinimg.com/564x/7e/0b/f5/7e0bf5b2eb4165f66f85ff4a98170faa.jpg'
-            ],
+    <!-- Banner Section -->
+    <section class="banner">
+        <div class="banner-text">
+            <h1>Bonsai</h1>
+            <p>Temukan semua yang perlu Anda ketahui tentang tanaman Anda, perlakukan mereka dengan baik dan mereka akan
+                menjaga Anda.</p>
+            <a href="{{ route('listTanaman') }}" class="btn-custom">Jelajahi Lebih Lanjut</a>
+        </div>
+        <div class="banner-image">
+            <img src="images/bonsai.png" alt="Bonsai" />
+        </div>
+    </section>
 
-            [
-                'name' => 'Strelitzia Nicoli',
-                'description' => 'Tanaman Strelitzia nicoli adalah spesies tanaman mirip daun pisang dengan batang tegak berkayu mencapai 7-8m, dan rumpun yang terbentuk dapat menyebar sejauh 3-5 m.',
-                'price' => '600000',
-                'image_url' => 'https://i.pinimg.com/564x/be/a2/a7/bea2a7386439b5cba688c597f2755833.jpg'
-            ],
+    <!-- Plant Gallery -->
+    <section class="plant-gallery">
+        <div class="plant-card">
+            <img src="images/birds.png" alt="birds">
+            <h3>Sansevieria Trifasciata</h3>
+        </div>
+        <div class="plant-card">
+            <img src="images/pilee.png" alt="pilea">
+            <h3>Pilea Peperoimedes</h3>
+        </div>
+        <div class="plant-card">
+            <img src="images/plant1.png" alt="aglo">
+            <h3>Aglonema KomKom</h3>
+        </div>
+        <div class="plant-card">
+            <img src="images/pink.png" alt="Anthu">
+            <h3>Anthurium Andra</h3>
+        </div>
+        <div class="plant-card">
+            <img src="images/sily.png" alt="cala">
+            <h3>Pink Calla Lily</h3>
+        </div>
+    </section>
 
-            [
-                'name' => 'Anggrek Ngengat',
-                'description' => 'Tanaman Anggrek Ngengat adalah tanaman asli Asia Tenggara. Ia memiliki dedaunan yang mengkilap, hijau sepanjang tahun, dan bunga kuning putih sebagai atributnya',
-                'price' => '200000',
-                'image_url' => 'https://i.pinimg.com/564x/21/d1/77/21d1772b0f2df2db386c512b419d7b12.jpg'
-            ],
-
-            [
-                'name' => 'Calathea Makoyana',
-                'description' => 'Tanaman Calathea Makoyana adalah spesies tumbuhan yang termasuk dalam genus Groppertia dalam famili Marantaceae, yang berasal dari negara Brazil bagian timur.',
-                'price' => '300000',
-                'image_url' => 'https://i.pinimg.com/564x/cd/44/06/cd44063fafd73e5e7dd53357c11c33ae.jpg'
-            ],
-
-            [
-                'name' => 'Ficus Iyrata',
-                'description' => 'Tanaman Ficus Iyrata adalah spesies tanaman berbunga dalam keluarga Murbei dan Moraceae. Spesies ini berasal dari Afrika barat, dari Kamerun barat hingga Sierra Leone',
-                'price' => '100000',
-                'image_url' => 'https://i.pinimg.com/564x/a6/c9/8f/a6c98f8ed810fd33e4017d4a210d4398.jpg'
-            ],
-
-            [
-                'name' => 'Peperomia Obtusifolia',
-                'description' => 'Tanaman Peperomia Obtusifolia adalah berbunga dalam genus Peperomia di bawah keluarga Piperaceae, yang berasal dari Florida, Meksiko, dan Karibia. Dan mendapat julukan berdaun tumpul.',
-                'price' => '30000',
-                'image_url' => 'https://i.pinimg.com/564x/08/57/9a/08579a70a259b9fc5f12c9453b98384e.jpg'
-            ],
-
-            [
-                'name' => 'Dracaena Trifasciata',
-                'description' => 'Tanaman Dracaena Trifasciata adalah spesies tumbuhan berbunga dalam keluarga Asparagaceae, berasal dari Afrika Barat tropis dari Nigeria timur hingga Kongo. Ia paling dikenal sebagai lidah ibu mertua',
-                'price' => '20000',
-                'image_url' => 'https://i.pinimg.com/564x/c4/0c/9f/c40c9f238dee598d968ba0c1b107b9b0.jpg'
-            ],
-
-            [
-                'name' => 'Sirih Gading',
-                'description' => 'Tanaman Sirih Gading adalah tanaman merambat semi epifit yang biasanya ditanam orang sebagai penghias perangan atau ruangan. Tumbuhan anggota suku talas-talsan ini dikenal dari warna daunnya yang belang.',
-                'price' => '20000',
-                'image_url' => 'https://i.pinimg.com/564x/0c/fa/27/0cfa274ffff5c2aec94718d054cb4987.jpg'
-            ],
-
-            [
-                'name' => 'Ficus Elastica',
-                'description' => 'Tanaman Ficus Elastica adalah spesies tumbuhan yang berasal dari genus ficus, asli timur laut India, Nepal, Bhutan, Myanmar, China, Malaysia dan Indonesia. Dan di bawa ke Sri Lanka, Hindia Barat.',
-                'price' => '300000',
-                'image_url' => 'https://i.pinimg.com/564x/68/aa/a5/68aaa56a6fbbba739567243761a3d238.jpg'
-            ],
-
-            [
-                'name' => 'Haworthi Fasciata',
-                'description' => 'Tanaman Haworthi Fasciata adalah spesies tanaman sukulen dari provinsi Eastern Cape, Afrika Selatan. Spesies ini jarang dibudidayakan, kebanyakan tumbuhan yang diberi label H.',
-                'price' => '60000',
-                'image_url' => 'https://i.pinimg.com/564x/c6/42/82/c64282526782e8a638894e6c8159af09.jpg'
-            ],
-
-            [
-                'name' => 'Aloe Vera',
-                'description' => 'Tanaman Aloe Vera adalah spesies tumbuhan dengan daun berdaging tebal dari genus Aloe. Tumbuhan ini bersifat menahun, berasal dari Jazirah Arab, dan tanaman liarnya telah menyebar ke kawasan beriklim tropis.',
-                'price' => '60000',
-                'image_url' => 'https://i.pinimg.com/736x/8d/52/16/8d5216e2a0d730d9374c7eaa6b31c690.jpg'
-            ],
-        ];
-
-        // Mendapatkan nilai pencarian dari query string
-        $searchQuery = isset($_GET['search']) ? strtolower($_GET['search']) : '';
-
-        // Loop melalui data tanaman dan tampilkan jika sesuai dengan pencarian
-        foreach ($plants as $plant) {
-            if ($searchQuery === '' || strpos(strtolower($plant['name']), $searchQuery) !== false) {
-                echo '<div class="product">';
-                echo '<img src="' . htmlspecialchars($plant['image_url']) . '" alt="Product Image">';
-                echo '<h3>' . htmlspecialchars($plant['name']) . '</h3>';
-                echo '<p>' . htmlspecialchars($plant['description']) . '</p>';
-                echo '<p>Rp' . htmlspecialchars($plant['price']) . '</p>';
-                echo '<button class="btn btn-primary btn-add-to-cart" data-product=\'' . htmlspecialchars(json_encode($plant, JSON_HEX_APOS)) . '\'>Add to Cart</button>';
-                echo '</div>';
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myLinks");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
             }
         }
-        ?>
-    </div>
-
-    <div class="footer">
-        <p>&copy; Tanamin E-commerce. All rights reserved.</p>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        // Fungsi untuk konfirmasi logout
-        function confirmLogout() {
-            return confirm('Are you sure you want to logout?');
-        }
-
-        // JQuery untuk menambah produk ke keranjang
-        $(document).ready(function() {
-            $('.btn-add-to-cart').click(function() {
-                var product = $(this).data('product');
-                var cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-                // Menambahkan produk ke keranjang
-                var existingProduct = cart.find(p => p.name === product.name);
-                if (existingProduct) {
-                    existingProduct.quantity += 1; // Tambah kuantitas jika produk sudah ada di keranjang
-                } else {
-                    product.quantity = 1; // Tambahkan produk baru dengan kuantitas 1
-                    cart.push(product);
-                }
-
-                // Simpan keranjang kembali ke localStorage
-                localStorage.setItem('cart', JSON.stringify(cart));
-
-                // Redirect ke halaman keranjang
-                window.location.href = 'cart'; // Ganti ini dengan URL halaman keranjang Anda
-            });
-        });
     </script>
 </body>
 

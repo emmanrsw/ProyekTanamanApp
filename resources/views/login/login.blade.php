@@ -100,7 +100,7 @@
             transition: background-color 0.3s;
             /* Transition effect */
             text-align: left;
-            font-size: 1p6x;
+            font-size: 16x;
         }
 
         .btn-primary:hover {
@@ -214,10 +214,9 @@
 </head>
 
 <body>
-
     <div class="image-section">
         <h1 class="logo">
-            <span class="tanam">Tanamin.</span><span class="in">in</span>
+            <span class="tanam">Tanam.</span><span class="in">in</span>
         </h1>
     </div>
     <div class="form-section">

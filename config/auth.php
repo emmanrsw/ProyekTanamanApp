@@ -13,9 +13,13 @@ return [
     |
     */
 
+    // 'defaults' => [
+    //     'guard' => env('AUTH_GUARD', 'web'),
+    //     'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+    
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        'guard' => 'pelanggan',
+        'passwords' => 'pelanggan',
     ],
 
     /*
@@ -36,9 +40,14 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        'pelanggan' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'pelanggan',
+        ],
+
+        'karyawan' => [
+            'driver' => 'session',
+            'provider' => 'karyawan',
         ],
     ],
 
@@ -60,15 +69,15 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'pelanggan' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => App\Models\AuthModel::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'karyawan' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\karyawanModel::class,
+        ],
     ],
 
     /*
@@ -91,9 +100,16 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+        'pelanggan' => [
+            'provider' => 'pelanggan',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'karyawan' => [
+            'provider' => 'karyawan',
+            'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],

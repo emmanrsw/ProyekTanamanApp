@@ -75,10 +75,10 @@
             </div>
             <div class="form-group">
                 <label for="image">Galeri Produk</label>
-                <div class="img-placeholder" onclick="document.getElementById('image').click();">
+                <div class="img-placeholder" onclick="document.getElementById('gambar').click();">
                     <i class="fas fa-image"></i> Drop your image here, or browse <br> Jpeg, png are allowed
                 </div>
-                <input type="file" class="form-control-file" id="image" name="image" style="display:none;" accept="image/*" required>
+                <input type="file" class="form-control-file" id="gambar" name="gambar" style="display:none;" accept="image/*" required>
             </div>
             <div class="form-group d-flex justify-content-between">
                 <button type="submit" class="btn btn-black">Tambahkan</button>
@@ -88,8 +88,8 @@
     </div>
 
     <script>
-        // Optional: Menambahkan event listener untuk mengganti placeholder gambar saat file dipilih
-        document.getElementById('image').addEventListener('change', function() {
+        // Menambahkan event listener untuk mengganti placeholder gambar saat file dipilih
+        document.getElementById('gambar').addEventListener('change', function() {
             const imgPlaceholder = document.querySelector('.img-placeholder');
             const file = this.files[0];
             if (file) {

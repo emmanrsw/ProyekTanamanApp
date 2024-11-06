@@ -4,31 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\tanamanModel;
+use Illuminate\Support\Facades\Storage;
 
 class tanamanController extends Controller
 {
-
+    public function listTanaman()
+    {
+        $tanaman = tanamanModel::all(); // Mengambil semua data tanaman dari database
+        return view('listTanaman', compact('tanaman')); // Kirim variabel tanaman ke view
+    }
 
     public function indexP(Request $request)
     {
-        // Mengambil semua data tanaman dari database
-        $plants = tanamanModel::all();
+        $searchQuery = $request->input('search');
+        $tanaman = tanamanModel::when($searchQuery, function ($query, $searchQuery) {
+            return $query->where('name', 'like', '%' . $searchQuery . '%');
+        })->get();
 
-        // Mendapatkan nilai pencarian dari query string
-        $searchQuery = $request->input('search', '');
-
-        // Jika ada pencarian, filter data
-        if (!empty($searchQuery)) {
-            $plants = $plants->filter(function ($plant) use ($searchQuery) {
-                return stripos($plant->namaTanaman, $searchQuery) !== false;
-            });
-        }
-
-
-        return view('tanamanHPP', [
-            'plants' => $plants,
-            'searchQuery' => $searchQuery,
-        ]);
+        return view('tanamanHPP', compact('tanaman'));
     }
 
 
@@ -62,97 +55,126 @@ class tanamanController extends Controller
     {
         return redirect()->route('homeKywn');  // Mengarahkan kembali ke halaman daftar tanaman karyawan
     }
-    
 
     public function simpanTanaman(Request $request)
     {
-        // Validasi data yang diterima
+        // Validasi input
         $request->validate([
             'namaTanaman' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
+            'deskripsi' => 'required|string',
             'jmlTanaman' => 'required|integer',
             'hargaTanaman' => 'required|numeric',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Upload gambar jika ada
+        // Upload gambar
         if ($request->hasFile('gambar')) {
-            $imageName = time() . '.' . $request->gambar->extension();
-            $request->gambar->move(public_path('images'), $imageName);
-        } else {
-            $imageName = null;  // Jika tidak ada gambar
+            $file = $request->file('gambar');
+            $filename = time() . '.' . $file->getClientOriginalExtension(); // Menggunakan timestamp untuk nama file
+
+            // ini yang diganti
+            $file->move(public_path('images'), $filename); // Memindahkan gambar ke folder public/images
         }
 
-        // Simpan data ke database
+
+        // Simpan data tanaman ke database
         tanamanModel::create([
             'namaTanaman' => $request->namaTanaman,
             'deskripsi' => $request->deskripsi,
             'jmlTanaman' => $request->jmlTanaman,
             'hargaTanaman' => $request->hargaTanaman,
-            'gambar' => $imageName, // Simpan nama file gambar
+            'gambar' => $filename, // Simpan nama file gambar
         ]);
-        // // Redirect atau tampilkan pesan sukses
-        // return redirect()->route('homeKywn')->with('success', 'Tanaman berhasil ditambahkan!');
 
-        // Redirect ke halaman lain atau tampilkan pesan sukses
-        return redirect()->back()->with('success', 'Data tanaman berhasil disimpan!');
+        return redirect()->route('homeKywn')->with('success', 'Tanaman berhasil ditambahkan.');
     }
 
 
-
-
-
-
-    
-    public function edit($id)
+    public function editTanaman($id)
     {
-        // Ambil data tanaman berdasarkan ID
-        $tanaman = tanamanModel::findOrFail($id);
-
-        // Kirim data tanaman ke view edit
-        return view('tanaman.edit', compact('tanaman'));
+        $tanaman = tanamanModel::findOrFail($id); // Temukan tanaman berdasarkan ID
+        return view('editT', compact('tanaman')); // Kirim data tanaman ke view
     }
 
-
-    public function update(Request $request, $id)
+    public function updateTanaman(Request $request, $id)
     {
         // Validasi input
         $request->validate([
             'namaTanaman' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
             'jmlTanaman' => 'required|integer',
             'hargaTanaman' => 'required|numeric',
-            'deskripsi' => 'nullable|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Gambar opsional
         ]);
 
-        // Ambil data tanaman yang akan diupdate
+        // Temukan tanaman berdasarkan ID
         $tanaman = tanamanModel::findOrFail($id);
 
-        // Jika ada file gambar baru, maka upload gambar baru
+        // Update field tanaman
+        $tanaman->namaTanaman = $request->namaTanaman;
+        $tanaman->deskripsi = $request->deskripsi;
+        $tanaman->jmlTanaman = $request->jmlTanaman;
+        $tanaman->hargaTanaman = $request->hargaTanaman;
+
+        // Cek apakah ada gambar yang diunggah
         if ($request->hasFile('gambar')) {
             // Hapus gambar lama jika ada
-            if ($tanaman->gambar && file_exists(public_path('images/' . $tanaman->gambar))) {
-                unlink(public_path('images/' . $tanaman->gambar));
+            if ($tanaman->gambar) {
+                $oldImagePath = public_path('images/' . $tanaman->gambar);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath); // Hapus gambar lama
+                }
             }
 
-            // Simpan gambar baru
-            $imageName = time() . '.' . $request->gambar->extension();
-            $request->gambar->move(public_path('images'), $imageName);
-        } else {
-            // Jika tidak ada gambar baru, gunakan gambar lama
-            $imageName = $tanaman->gambar;
+            $file = $request->file('gambar');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images'), $filename);
+            $tanaman->gambar = $filename; // Update nama file gambar
         }
 
-        // Update data tanaman
-        $tanaman->update([
-            'namaTanaman' => $request->namaTanaman,
-            'jmlTanaman' => $request->jmlTanaman,
-            'hargaTanaman' => $request->hargaTanaman,
-            'deskripsi' => $request->deskripsi,
-            'gambar' => $imageName,
-        ]);
+        // Simpan perubahan ke database
+        $tanaman->save();
 
-        // Redirect ke halaman lain atau tampilkan pesan sukses
-        return redirect()->back()->with('success', 'Data tanaman berhasil diperbarui!');
+        return redirect()->route('homeKywn')->with('success', 'Tanaman berhasil diperbarui.');
+    }
+
+    public function hapusTanaman(Request $request)
+    {
+        // Mendapatkan array ID tanaman dari permintaan
+        $ids = $request->input('ids'); // Pastikan Anda mengirim array ID dengan nama 'ids'
+
+        if ($ids) {
+            foreach ($ids as $id) {
+                // Temukan tanaman berdasarkan ID
+                $tanaman = tanamanModel::find($id);
+
+                if ($tanaman) {
+                    // Hapus gambar dari penyimpanan jika ada
+                    if ($tanaman->gambar) {
+                        Storage::delete('images/' . $tanaman->gambar);
+                    }
+
+                    // Hapus tanaman dari database
+                    $tanaman->delete();
+                }
+            }
+
+            return redirect()->back()->with('success', 'Tanaman berhasil dihapus.');
+        }
+
+        return redirect()->back()->with('error', 'Tidak ada tanaman yang dipilih untuk dihapus.');
+    }
+
+
+    public function destroy(Request $request)
+    {
+        // Ambil ID tanaman dari permintaan
+        $ids = explode(',', $request->input('ids'));
+
+        // Hapus tanaman berdasarkan ID yang diberikan
+        tanamanModel::whereIn('idTanaman', $ids)->delete();
+
+        // Redirect kembali dengan pesan sukses
+        return redirect()->back()->with('success', 'Tanaman berhasil dihapus.');
     }
 }

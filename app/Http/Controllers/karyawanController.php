@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 use App\Models\tanamanModel;
 use App\Models\karyawanModel;
 use Illuminate\Http\Request;
-// use App\Models\Detail_penjualan;
-// use Illuminate\Http\JsonResponse;
-// use Illuminate\Support\Facades\Auth;
-// use App\Http\Middleware\Authenticate;
 
 class karyawanController extends Controller
 {
 
     public function indexKywn(Request $request)
     {
+
         // Mengambil semua data tanaman dari database
         $plants = tanamanModel::all();
 

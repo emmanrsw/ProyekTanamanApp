@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\karyawanController;
 use App\Http\Controllers\tanamanController;
+use App\Models\tanamanModel;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,29 +24,24 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/home', [tanamanController::class, 'indexP'])->name('home');
 Route::get('/homeKywn', [karyawanController::class, 'indexKywn'])->name('homeKywn');
 
-// Route::get('/addPlant', [tanamanController::class, 'tambahTanaman'])->name('addPlant');
-
-
+// -------------------
 
 Route::get('/tambahTanaman', [tanamanController::class, 'tambahTanaman'])->name('tambahTanaman');
 Route::get('/batalTambah', [tanamanController::class, 'batalTambah'])->name('batalTambah');
-
-// Route untuk menyimpan tanaman
+// Route untuk menyimpan tanaman yang ditambahkan
 Route::post('/simpanTanaman', [tanamanController::class, 'simpanTanaman'])->name('simpanTanaman');
 
+Route::get('/editTanaman/{id}', [tanamanController::class, 'editTanaman'])->name('editTanaman');
+Route::post('/tanaman/update/{id}', [tanamanController::class, 'updateTanaman'])->name('tanaman.update');
+Route::post('/deleteTanaman', [tanamanController::class, 'destroy'])->name('deleteTanaman');
 
 
 
-// Route::post('/simpanTanaman', [tanamanController::class, 'tambahTanaman'])->name('tambah');
-// // Menampilkan form edit
-// Route::get('/tanaman/edit/{id}', [TanamanController::class, 'edit'])->name('tanaman.edit');
-// // Mengupdate data tanaman
-// Route::post('/tanaman/update/{id}', [TanamanController::class, 'update'])->name('tanaman.update');
 
 
-// Route::get('/tanaman/{id}', [tanamanController::class, 'show'])->name('tanaman.show');
 
-// Route::get('/tanaman', [tanamanController::class, 'index'])->name('tanaman');
-// Route::post('/simpanTanaman', [tanamanController::class, 'add'])->name('tanaman.store');
-// Route::get('/tanaman/{id}/edit', [tanamanController::class, 'edit'])->name('tanaman.edit');
-// Route::post('/tanaman/{id}/update', [tanamanController::class, 'update'])->name('tanaman.update');
+
+
+Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
+
+Route::get('/tanaman', [tanamanController::class, 'listTanaman'])->name('listTanaman');
