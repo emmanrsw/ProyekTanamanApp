@@ -168,8 +168,8 @@
                 <i class="fa fa-search"></i>
             </a>
             <a href="{{ route('cart') }}" class="nav-link">
-        <i class="fa fa-shopping-cart"></i>
-    </a>
+                <i class="fa fa-shopping-cart"></i>
+            </a>
             <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="toggleUserMenu()">
                     <i class="fa fa-user"></i>
@@ -185,7 +185,7 @@
 
     <div class="container">
         <div class="jumbotron">
-            <img src="imagesHome/jumbotron.png" alt="jumbotron" style="height: 50%; width: 100%;">
+            <img src="Img/jumbotron.png" alt="jumbotron" style="height: 50%; width: 100%;">
         </div>
 
         <div class="container">

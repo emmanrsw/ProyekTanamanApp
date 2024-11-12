@@ -200,7 +200,7 @@
             </a>
 
             <!-- Shopping Cart Icon -->
-            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#cartModal">
+            <a href="{{ route('cart') }}" class="nav-link" data-bs-toggle="modal" data-bs-target="#cartModal">
                 <i class="fa fa-shopping-cart"></i> 
             </a>
             <!-- User Icon -->
@@ -273,30 +273,30 @@
             <a href="{{ route('listTanaman') }}" class="btn-custom">Jelajahi Lebih Lanjut</a>
         </div>
         <div class="banner-image">
-            <img src="images/bonsai.png" alt="Bonsai" />
+            <img src="Img/bonsai.png" alt="Bonsai" />
         </div>
     </section>
 
     <!-- Plant Gallery -->
     <section class="plant-gallery">
         <div class="plant-card">
-            <img src="images/birds.png" alt="birds">
+            <img src="Img/birds.png" alt="birds">
             <h3>Sansevieria Trifasciata</h3>
         </div>
         <div class="plant-card">
-            <img src="images/pilee.png" alt="pilea">
+            <img src="Img/pilee.png" alt="pilea">
             <h3>Pilea Peperoimedes</h3>
         </div>
         <div class="plant-card">
-            <img src="images/plant1.png" alt="aglo">
+            <img src="Img/plant1.png" alt="aglo">
             <h3>Aglonema KomKom</h3>
         </div>
         <div class="plant-card">
-            <img src="images/pink.png" alt="Anthu">
+            <img src="Img/pink.png" alt="Anthu">
             <h3>Anthurium Andra</h3>
         </div>
         <div class="plant-card">
-            <img src="images/sily.png" alt="cala">
+            <img src="Img/sily.png" alt="cala">
             <h3>Pink Calla Lily</h3>
         </div>
     </section>
