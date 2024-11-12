@@ -16,13 +16,11 @@
         font-family: 'Poppins';
     }
 
-    /* Navbar */
     .navbar {
         background-color: white;
         padding: 20px 80px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 0;
-        /* Ensure there is no margin at the bottom */
     }
 
     .navbar-brand {
@@ -32,7 +30,7 @@
     }
 
     .navbar-brand .highlight {
-        color: #6c9969;
+        color: #4B553D;
     }
 
     .navbar-nav .nav-link {
@@ -40,7 +38,6 @@
         margin-right: 20px;
     }
 
-    /* Banner Section */
     .banner {
         display: flex;
         justify-content: space-between;
@@ -49,9 +46,7 @@
         padding: 80px 100px;
         margin: 0;
         width: 100%;
-        /* Mengatur lebar banner 100% dari elemen induknya */
         height: 400px;
-        /* Menentukan tinggi spesifik */
     }
 
     .banner h1 {
@@ -67,11 +62,6 @@
         color: #555;
     }
 
-    .banner img {
-        max-width: 250px;
-        height: auto;
-    }
-
     .btn-custom {
         background-color: #6c9969;
         color: white;
@@ -85,8 +75,6 @@
         background-color: #578154;
     }
 
-
-    /* Navbar Icons */
     .navbar-icons {
         display: flex;
         align-items: center;
@@ -99,34 +87,26 @@
         font-size: 1.2rem;
     }
 
-    /* Filter and Product Section */
     .filter-section {
         margin: 30px 0;
     }
-
-    .filter-header {
-        font-weight: bold;
-        font-size: 1.2rem;
-        margin-bottom: 10px;
-    }
-
 
     .product-grid {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
+        gap: 20px;
     }
 
     .product-card {
         background-color: white;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        width: 23%;
-        margin-bottom: 30px;
+        width: 30%;
         padding: 20px;
         text-align: center;
+        transition: transform 0.3s;
     }
-
 
     .product-card img {
         max-width: 100%;
@@ -135,71 +115,28 @@
         border-radius: 5px;
     }
 
-    .product-card h5 {
-        font-weight: bold;
-        margin-bottom: 10px;
-        font-size: 1.2rem;
+    .product-card:hover {
+        transform: scale(1.05);
     }
 
-    .product-card p {
-        color: #6c9969;
-        font-weight: bold;
+    .btn-add-to-cart {
+        background-color: #6c9969;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
     }
 
-    .sort-by {
-        margin-left: auto;
-    }
-
-    .filter-price {
-        padding: 10px;
-    }
-
-    .filter-price input {
-        width: 100px;
-        margin-right: 10px;
-    }
-
-    .modal-img {
-        max-width: 50%;
-        /* Gambar tidak lebih dari lebar modal */
-        height: auto;
-        /* Menjaga rasio aspek gambar */
-        margin: 0 auto;
-        /* Mengatur gambar ke tengah */
-        display: block;
-        /* Memastikan gambar ditampilkan sebagai block element */
-    }
-
-    .product img {
-        max-width: 35%;
-        /* Gambar tidak lebih dari lebar modal */
-        height: auto;
-        /* Menjaga rasio aspek gambar */
-        margin: 0 auto;
-        /* Mengatur gambar ke tengah */
-        display: block;
-        /* 
-     */
-    
-    }
-     .topnav {
-        position: relative;
+    .btn-add-to-cart:hover {
+        background-color: #578154;
     }
 
     #myLinks {
-        position: absolute;
-        top: 60px;
-        /* Sesuaikan dengan tinggi navbar Anda */
-        right: 0;
-        /* Memposisikan menu di sisi kanan */
-        background-color: #333;
-        border-radius: 5px;
-        /* Menambahkan sudut membulat */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        /* Menambahkan bayangan */
-        z-index: 1000;
-        /* Pastikan menu berada di atas elemen lain */
-        font-size: 14px;
+        display: none;
+    }
+
+    #myLinks.show {
+        display: block;
     }
 
     #myLinks a {
@@ -207,11 +144,6 @@
         padding: 12px 16px;
         text-decoration: none;
         display: block;
-    }
-
-    #myLinks a:hover {
-        background-color: #ddd;
-        color: black;
     }
 </style>
 
@@ -232,25 +164,18 @@
             </ul>
         </div>
         <div class="navbar-icons d-flex align-items-center">
-            <!-- Search Icon -->
             <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#searchModal">
                 <i class="fa fa-search"></i>
             </a>
-
-            <!-- Shopping Cart Icon -->
-            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#cartModal">
-                <i class="fa fa-shopping-cart"></i>
-            </a>
-
-            <!-- User Icon -->
+            <a href="{{ route('cart') }}" class="nav-link">
+        <i class="fa fa-shopping-cart"></i>
+    </a>
             <div class="topnav">
-                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                    <i class="fa fa-bars"></i>
+                <a href="javascript:void(0);" class="icon" onclick="toggleUserMenu()">
+                    <i class="fa fa-user"></i>
                 </a>
-                <div id="myLinks" style="display: none;">
-                    <a href="{{ route('profile') }}" class="nav-link">
-                        <i class="fa fa-user"></i> {{ session('usernameCust') }}
-                    </a>
+                <div id="myLinks">
+                    <a href="{{ route('profile') }}" class="nav-link">{{ session('usernameCust') }}</a>
                     <a href="#" style="font-size: 1rem;">Ubah Password</a>
                     <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
                 </div>
@@ -258,50 +183,11 @@
         </div>
     </nav>
 
-    <!-- Search Modal -->
-    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="searchModalLabel">Pencarian</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" class="form-control" placeholder="Cari tanaman...">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-primary">Cari</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Cart Modal -->
-    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="cartModalLabel">Keranjang Belanja</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Keranjang Anda kosong.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-primary">Lanjutkan ke Pembayaran</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="container">
         <div class="jumbotron">
-            <img src="Img/jumbotron.png" alt="jumbotron" style="height: 50%; width: 100%;">
+            <img src="imagesHome/jumbotron.png" alt="jumbotron" style="height: 50%; width: 100%;">
         </div>
 
-        <!-- Filter & Product Section -->
         <div class="container">
             <div class="row filter-section">
                 <div class="col-md-3">
@@ -314,50 +200,90 @@
                 <div class="col-md-9">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h3>Tanaman</h3>
-                        <select class="form-select sort-by" aria-label="Sort by" style="width: 150px; height: 30px; font-size: 12px;">
+                        <select class="form-select sort-by" aria-label="Sort by"
+                            style="width: 150px; height: 30px; font-size: 11px;">
                             <option selected>Sort by: Popular</option>
                             <option value="1">Price: Low to High</option>
                             <option value="2">Price: High to Low</option>
                         </select>
                     </div>
-                    <!-- Product Grid -->
                     <div class="product-grid">
-                        @foreach($tanaman as $tanaman)
-                        <div class="product">
-                            @if($tanaman->gambar)
-                            <img src="{{ asset('images/' . $tanaman->gambar) }}" alt="Product Image">
-                            @else
-                            <img src="{{ asset('default-image.png') }}" alt="No Image Available">
-                            @endif <h3>{{ $tanaman->namaTanaman }}</h3>
-                            <p>{{ $tanaman->deskripsi }}</p>
+                        @foreach ($tanaman as $tanaman)
+                        <div class="product-card">
+                            <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
+                                alt="{{ $tanaman->namaTanaman }}">
+                            <h5>{{ $tanaman->namaTanaman }}</h5>
                             <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
-                            <button class="btn btn-primary btn-add-to-cart" data-product='@json($tanaman)'>Add to Cart</button>
+                            <button class="btn btn-primary btn-add-to-cart"
+                                data-product='@json($tanaman)'>View Details</button>
+                            <meta name="csrf-token" content="{{ csrf_token() }}">
                         </div>
                         @endforeach
                     </div>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="productModal${product.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">${product.name}</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <img src="${product.image}" alt="${product.name}" style="width: 50%; height:auto;">
-                                    <p>${product.description}</p>
-                                    <p><strong>Harga:</strong> ${product.price}</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Add to Cart</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- `; -->
-                    <!-- }); -->
-                    <!-- </script> -->
                 </div>
             </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.btn-add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const product = JSON.parse(this.getAttribute('data-product'));
+                showProductModal(product);
+            });
+        });
+
+        function showProductModal(product) {
+            const existingModal = document.getElementById('productModal');
+            if (existingModal) existingModal.remove();
+
+            const modalContent = `
+            <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="productModalLabel">${product.namaTanaman}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <img src="${product.gambar ? '/images/' + product.gambar : '/default-image.png'}" class="img-fluid" alt="${product.namaTanaman}">
+                            <p>Harga: Rp${product.hargaTanaman.toLocaleString()}</p>
+                            <p>Deskripsi: ${product.deskripsi || "Deskripsi tidak tersedia"}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-primary" onclick="addToCart(${product.idTanaman})">Tambah ke Keranjang</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+
+            document.body.insertAdjacentHTML('beforeend', modalContent);
+            new bootstrap.Modal(document.getElementById('productModal')).show();
+        }
+
+        function addToCart(productId) {
+            fetch(`/cart/add/${productId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        productId: productId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message || "Produk berhasil ditambahkan ke keranjang!");
+                    // Menutup modal setelah produk berhasil ditambahkan ke keranjang
+                    new bootstrap.Modal(document.getElementById('productModal')).hide();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>
+
+</html>
