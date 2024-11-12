@@ -163,7 +163,7 @@
 
                             <td>Rp{{ number_format($details['hargaTanaman'], 0, ',', '.') }}</td>
                             <td>
-                                <div class="input-group" style="width: 100px;">
+                                <div class="input-group" style="width: 150px;">
                                     <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity('{{ $id }}')">-</button>
                                     <input type="text" class="form-control text-center" id="quantity-{{ $id }}" value="{{ $details['quantity'] }}" readonly>
                                     <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity('{{ $id }}')">+</button>
