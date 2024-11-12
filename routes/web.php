@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\karyawanController;
 use App\Http\Controllers\tanamanController;
+use App\Http\Controllers\CartController;
 use App\Models\tanamanModel;
 
 Route::get('/', function () {
@@ -45,3 +46,9 @@ Route::post('/deleteTanaman', [tanamanController::class, 'destroy'])->name('dele
 Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
 
 Route::get('/tanaman', [tanamanController::class, 'listTanaman'])->name('listTanaman');
+
+
+Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add'); // Rute untuk menambah ke keranjang
+Route::get('/cart', [CartController::class, 'viewCart'])->name('cart'); // Rute untuk melihat keranjang
+
+Route::post('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
