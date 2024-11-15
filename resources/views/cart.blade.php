@@ -133,112 +133,85 @@
             </div>
         </div>
     </div>
+
     <div class="container">
         <h1>Keranjang Belanja</h1>
 
-        @if (session('cart'))
-        <div class="row">
-            <div class="col-md-8">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Pilih</th>
-                            <th>Produk</th>
-                            <th>Harga</th>
-                            <th>Jumlah</th>
-                            <th>Total</th>
-                            <th>Hapus</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (session('cart') as $id => $details)
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="selected_items[]" value="{{ $id }}">
-                            </td>
-                            <td>
-                                <img src="{{ asset('images/' . $details['gambar']) }}" width="50" height="50" alt="Tanaman">
-                                <strong>{{ $details['namaTanaman'] }}</strong>
-                            </td>
-
-                            <td>Rp{{ number_format($details['hargaTanaman'], 0, ',', '.') }}</td>
-                            <td>
-                                <div class="input-group" style="width: 100px;">
-                                    <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity('{{ $id }}')">-</button>
-                                    <input type="text" class="form-control text-center" id="quantity-{{ $id }}" value="{{ $details['quantity'] }}" readonly>
-                                    <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity('{{ $id }}')">+</button>
-                                </div>
-                            </td>
-
-                            <td>Rp{{ number_format($details['hargaTanaman'] * $details['quantity'], 0, ',', '.') }}
-                            </td>
-                            <td>
-                                <form action="{{ route('cart.remove', $id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-link text-danger" style="padding: 0; border: none; background: none;">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
-
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-4">
-                <div class="cart-summary">
-                    <h3>Jumlah Keranjang</h3>
-                    <p><strong>Subtotal:</strong> ${{ array_sum(array_column(session('cart'), 'price')) }}</p>
-                    <p><strong>Diskon:</strong> — </p>
-                    <p><strong>Total:</strong>
-                        {{-- ${{ array_sum(
-                                array_map(function ($details) {
-                                    return $details['harga'] * $details['quantity'];
-                                }, session('cart')),
-                            ) }} --}}
-                        {{-- </p> --}}
-                        <a href="#" class="btn btn-primary btn-block">Lanjutkan ke Pembayaran</a>
-                </div>
-            </div>
+        @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
         </div>
-        @else
-        <p>Keranjang belanja kosong</p>
         @endif
-        {{-- </div>
-    <div class="container">
-        <div class="row">
-            @foreach ($tanaman as $tanaman)
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <img src="{{ $tanaman->gambar }}" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">{{ $tanaman->nama }}</h5>
-            <p class="card-text">${{ $tanaman->hargaTanaman }}</p>
-            <a href="{{ route('cart.add', ['id' => $tanaman->id]) }}" class="btn btn-primary">Add to
-                Cart</a>
-            </form>
-        </div>
-    </div>
-    </div>
-    @endforeach
-    </div> --}}
-    </div>
-    <script>
-        function decreaseQuantity(id) {
-            var quantityInput = document.getElementById("quantity-" + id);
-            var currentQuantity = parseInt(quantityInput.value);
-            if (currentQuantity > 1) { // Minimal 1 item
-                quantityInput.value = currentQuantity - 1;
-                // Anda bisa menambahkan kode di sini untuk memperbarui kuantitas di server
-            }
-        }
 
-        function increaseQuantity(id) {
-            var quantityInput = document.getElementById("quantity-" + id);
-            var currentQuantity = parseInt(quantityInput.value);
-            quantityInput.value = currentQuantity + 1;
-            // Anda bisa menambahkan kode di sini untuk memperbarui kuantitas di server
+        @if($cartItems->isEmpty())
+        <p>Keranjang Anda kosong.</p>
+        @else
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nama Tanaman</th>
+                    <th>Harga</th>
+                    <th>Jumlah</th>
+                    <th>Total Harga</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($cartItems as $item)
+                <tr>
+                    <td>{{ $item->namaTanaman }}</td>
+                    <td class="harga_satuan">{{ number_format($item->harga_satuan, 2) }}</td>
+                    <td>
+                        <input type="number" id="quantity-{{ $item->idTanaman }}" class="form-control" value="{{ $item->jumlah }}"
+                            onchange="updateQuantity({{ $item->idTanaman }})">
+                    </td>
+                    <td class="total_harga">{{ number_format($item->total_harga, 2) }}</td>
+                    <td>
+                        <form action="{{ route('cart.remove', $item->idTanaman) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        @endif
+    </div>
+
+    <script>
+        function updateTotal(id, price) {
+            var quantity = document.getElementById("quantity-" + id).value;
+            var total = quantity * price;
+            document.getElementById("total-" + id).innerText = total.toFixed(2);
+        }
+    </script>
+    <script>
+        function updateQuantity(idTanaman) {
+            var quantityInput = document.getElementById("quantity-" + idTanaman);
+            var newQuantity = parseInt(quantityInput.value);
+            var row = quantityInput.closest('tr'); // Mendapatkan baris terkait untuk perhitungan total harga
+
+            // Kirim request ke server untuk memperbarui jumlah
+            $.ajax({
+                url: '{{ route("cart.update") }}', // Route untuk mengupdate jumlah
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    idTanaman: idTanaman,
+                    quantity: newQuantity
+                },
+                success: function(response) {
+                    // Update total harga
+                    var unitPrice = parseFloat(row.querySelector(".harga_satuan").textContent.replace(/[^0-9.-]+/g, ""));
+                    var totalPrice = newQuantity * unitPrice;
+                    row.querySelector(".total_harga").textContent = totalPrice.toFixed(2);
+                },
+                error: function() {
+                    alert('Terjadi kesalahan saat memperbarui jumlah.');
+                }
+            });
         }
     </script>
 

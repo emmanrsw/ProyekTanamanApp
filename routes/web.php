@@ -33,6 +33,7 @@ use App\Http\Controllers\CartController;
 Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add'); // Rute untuk menambah ke keranjang
 Route::get('/cart', [CartController::class, 'viewCart'])->name('cart'); // Rute untuk melihat keranjang
 Route::post('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\TransaksiController;
 Route::post('/transaksi', [TransaksiController::class, 'store']);

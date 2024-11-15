@@ -249,10 +249,15 @@
                             <img src="${product.gambar ? '/images/' + product.gambar : '/default-image.png'}" class="img-fluid" alt="${product.namaTanaman}">
                             <p>Harga: Rp${product.hargaTanaman.toLocaleString()}</p>
                             <p>Deskripsi: ${product.deskripsi || "Deskripsi tidak tersedia"}</p>
+                            <!-- Input untuk jumlah -->
+                            <div class="mt-3">
+                                <label for="jumlah">Jumlah:</label>
+                                <input type="number" id="jumlah" class="form-control" value="1" min="1" max="100">
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button type="button" class="btn btn-primary" onclick="addToCart(${product.idTanaman})">Tambah ke Keranjang</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="addToCart(${product.idTanaman})">Tambah ke Keranjang</button>
                         </div>
                     </div>
                 </div>
@@ -262,7 +267,37 @@
             new bootstrap.Modal(document.getElementById('productModal')).show();
         }
 
+        // function addToCart(productId) {
+        //     fetch(`/cart/add/${productId}`, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        //             },
+        //             body: JSON.stringify({
+        //                 productId: productId
+        //             })
+        //         })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             alert(data.message || "Produk berhasil ditambahkan ke keranjang!");
+        //             // Menutup modal setelah produk berhasil ditambahkan ke keranjang
+        //             new bootstrap.Modal(document.getElementById('productModal')).hide();
+        //         })
+        //         .catch(error => {
+        //             console.error('Error:', error);
+        //         });
+        // }
         function addToCart(productId) {
+            // Ambil jumlah dari input yang ada di modal
+            const jumlah = document.getElementById('jumlah').value;
+
+            // Pastikan jumlah adalah angka yang valid
+            if (jumlah < 1) {
+                alert('Jumlah tidak valid');
+                return;
+            }
+
             fetch(`/cart/add/${productId}`, {
                     method: 'POST',
                     headers: {
@@ -270,14 +305,13 @@
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
                     body: JSON.stringify({
-                        productId: productId
+                        productId: productId,
+                        jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
                     })
                 })
                 .then(response => response.json())
                 .then(data => {
                     alert(data.message || "Produk berhasil ditambahkan ke keranjang!");
-                    // Menutup modal setelah produk berhasil ditambahkan ke keranjang
-                    new bootstrap.Modal(document.getElementById('productModal')).hide();
                 })
                 .catch(error => {
                     console.error('Error:', error);
