@@ -163,7 +163,7 @@ class AuthController extends Controller
 
     public function register()
     {
-        return view('login.register');
+        return view('login.login');
     }
 
     public function registerProcess(Request $request)

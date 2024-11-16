@@ -49,18 +49,44 @@
             color: #333;
             font-size: 1.2rem;
         }
-
         /* Flex Layout */
         .cart-container {
             display: flex;
             justify-content: space-between;
+            padding: 10px;
             margin-bottom: 30px;
         }
 
         .cart-items {
             width: 75%;
+            border-radius: 15px;
+            flex-direction: column;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
+        .table th {
+            background-color: #6b8e23;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .table thead tr:first-child th:first-child {
+            border-top-left-radius: 10px;
+        }
+
+        .table thead tr:first-child th:last-child {
+            border-top-right-radius: 10px;
+        }
+
+        .table tbody td {
+            padding: 15px;
+            vertical-align: middle;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+    
         .cart-summary {
             width: 22%;
             height: auto;
@@ -128,7 +154,7 @@
             background-color: #6b8e23;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 1rem;
             display: flex;
@@ -214,73 +240,82 @@
     </div>
 
     <div class="container">
-        <h1>Keranjang Belanja</h1>
 
-        @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
         @endif
 
         <div class="cart-container">
             <!-- Bagian Keranjang Belanja -->
             <div class="cart-items">
-                @if($cartItems->isEmpty())
-                <p>Keranjang Anda kosong.</p>
+                @if ($cartItems->isEmpty())
+                    <p>Keranjang Anda kosong.</p>
                 @else
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Nama Tanaman</th>
-                            <th>Harga</th>
-                            <th>Jumlah</th>
-                            <th>Total Harga</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($cartItems as $item)
-                        <tr>
-                            <td><input type="checkbox" class="plant-checkbox" data-item-id="{{ $item->idTanaman }}" data-price="{{ $item->harga_satuan }}" data-total="{{ $item->total_harga }}" onclick="updateSubtotal()"></td>
-                            <td>
-                                <!-- Menampilkan Gambar dan Nama Tanaman di Samping -->
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <img src="{{ asset('images/' . $item->gambar) }}" alt="{{ $item->namaTanaman }}" style="width: 50px; height: 50px; object-fit: cover;">
-                                    <span>{{ $item->namaTanaman }}</span>
-                                </div>
-                            </td>
-                            <td class="harga_satuan">{{ number_format($item->harga_satuan) }}</td>
-                            <td>
-                                <div class="quantity-wrapper">
-                                    <form method="POST" action="{{route('cart.decreaseqty',['rowId' => $item->idKeranjang])}}">
-                                        @csrf
-                                        @method('PUT')
-                                        <button type="button" class="btn-minus" onclick="this.closest('form').submit()">-</button>
-                                    </form>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama Tanaman</th>
+                                <th>Harga</th>
+                                <th>Jumlah</th>
+                                <th>Total Harga</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($cartItems as $item)
+                                <tr>
+                                    <td><input type="checkbox" class="plant-checkbox"
+                                            data-item-id="{{ $item->idTanaman }}" data-price="{{ $item->harga_satuan }}"
+                                            data-total="{{ $item->total_harga }}" onclick="updateSubtotal()"></td>
+                                    <td>
+                                        <!-- Menampilkan Gambar dan Nama Tanaman di Samping -->
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <img src="{{ asset('images/' . $item->gambar) }}"
+                                                alt="{{ $item->namaTanaman }}"
+                                                style="width: 50px; height: 50px; object-fit: cover;">
+                                            <span>{{ $item->namaTanaman }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="harga_satuan">{{ number_format($item->harga_satuan) }}</td>
+                                    <td>
+                                        <div class="quantity-wrapper">
+                                            <form method="POST"
+                                                action="{{ route('cart.decreaseqty', ['rowId' => $item->idKeranjang]) }}">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="button" class="btn-minus"
+                                                    onclick="this.closest('form').submit()">-</button>
+                                            </form>
 
-                                    <input type="text" class="jumlah-input" value="{{ $item->jumlah }}" data-id="{{ $item->idKeranjang }}" readonly>
+                                            <input type="text" class="jumlah-input" value="{{ $item->jumlah }}"
+                                                data-id="{{ $item->idKeranjang }}" readonly>
 
-                                    <form method="POST" action="{{route('cart.increaseqty',['rowId' => $item->idKeranjang])}}">
-                                        @csrf
-                                        @method('PUT')
-                                        <button type="button" class="btn-plus" onclick="this.closest('form').submit()">+</button>
-                                    </form>
-                                </div>
-                            </td>
+                                            <form method="POST"
+                                                action="{{ route('cart.increaseqty', ['rowId' => $item->idKeranjang]) }}">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="button" class="btn-plus"
+                                                    onclick="this.closest('form').submit()">+</button>
+                                            </form>
+                                        </div>
+                                    </td>
 
-                            <td id="total-{{ $item->idTanaman }}">{{ number_format($item->total_harga) }}</td>
-                            <td>
-                                <form action="{{ route('cart.remove', $item->idTanaman) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Hapus</button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                    <td id="total-{{ $item->idTanaman }}">{{ number_format($item->total_harga) }}
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('cart.remove', $item->idTanaman) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Hapus</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 @endif
             </div>
 
