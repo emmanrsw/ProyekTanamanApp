@@ -14,12 +14,12 @@ class CartController extends Controller
     public function viewCart()
     {
         // Pastikan pengguna sudah login
-        if (!auth('pelanggans')->check()) {
+        if (!auth('pelanggan')->check()) {
             return redirect()->route('login')->with('error', 'Harap login terlebih dahulu');
         }
 
         // Mengambil ID pengguna yang sedang login
-        $userId = auth('pelanggans')->id(); // Gunakan guard 'pelanggans' untuk mendapatkan ID pengguna
+        $userId = auth('pelanggan')->id(); // Gunakan guard 'pelanggans' untuk mendapatkan ID pengguna
 
         // Ambil data keranjang dari tabel `keranjangs` berdasarkan ID pengguna yang sedang login
         $cartItems = cartModel::where('idCust', $userId)->with('tanaman')->get();
@@ -43,7 +43,7 @@ class CartController extends Controller
 
         // Ambil data keranjang atau buat keranjang baru
         // Mengakses data pengguna dari guard 'pelanggans'
-        $keranjang = cartModel::where('idCust', auth('pelanggans')->id())
+        $keranjang = cartModel::where('idCust', auth('pelanggan')->id())
             ->where('idTanaman', $productId)
             ->first();
 
@@ -56,7 +56,7 @@ class CartController extends Controller
         } else {
             // Jika produk belum ada di keranjang, buat entri baru
             cartModel::create([
-                'idCust' => auth('pelanggans')->id(),
+                'idCust' => auth('pelanggan')->id(),
                 'idTanaman' => $productId,
                 'gambar' => $product->gambar,
                 'namaTanaman' => $product->namaTanaman,
@@ -71,12 +71,12 @@ class CartController extends Controller
     public function removeFromCart($id)
     {
         // Pastikan pengguna sudah login
-        if (!auth('pelanggans')->check()) {
+        if (!auth('pelanggan')->check()) {
             return redirect()->route('login')->with('error', 'Harap login terlebih dahulu');
         }
 
         // Mengambil ID pengguna yang sedang login
-        $userId = auth('pelanggans')->id();
+        $userId = auth('pelanggan')->id();
 
         // Hapus item dari keranjang berdasarkan ID pengguna dan ID tanaman
         cartModel::where('idCust', $userId)->where('idTanaman', $id)->delete();
@@ -87,13 +87,13 @@ class CartController extends Controller
     public function increase_cart_quantity($rowId)
     {
         // Pastikan pengguna sudah login
-        if (!auth('pelanggans')->check()) {
+        if (!auth('pelanggan')->check()) {
             return redirect()->route('login')->with('error', 'Harap login terlebih dahulu');
         }
 
         // Temukan item di keranjang berdasarkan rowId
         $cartItem = cartModel::where('idKeranjang', $rowId)
-            ->where('idCust', auth('pelanggans')->id())
+            ->where('idCust', auth('pelanggan')->id())
             ->first();
 
         if (!$cartItem) {
@@ -112,13 +112,13 @@ class CartController extends Controller
     public function decrease_cart_quantity($rowId)
     {
         // Pastikan pengguna sudah login
-        if (!auth('pelanggans')->check()) {
+        if (!auth('pelanggan')->check()) {
             return redirect()->route('login')->with('error', 'Harap login terlebih dahulu');
         }
 
         // Temukan item di keranjang berdasarkan rowId
         $cartItem = cartModel::where('idKeranjang', $rowId)
-            ->where('idCust', auth('pelanggans')->id())
+            ->where('idCust', auth('pelanggan')->id())
             ->first();
 
         if (!$cartItem) {

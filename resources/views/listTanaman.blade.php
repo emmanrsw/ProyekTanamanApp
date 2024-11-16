@@ -55,13 +55,6 @@
         color: #243a56;
     }
 
-    .banner p {
-        font-size: 1.2rem;
-        margin-top: 15px;
-        margin-bottom: 30px;
-        color: #555;
-    }
-
     .btn-custom {
         background-color: #6c9969;
         color: white;
@@ -185,7 +178,7 @@
 
     <div class="container">
         <div class="jumbotron">
-            <img src="Img/jumbotron.png" alt="jumbotron" style="height: 50%; width: 100%;">
+            <img src="/imagesHome/jumbotron.png" alt="jumbotron" style="height: 50%; width: 100%;">
         </div>
 
         <div class="container">
@@ -274,6 +267,25 @@
             new bootstrap.Modal(document.getElementById('productModal')).show();
         }
 
+        // function addToCart(productId) {
+        //     fetch(`/cart/add/${productId}`, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        //             },
+        //             body: JSON.stringify({
+        //                 productId: productId
+        //             })
+        //         })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             alert(data.message || "Produk berhasil ditambahkan ke keranjang!");
+        //         })
+        //         .catch(error => {
+        //             console.error('Error:', error);
+        //         });
+        // }
         function addToCart(productId) {
             // Ambil jumlah dari input yang ada di modal
             const jumlah = document.getElementById('jumlah').value;

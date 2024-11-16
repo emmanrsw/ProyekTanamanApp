@@ -27,7 +27,7 @@ class tanamanController extends Controller
 
     public function showTanaman(Request $request)
     {
-        $query = Tanaman::query();
+        $query = tanamanModel::query();
 
         // Filter harga
         if ($request->has('min_price') && $request->min_price != '') {
