@@ -200,13 +200,13 @@
             </a>
 
             <!-- Shopping Cart Icon -->
-            <a href="{{ route('cart') }}" class="nav-link" data-bs-toggle="modal" data-bs-target="#cartModal">
-                <i class="fa fa-shopping-cart"></i> 
+            <a href="{{ route('cart') }}" class="nav-link">
+                <i class="fa fa-shopping-cart"></i>
             </a>
             <!-- User Icon -->
             <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                    <i class="fa fa-bars"></i> 
+                    <i class="fa fa-bars"></i>
                 </a>
                 <div id="myLinks" style="display: none;">
                     <a href="{{ route('profile') }}" class="nav-link">
@@ -240,25 +240,6 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                     <button type="button" class="btn btn-primary">Cari</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Cart Modal -->
-    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="cartModalLabel">Keranjang Belanja</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Keranjang Anda kosong.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-primary">Lanjutkan ke Pembayaran</button>
                 </div>
             </div>
         </div>

@@ -191,21 +191,28 @@
         <div class="container">
             <div class="row filter-section">
                 <div class="col-md-3">
-                    <div class="filter-header">Filter</div>
                     <div class="filter-price">
-                        <p>Price</p>
-                        <input type="text" placeholder="Min"> - <input type="text" placeholder="Max">
+                        <p><strong>Price</strong></p>
+                        <form action="{{ route('tanaman.show') }}" method="GET">
+                            <div class="d-flex">
+                                <input type="number" name="min_price" class="form-control form-control-sm" placeholder="Min" value="{{ request('min_price') }}">
+                                <span class="mx-2">-</span>
+                                <input type="number" name="max_price" class="form-control form-control-sm" placeholder="Max" value="{{ request('max_price') }}">
+                            </div>
+                            <button type="submit" class="btn btn-custom mt-3">Apply Filter</button>
+                        </form>
                     </div>
                 </div>
                 <div class="col-md-9">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h3>Tanaman</h3>
-                        <select class="form-select sort-by" aria-label="Sort by"
-                            style="width: 150px; height: 30px; font-size: 11px;">
-                            <option selected>Sort by: Popular</option>
-                            <option value="1">Price: Low to High</option>
-                            <option value="2">Price: High to Low</option>
-                        </select>
+                        <form method="GET" action="{{ route('tanaman.show') }}">
+                            <select class="form-select" aria-label="Sort by" name="sort" onchange="this.form.submit()">
+                                <option value="default" {{ request('sort') == 'default' ? 'selected' : '' }}>Default</option>
+                                <option value="price_low_high" {{ request('sort') == 'price_low_high' ? 'selected' : '' }}>Price: Low to High</option>
+                                <option value="price_high_low" {{ request('sort') == 'price_high_low' ? 'selected' : '' }}>Price: High to Low</option>
+                            </select>
+                        </form>
                     </div>
                     <div class="product-grid">
                         @foreach ($tanaman as $tanaman)
@@ -267,27 +274,6 @@
             new bootstrap.Modal(document.getElementById('productModal')).show();
         }
 
-        // function addToCart(productId) {
-        //     fetch(`/cart/add/${productId}`, {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        //             },
-        //             body: JSON.stringify({
-        //                 productId: productId
-        //             })
-        //         })
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             alert(data.message || "Produk berhasil ditambahkan ke keranjang!");
-        //             // Menutup modal setelah produk berhasil ditambahkan ke keranjang
-        //             new bootstrap.Modal(document.getElementById('productModal')).hide();
-        //         })
-        //         .catch(error => {
-        //             console.error('Error:', error);
-        //         });
-        // }
         function addToCart(productId) {
             // Ambil jumlah dari input yang ada di modal
             const jumlah = document.getElementById('jumlah').value;
@@ -316,6 +302,13 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
+        }
+
+        function sortProducts() {
+            const sortBy = document.querySelector('.sort-by').value;
+
+            // Mengarahkan ke URL dengan query string untuk pengurutan
+            window.location.href = `?sortBy=${sortBy}`;
         }
     </script>
 </body>
