@@ -28,12 +28,15 @@ Route::get('/editTanaman/{id}', [tanamanController::class, 'editTanaman'])->name
 Route::post('/tanaman/update/{id}', [tanamanController::class, 'updateTanaman'])->name('tanaman.update');
 Route::post('/deleteTanaman', [tanamanController::class, 'destroy'])->name('deleteTanaman');
 Route::get('/tanaman', [tanamanController::class, 'listTanaman'])->name('listTanaman');
+Route::get('/tanaman/show', [TanamanController::class, 'showTanaman'])->name('tanaman.show');
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\CartController;
-Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add'); // Rute untuk menambah ke keranjang
+Route::post('/cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add'); // Rute untuk menambah ke keranjang
 Route::get('/cart', [CartController::class, 'viewCart'])->name('cart'); // Rute untuk melihat keranjang
-Route::post('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::put('/cart/decrease/{rowId}', [CartController::class, 'decrease_cart_quantity'])->name('cart.decreaseqty');
+Route::put('/cart/increase/{rowId}', [CartController::class, 'increase_cart_quantity'])->name('cart.increaseqty');
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\TransaksiController;
 Route::post('/transaksi', [TransaksiController::class, 'store']);

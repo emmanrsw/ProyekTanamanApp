@@ -27,23 +27,35 @@ class tanamanController extends Controller
 
     public function showTanaman(Request $request)
     {
-        // Mengambil semua data tanaman dari database
-        $tanaman = tanamanModel::all();
+        $query = Tanaman::query();
 
-        // Mendapatkan nilai pencarian dari query string
-        $searchQuery = $request->input('search', '');
-
-        // Jika ada pencarian, filter data
-        if (!empty($searchQuery)) {
-            $tanaman = $tanaman->filter(function ($plant) use ($searchQuery) {
-                return stripos($plant->name, $searchQuery) !== false;
-            });
+        // Filter harga
+        if ($request->has('min_price') && $request->min_price != '') {
+            $query->where('hargaTanaman', '>=', $request->min_price);
         }
 
-        return view('daftar_tanaman', [
-            'tanaman' => $tanaman, // Pastikan ini adalah Collection
-            'searchQuery' => $searchQuery,
-        ]);
+        if ($request->has('max_price') && $request->max_price != '') {
+            $query->where('hargaTanaman', '<=', $request->max_price);
+        }
+
+        // Pengurutan
+        if ($request->has('sort')) {
+            switch ($request->sort) {
+                case 'price_low_high':
+                    $query->orderBy('hargaTanaman', 'asc');
+                    break;
+                case 'price_high_low':
+                    $query->orderBy('hargaTanaman', 'desc');
+                    break;
+                default:
+                    // Default sorting
+                    $query->orderBy('idTanaman', 'asc');
+            }
+        }
+
+        $tanaman = $query->get();
+
+        return view('listTanaman', compact('tanaman'));
     }
 
     public function tambahTanaman()
