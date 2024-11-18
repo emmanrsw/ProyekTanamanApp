@@ -15,6 +15,11 @@ class TransaksiController extends Controller
         return view('transaksi');
     }
 
+    public function index()
+    {
+        $transaksi = transaksiModel::all(); // Ambil semua data pesanan
+        return view('orderList', compact('transaksi'));
+    }
 
     public function bayar(Request $request)
     {
@@ -50,12 +55,8 @@ class TransaksiController extends Controller
         return response()->json(['message' => 'Transaksi berhasil dibuat', 'data' => $transaksi], 201);
     }
 
-    // Lihat Semua Transaksi
-    public function index()
-    {
-        $transaksi = transaksiModel::all();
-        return response()->json($transaksi);
-    }
+
+
 
     // Update Status Transaksi
     public function updateStatus(Request $request, $idTJual)

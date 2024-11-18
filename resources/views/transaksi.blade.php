@@ -234,15 +234,6 @@
                     <p class="note">
                         Silakan lakukan pembayaran langsung ke rekening bank kami. Harap gunakan ID Pesanan Anda sebagai referensi pembayaran. Pesanan Anda tidak akan dikirimkan sampai dana kami terima di rekening.
                     </p>
-                    <label>
-                        <input type="radio" name="payment" /> Transfer
-                    </label>
-                    <label>
-                        <input type="radio" name="payment" /> Cash On Delivery
-                    </label>
-                    <p class="note">
-                        Data pribadi Anda akan digunakan untuk mendukung pengalaman Anda di seluruh situs web ini, untuk mengelola akses ke akun Anda, dan untuk tujuan lain yang dijelaskan dalam kebijakan privasi kami.
-                    </p>
                     <button class="btn">BAYAR SEKARANG</button>
                 </div>
             </div>

@@ -51,7 +51,7 @@
                 <a class="nav-link" href="#">All Products</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Order List</a>
+                <a class="nav-link" href="orders">Order List</a>
             </li>
         </ul>
     </div>

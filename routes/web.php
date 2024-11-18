@@ -61,3 +61,11 @@ use App\Http\Controllers\pesananController;
 Route::get('/pesanan', [pesananController::class, 'show']);
 // Route::get('/tanaman', [tanamanController::class, 'listTanaman'])->name('listTanaman');
 
+
+Route::get('/orders', [TransaksiController::class, 'index'])->name('orders.index');
+Route::get('/orders/create', [TransaksiController::class, 'create'])->name('orders.create');
+Route::post('/orders', [TransaksiController::class, 'store'])->name('orders.store');
+Route::get('/orders/{id}/edit', [TransaksiController::class, 'edit'])->name('orders.edit');
+Route::put('/orders/{id}', [TransaksiController::class, 'update'])->name('orders.update');
+// Route::delete('/orders/{id}', [TransaksiController::class, 'destroy'])->name('orders.destroy');
+
