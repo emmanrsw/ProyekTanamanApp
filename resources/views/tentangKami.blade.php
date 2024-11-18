@@ -299,7 +299,8 @@
                 <li class="nav-item"><a class="nav-link" href="tanaman">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="404">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
-                <li class="nav-item"><a class="nav-link" href="404">Tanaman Saya</a></li>
+                <li class="nav-item"><a class="nav-link" href="pesanan">Pesanan Saya</a></li>
+
             </ul>
         </div>
         <div class="navbar-icons d-flex align-items-center">
