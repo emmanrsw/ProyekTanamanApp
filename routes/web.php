@@ -9,6 +9,17 @@ Route::get('/tentangKami', function () {
     return view('tentangKami');
 });
 
+use App\Http\Controllers\PelangganController;
+
+// Route::post('/editPelanggan', [PelangganController::class, 'edit'])->name('editProfile');
+// Route::post('/updatePelanggan', [PelangganController::class, 'updateProfile'])->name('updateProfile');
+Route::middleware(['auth:pelanggan'])->group(function () {
+    Route::get('/profile', [PelangganController::class, 'showProfile'])->name('pelanggan.profile');
+    Route::post('/profile/edit', [PelangganController::class, 'edit'])->name('pelanggan.edit');
+    Route::post('/profile/update', [PelangganController::class, 'updateProfile'])->name('pelanggan.update');
+    Route::post('/update-profile-picture', [PelangganController::class, 'updateProfilePicture'])->name('updateProfilePicture');
+});
+
 use App\Http\Controllers\AuthController;
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'registerProcess']);
@@ -16,7 +27,7 @@ Route::get('/login', [AuthController::class, 'login'])->name('login.login');
 Route::post('/login', [AuthController::class, 'loginProcess'])->name('loginProcess');
 Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('forgot-password');
 Route::post('/forgot-password', [AuthController::class, 'submitForgotPasswordForm'])->name('forgot-password.submit');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\karyawanController;

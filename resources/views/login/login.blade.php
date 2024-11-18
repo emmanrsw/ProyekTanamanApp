@@ -245,7 +245,12 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                    <div style="position: relative;">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                        <div id="passwordError" class="text-danger"></div>
+                        <!-- Icon mata untuk menampilkan/membunyikan password -->
+                        <i class="fa fa-eye" id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                    </div>
                 </div>
 
                 <div class="form-group form-check">
@@ -276,6 +281,18 @@
     </div>
 
     <script>
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+
+        togglePassword.addEventListener('click', function() {
+            // Toggle tipe input antara 'password' dan 'text'
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+
+            // Toggle icon antara mata terbuka dan tertutup
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
         function validateForm() {
             const checkbox = document.getElementById('stayLoggedIn');
             const error = document.getElementById('checkboxError');

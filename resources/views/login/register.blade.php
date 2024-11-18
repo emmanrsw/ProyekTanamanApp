@@ -211,24 +211,35 @@
                 <?= csrf_field() ?>
 
                 <div class="form-group">
-                    <input type="text" class="form-control" id="namaCust" name="namaCust" placeholder="Nama Lengkap" value="<?= old('nama') ?>" required>
+                    <input type="text" class="form-control" id="usernameCust" name="usernameCust" placeholder="Username" value="{{ old('username') }}" required>
                 </div>
 
                 <div class="form-group">
-                    <input type="email" class="form-control" id="emailCust" name="emailCust" placeholder="Email" value="<?= old('email') ?>" required>
+                    <input type="text" class="form-control" id="namaCust" name="namaCust" placeholder="Nama Lengkap" value="{{ old('nama') }}" required>
                 </div>
 
                 <div class="form-group">
-                    <input type="text" class="form-control" id="usernameCust" name="usernameCust" placeholder="Username" value="<?= old('username') ?>" required>
+                    <input type="email" class="form-control" id="emailCust" name="emailCust" placeholder="Email" value="{{ old('email') }}" required>
                 </div>
 
                 <div class="form-group">
-                    <input type="password" class="form-control" id="passwordCust" name="passwordCust" placeholder="Password" required>
-                    <div id="passwordError" class="text-danger"></div>
+                    <input type="text" class="form-control" id="alamatCust" name="alamatCust" placeholder="Alamat Lengkap" value="{{ old('alamat') }}" required>
                 </div>
 
                 <div class="form-group">
-                    <input type="text" class="form-control" id="alamatCust" name="alamatCust" placeholder="Alamat Lengkap" value="<?= old('alamat') ?>" required>
+                    <div style="position: relative;">
+                        <input type="password" class="form-control" id="passwordCust" name="passwordCust" placeholder="Password" required>
+                        <div id="passwordError" class="text-danger"></div>
+                        <!-- Icon mata untuk menampilkan/membunyikan password -->
+                        <i class="fa fa-eye" id="togglePassword1" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div style="position: relative;">
+                        <input type="password" class="form-control" id="passwordCust_confirmation" name="passwordCust_confirmation" placeholder="Confirm Password" value="{{ old('confirmPw') }}" required>
+                        <i class="fa fa-eye" id="togglePassword2" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                    </div>
                 </div>
 
                 <div class="form-group form-check mt-3">
@@ -257,6 +268,7 @@
 
     <script>
         const passwordInput = document.getElementById('passwordCust');
+        const confirmPwInput = document.getElementById('passwordCust_confirmation');
         const passwordError = document.getElementById('passwordError');
 
         passwordInput.addEventListener('input', function() {
@@ -269,6 +281,7 @@
             }
         });
 
+        // validasi checkbox
         function validateForm() {
             const checkbox = document.getElementById('stayLoggedIn');
             const error = document.getElementById('checkboxError');
@@ -281,6 +294,21 @@
                 return true;
             }
         }
+        // Toggle Password untuk `passwordCust`
+        document.getElementById('togglePassword1').addEventListener('click', function() {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // Toggle Password untuk `confirmPw`
+        document.getElementById('togglePassword2').addEventListener('click', function() {
+            const type = confirmPwInput.type === 'password' ? 'text' : 'password';
+            confirmPwInput.type = type;
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
     </script>
 </body>
 

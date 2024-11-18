@@ -176,19 +176,42 @@
             height: 38px;
             box-sizing: border-box;
         }
+
+        #myLinks {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background-color: #333;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            font-size: 14px;
+        }
+
+        #myLinks a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        #myLinks a:hover {
+            background-color: #ddd;
+            color: black;
+        }
     </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="{{ route('home') }}"><span>Tanam</span><span class="highlight">.in</span></a>
+        <a class="navbar-brand" href="{{ Auth::guard('pelanggan')->check() ? route('homePage') : route('register') }}"><span>Tanam</span><span class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ Auth::guard('pelanggan')->check() ? route('homePage') : route('register') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="404">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
@@ -202,20 +225,25 @@
             </a>
 
             <!-- Shopping Cart Icon -->
-            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#cartModal">
+            <a href="{{ route('cart') }}" class="nav-link">
                 <i class="fa fa-shopping-cart"></i>
             </a>
-            <!-- User icon -->
+
+            <!-- User Icon -->
             <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     <i class="fa fa-user"></i>
                 </a>
                 <div id="myLinks" style="display: none;">
-                    <a href="{{ route('profile') }}" class="nav-link">
-                        {{ session('usernameCust') }}
+                    @if(Auth::guard('pelanggans')->check())
+                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                        {{ Auth::guard('pelanggans')->user()->usernameCust }}
                     </a>
                     <a href="#" style="font-size: 1rem;">Ubah Password</a>
                     <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                    @else
+                    <a href="{{ route('login.login') }}" class="nav-link">Login</a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -327,15 +355,15 @@
 
             <!-- Bagian Jumlah Keranjang -->
             <div class="cart-summary">
-                <h5>Jumlah Keranjang</h5>
+                <h5>Ringkasan Keranjang</h5>
                 <table>
                     <tr>
                         <td>SUBTOTAL</td>
                         <td class="subtotal">Rp0</td>
                     </tr>
                     <tr>
-                        <td>DISKON</td>
-                        <td>500</td>
+                        <td>PAJAK (10%)</td>
+                        <td id="tax">Rp0</td>
                     </tr>
                     <tr class="total">
                         <td>TOTAL</td>
@@ -369,50 +397,107 @@
         });
     </script>
     <script>
+        // Fungsi untuk memperbarui ringkasan keranjang
+        function updateSummary() {
+            const checkboxes = document.querySelectorAll('.plant-checkbox:checked'); // Pilih checkbox yang dicentang
+            let subtotal = 0;
+
+            // Hitung subtotal dari checkbox yang dicentang
+            checkboxes.forEach(checkbox => {
+                subtotal += parseFloat(checkbox.dataset.total); // Ambil nilai `data-total` dari produk
+            });
+
+            const taxRate = 0.1; // Pajak 10%
+            const tax = subtotal * taxRate;
+            const total = subtotal + tax;
+
+            // Update nilai di DOM
+            document.getElementById('subtotal').textContent = `Rp${subtotal.toLocaleString()}`;
+            document.getElementById('tax').textContent = `Rp${tax.toLocaleString()}`;
+            document.getElementById('total').textContent = `Rp${total.toLocaleString()}`;
+
+            // Aktifkan tombol checkout jika subtotal lebih dari 0
+            const checkoutButton = document.getElementById('checkoutButton');
+            if (subtotal > 0) {
+                checkoutButton.classList.add('enabled');
+                checkoutButton.disabled = false;
+            } else {
+                checkoutButton.classList.remove('enabled');
+                checkoutButton.disabled = true;
+            }
+        }
+
+        // Event listener untuk setiap checkbox
+        document.querySelectorAll('.plant-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateSummary);
+        });
+
+        // Panggil fungsi saat halaman pertama kali dimuat
+        updateSummary();
+
+        function updateCheckoutButtonState() {
+            const checkboxes = document.querySelectorAll('.plant-checkbox');
+            const checkoutButton = document.getElementById('checkoutButton');
+
+            // Periksa jika ada checkbox yang dicentang
+            const isAnyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+            if (isAnyChecked) {
+                checkoutButton.classList.add('enabled');
+                checkoutButton.classList.remove('disabled');
+            } else {
+                checkoutButton.classList.remove('enabled');
+                checkoutButton.classList.add('disabled');
+            }
+        }
+
+        // Tambahkan event listener untuk semua checkbox
+        document.querySelectorAll('.plant-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateCheckoutButtonState);
+        });
+
         function updateSubtotal() {
             let subtotal = 0;
 
-            // Hitung subtotal dari semua item di keranjang
-            document.querySelectorAll('.jumlah-input').forEach(input => {
-                const jumlah = parseInt(input.value); // Ambil jumlah
-                const hargaSatuan = parseFloat(input.closest('tr').querySelector('.harga_satuan').textContent
-                    .replace(/[^\d]/g, '')); // Ambil harga satuan
-
-                // Tambahkan total harga untuk item ini
-                subtotal += jumlah * hargaSatuan;
-            });
-
-            document.querySelector('.subtotal').textContent = `Rp${subtotal.toLocaleString()}`;
-            document.querySelector('.total td:last-child').textContent = `Rp${(subtotal - 500).toLocaleString()}`;
-        }
-
-        // Panggil `updateSubtotal` saat halaman selesai dimuat
-        window.onload = function() {
-            updateSubtotal();
-        };
-
-        document.getElementById("checkoutButton").addEventListener("click", function() {
-            const selectedItems = [];
-            document.querySelectorAll(".item-row").forEach(row => {
-                const checkbox = row.querySelector(".item-checkbox");
+            // Iterate over all checkboxes
+            document.querySelectorAll('.plant-checkbox').forEach(checkbox => {
                 if (checkbox.checked) {
-                    const itemName = row.querySelector(".item-name").innerText;
-                    const itemPrice = row.querySelector(".item-price").innerText;
-                    const itemQuantity = row.querySelector(".item-quantity").value;
-                    selectedItems.push({
-                        name: itemName,
-                        price: itemPrice,
-                        quantity: itemQuantity
-                    });
+                    // Add the total price of the checked item to subtotal
+                    subtotal += parseFloat(checkbox.dataset.total);
                 }
             });
 
-            if (selectedItems.length > 0) {
-                console.log("Selected items:", selectedItems);
+            // Format subtotal with thousands separator (Rp xxx.xxx)
+            const formattedSubtotal = new Intl.NumberFormat('id-ID').format(subtotal);
+
+            // Update the subtotal display
+            document.querySelector('.subtotal').textContent = "Rp " + formattedSubtotal;
+
+            // Calculate total (apply discount if available)
+            let discount = 0; // default: no discount
+            let total = subtotal - discount;
+
+            // Format the total with thousands separator (Rp xxx.xxx)
+            const formattedTotal = new Intl.NumberFormat('id-ID').format(total);
+
+            // Update the total display
+            document.querySelector('.total td:last-child').textContent = "Rp " + formattedTotal;
+        }
+
+        // Initialize subtotal and total when page loads
+        window.onload = function() {
+            updateSubtotal();
+            updateCheckoutButtonState();
+        };
+
+        function myFunction() {
+            var x = document.getElementById("myLinks");
+            if (x.style.display === "block") {
+                x.style.display = "none";
             } else {
-                alert("Pilih barang terlebih dahulu!");
+                x.style.display = "block";
             }
-        });
+        }
     </script>
 </body>
 
