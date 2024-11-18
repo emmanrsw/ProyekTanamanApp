@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <style>
@@ -56,9 +57,9 @@
     }
 
     .btn-custom {
-        background-color: #6c9969;
+        background-color: #4B553D;
         color: white;
-        padding: 15px 30px;
+        padding: 4px 10px;
         border-radius: 5px;
         font-size: 1rem;
         border: none;
@@ -76,7 +77,7 @@
 
     .navbar-icons a {
         margin-left: 20px;
-        color: #333;
+        color: #4B553D;
         font-size: 1.2rem;
     }
 
@@ -113,7 +114,7 @@
     }
 
     .btn-add-to-cart {
-        background-color: #6c9969;
+        background-color: #4B553D;
         color: white;
         border: none;
         padding: 10px 20px;
@@ -138,6 +139,14 @@
         text-decoration: none;
         display: block;
     }
+
+    .img-fluid {
+        max-width: 55%;
+        margin: 0 auto;
+        /* Center secara horizontal */
+        display: block;
+        /* Diperlukan untuk margin bekerja pada elemen inline seperti gambar */
+    }
 </style>
 
 <body>
@@ -152,7 +161,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="404">Kontak</a></li>
-                <li class="nav-item"><a class="nav-link" href="404">Tentang Kami</a></li>
+                <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
                 <li class="nav-item"><a class="nav-link" href="404">Tanaman Saya</a></li>
             </ul>
         </div>
@@ -175,10 +184,9 @@
             </div>
         </div>
     </nav>
-
     <div class="container">
         <div class="jumbotron">
-            <img src="/imagesHome/jumbotron.png" alt="jumbotron" style="height: 50%; width: 100%;">
+            <img src="/img/jumbotron.png" alt="jumbotron" style="height: 50%; width: 100%;">
         </div>
 
         <div class="container">
@@ -188,9 +196,11 @@
                         <p><strong>Price</strong></p>
                         <form action="{{ route('tanaman.show') }}" method="GET">
                             <div class="d-flex">
-                                <input type="number" name="min_price" class="form-control form-control-sm" placeholder="Min" value="{{ request('min_price') }}">
+                                <input type="number" name="min_price" class="form-control form-control-sm"
+                                    placeholder="Min" value="{{ request('min_price') }}">
                                 <span class="mx-2">-</span>
-                                <input type="number" name="max_price" class="form-control form-control-sm" placeholder="Max" value="{{ request('max_price') }}">
+                                <input type="number" name="max_price" class="form-control form-control-sm"
+                                    placeholder="Max" value="{{ request('max_price') }}">
                             </div>
                             <button type="submit" class="btn btn-custom mt-3">Apply Filter</button>
                         </form>
@@ -200,24 +210,30 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h3>Tanaman</h3>
                         <form method="GET" action="{{ route('tanaman.show') }}">
-                            <select class="form-select" aria-label="Sort by" name="sort" onchange="this.form.submit()">
-                                <option value="default" {{ request('sort') == 'default' ? 'selected' : '' }}>Default</option>
-                                <option value="price_low_high" {{ request('sort') == 'price_low_high' ? 'selected' : '' }}>Price: Low to High</option>
-                                <option value="price_high_low" {{ request('sort') == 'price_high_low' ? 'selected' : '' }}>Price: High to Low</option>
+                            <select class="form-select" aria-label="Sort by" name="sort"
+                                onchange="this.form.submit()">
+                                <option value="default" {{ request('sort') == 'default' ? 'selected' : '' }}>Default
+                                </option>
+                                <option value="price_low_high"
+                                    {{ request('sort') == 'price_low_high' ? 'selected' : '' }}>Price: Low to High
+                                </option>
+                                <option value="price_high_low"
+                                    {{ request('sort') == 'price_high_low' ? 'selected' : '' }}>Price: High to Low
+                                </option>
                             </select>
                         </form>
                     </div>
                     <div class="product-grid">
                         @foreach ($tanaman as $tanaman)
-                        <div class="product-card">
-                            <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
-                                alt="{{ $tanaman->namaTanaman }}">
-                            <h5>{{ $tanaman->namaTanaman }}</h5>
-                            <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
-                            <button class="btn btn-primary btn-add-to-cart"
-                                data-product='@json($tanaman)'>View Details</button>
-                            <meta name="csrf-token" content="{{ csrf_token() }}">
-                        </div>
+                            <div class="product-card">
+                                <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
+                                    alt="{{ $tanaman->namaTanaman }}">
+                                <h5>{{ $tanaman->namaTanaman }}</h5>
+                                <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
+                                <button class="btn btn-primary btn-add-to-cart"
+                                    data-product='@json($tanaman)'>View Details</button>
+                                <meta name="csrf-token" content="{{ csrf_token() }}">
+                            </div>
                         @endforeach
                     </div>
                 </div>
@@ -246,13 +262,15 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                            <div class="d-flex justify-content-center">
                             <img src="${product.gambar ? '/images/' + product.gambar : '/default-image.png'}" class="img-fluid" alt="${product.namaTanaman}">
+                            </div>
                             <p>Harga: Rp${product.hargaTanaman.toLocaleString()}</p>
                             <p>Deskripsi: ${product.deskripsi || "Deskripsi tidak tersedia"}</p>
                             <!-- Input untuk jumlah -->
-                            <div class="mt-3">
-                                <label for="jumlah">Jumlah:</label>
-                                <input type="number" id="jumlah" class="form-control" value="1" min="1" max="100">
+                            <div class="d-flex align-items-center mt-3">
+                                <label for="jumlah" class="me-2">Jumlah:</label>
+                                <input type="number" id="jumlah" class="form-control w-50" value="1" min="1" max="100">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -309,7 +327,12 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    alert(data.message || "Produk berhasil ditambahkan ke keranjang!");
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: data.message || "Produk berhasil ditambahkan ke keranjang!",
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    })
                 })
                 .catch(error => {
                     console.error('Error:', error);

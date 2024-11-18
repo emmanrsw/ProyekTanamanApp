@@ -29,7 +29,7 @@
         }
 
         .navbar-brand .highlight {
-            color: #6c9969;
+            color: #4B553D;
         }
 
         .navbar-nav .nav-link {
@@ -49,6 +49,7 @@
             color: #333;
             font-size: 1.2rem;
         }
+
         /* Flex Layout */
         .cart-container {
             display: flex;
@@ -65,7 +66,7 @@
         }
 
         .table th {
-            background-color: #6b8e23;
+            background-color: #4B553D;
             color: white;
             padding: 10px;
             text-align: center;
@@ -86,7 +87,7 @@
             text-align: center;
             font-size: 0.95rem;
         }
-    
+
         .cart-summary {
             width: 22%;
             height: auto;
@@ -101,7 +102,7 @@
         }
 
         .cart-summary h5 {
-            background-color: #6b8e23;
+            background-color: #4B553D;
             color: #fff;
             padding: 10px;
             border-radius: 8px 8px 0 0;
@@ -151,7 +152,7 @@
         .btn-minus,
         .btn-plus {
             padding: 5px 10px;
-            background-color: #6b8e23;
+            background-color: #4B553D;
             color: white;
             border: none;
             border-radius: 5px;
@@ -190,7 +191,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="404">Kontak</a></li>
-                <li class="nav-item"><a class="nav-link" href="404">Tentang Kami</a></li>
+                <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
                 <li class="nav-item"><a class="nav-link" href="404">Tanaman Saya</a></li>
             </ul>
         </div>
@@ -329,7 +330,7 @@
                     </tr>
                     <tr>
                         <td>DISKON</td>
-                        <td>---</td>
+                        <td>500</td>
                     </tr>
                     <tr class="total">
                         <td>TOTAL</td>
@@ -345,44 +346,51 @@
         $(function() {
             $(".btn-plus").on("click", function() {
                 $(this).closest('form').submit();
-            })
-        })
-        $(function() {
+
+                // Tunggu hingga server merespons, lalu perbarui subtotal
+                setTimeout(updateSubtotal, 500);
+            });
+
             $(".btn-minus").on("click", function() {
                 $(this).closest('form').submit();
-            })
-        })
+
+                // Tunggu hingga server merespons, lalu perbarui subtotal
+                setTimeout(updateSubtotal, 500);
+            });
+        });
     </script>
     <script>
         function updateSubtotal() {
             let subtotal = 0;
 
-            // Iterate over all checkboxes
-            document.querySelectorAll('.plant-checkbox').forEach(checkbox => {
-                if (checkbox.checked) {
-                    // Add the total price of the checked item to subtotal
-                    subtotal += parseFloat(checkbox.dataset.total);
-                }
+            // Hitung subtotal dari semua item di keranjang
+            document.querySelectorAll('.jumlah-input').forEach(input => {
+                const jumlah = parseInt(input.value); // Ambil jumlah
+                const hargaSatuan = parseFloat(input.closest('tr').querySelector('.harga_satuan').textContent
+                    .replace(/[^\d]/g, '')); // Ambil harga satuan
+
+                // Tambahkan total harga untuk item ini
+                subtotal += jumlah * hargaSatuan;
             });
 
-            // Format subtotal with thousands separator (Rp xxx.xxx)
+            // Format subtotal dengan ribuan separator (Rp xxx.xxx)
             const formattedSubtotal = new Intl.NumberFormat('id-ID').format(subtotal);
 
-            // Update the subtotal display
+            // Update tampilan subtotal
             document.querySelector('.subtotal').textContent = "Rp " + formattedSubtotal;
 
-            // Calculate total (apply discount if available)
-            let discount = 0; // default: no discount
+            // Total (bisa tambahkan diskon di sini jika perlu)
+            let discount = 500; // Default: tanpa diskon
             let total = subtotal - discount;
 
-            // Format the total with thousands separator (Rp xxx.xxx)
+            // Format total dengan ribuan separator
             const formattedTotal = new Intl.NumberFormat('id-ID').format(total);
 
-            // Update the total display
+            // Update tampilan total
             document.querySelector('.total td:last-child').textContent = "Rp " + formattedTotal;
         }
 
-        // Initialize subtotal and total when page loads
+        // Panggil `updateSubtotal` saat halaman selesai dimuat
         window.onload = function() {
             updateSubtotal();
         };

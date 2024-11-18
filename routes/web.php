@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('tanamanHPP');
 });
+Route::get('/tentangKami', function () {
+    return view('tentangKami');
+});
 
 use App\Http\Controllers\AuthController;
 Route::get('/register', [AuthController::class, 'register'])->name('register');
