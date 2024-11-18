@@ -234,7 +234,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-primary">Lanjutkan ke Pembayaran</button>
+
+                    <form action="/transaksi" method="GET">
+                        @csrf
+                        <button class="btn">BAYAR SEKARANG</button>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -243,80 +248,80 @@
     <div class="container">
 
         @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
         @endif
 
         <div class="cart-container">
             <!-- Bagian Keranjang Belanja -->
             <div class="cart-items">
                 @if ($cartItems->isEmpty())
-                    <p>Keranjang Anda kosong.</p>
+                <p>Keranjang Anda kosong.</p>
                 @else
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Nama Tanaman</th>
-                                <th>Harga</th>
-                                <th>Jumlah</th>
-                                <th>Total Harga</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($cartItems as $item)
-                                <tr>
-                                    <td><input type="checkbox" class="plant-checkbox"
-                                            data-item-id="{{ $item->idTanaman }}" data-price="{{ $item->harga_satuan }}"
-                                            data-total="{{ $item->total_harga }}" onclick="updateSubtotal()"></td>
-                                    <td>
-                                        <!-- Menampilkan Gambar dan Nama Tanaman di Samping -->
-                                        <div style="display: flex; align-items: center; gap: 10px;">
-                                            <img src="{{ asset('images/' . $item->gambar) }}"
-                                                alt="{{ $item->namaTanaman }}"
-                                                style="width: 50px; height: 50px; object-fit: cover;">
-                                            <span>{{ $item->namaTanaman }}</span>
-                                        </div>
-                                    </td>
-                                    <td class="harga_satuan">{{ number_format($item->harga_satuan) }}</td>
-                                    <td>
-                                        <div class="quantity-wrapper">
-                                            <form method="POST"
-                                                action="{{ route('cart.decreaseqty', ['rowId' => $item->idKeranjang]) }}">
-                                                @csrf
-                                                @method('PUT')
-                                                <button type="button" class="btn-minus"
-                                                    onclick="this.closest('form').submit()">-</button>
-                                            </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama Tanaman</th>
+                            <th>Harga</th>
+                            <th>Jumlah</th>
+                            <th>Total Harga</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($cartItems as $item)
+                        <tr>
+                            <td><input type="checkbox" class="plant-checkbox"
+                                    data-item-id="{{ $item->idTanaman }}" data-price="{{ $item->harga_satuan }}"
+                                    data-total="{{ $item->total_harga }}" onclick="updateSubtotal()"></td>
+                            <td>
+                                <!-- Menampilkan Gambar dan Nama Tanaman di Samping -->
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <img src="{{ asset('images/' . $item->gambar) }}"
+                                        alt="{{ $item->namaTanaman }}"
+                                        style="width: 50px; height: 50px; object-fit: cover;">
+                                    <span>{{ $item->namaTanaman }}</span>
+                                </div>
+                            </td>
+                            <td class="harga_satuan">{{ number_format($item->harga_satuan) }}</td>
+                            <td>
+                                <div class="quantity-wrapper">
+                                    <form method="POST"
+                                        action="{{ route('cart.decreaseqty', ['rowId' => $item->idKeranjang]) }}">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="button" class="btn-minus"
+                                            onclick="this.closest('form').submit()">-</button>
+                                    </form>
 
-                                            <input type="text" class="jumlah-input" value="{{ $item->jumlah }}"
-                                                data-id="{{ $item->idKeranjang }}" readonly>
+                                    <input type="text" class="jumlah-input" value="{{ $item->jumlah }}"
+                                        data-id="{{ $item->idKeranjang }}" readonly>
 
-                                            <form method="POST"
-                                                action="{{ route('cart.increaseqty', ['rowId' => $item->idKeranjang]) }}">
-                                                @csrf
-                                                @method('PUT')
-                                                <button type="button" class="btn-plus"
-                                                    onclick="this.closest('form').submit()">+</button>
-                                            </form>
-                                        </div>
-                                    </td>
+                                    <form method="POST"
+                                        action="{{ route('cart.increaseqty', ['rowId' => $item->idKeranjang]) }}">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="button" class="btn-plus"
+                                            onclick="this.closest('form').submit()">+</button>
+                                    </form>
+                                </div>
+                            </td>
 
-                                    <td id="total-{{ $item->idTanaman }}">{{ number_format($item->total_harga) }}
-                                    </td>
-                                    <td>
-                                        <form action="{{ route('cart.remove', $item->idTanaman) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Hapus</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            <td id="total-{{ $item->idTanaman }}">{{ number_format($item->total_harga) }}
+                            </td>
+                            <td>
+                                <form action="{{ route('cart.remove', $item->idTanaman) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
                 @endif
             </div>
 
@@ -337,7 +342,11 @@
                         <td>Rp0</td>
                     </tr>
                 </table>
-                <a class="checkout-btn" href="#">Lanjutkan Ke Pembayaran</a>
+
+                <form action="{{ route('transaksi') }}" method="GET">
+                    @csrf
+                    <button class="checkout-btn">Lanjutkan Ke Pembayaran</button>
+                </form>
             </div>
 
         </div>
@@ -373,27 +382,37 @@
                 subtotal += jumlah * hargaSatuan;
             });
 
-            // Format subtotal dengan ribuan separator (Rp xxx.xxx)
-            const formattedSubtotal = new Intl.NumberFormat('id-ID').format(subtotal);
-
-            // Update tampilan subtotal
-            document.querySelector('.subtotal').textContent = "Rp " + formattedSubtotal;
-
-            // Total (bisa tambahkan diskon di sini jika perlu)
-            let discount = 500; // Default: tanpa diskon
-            let total = subtotal - discount;
-
-            // Format total dengan ribuan separator
-            const formattedTotal = new Intl.NumberFormat('id-ID').format(total);
-
-            // Update tampilan total
-            document.querySelector('.total td:last-child').textContent = "Rp " + formattedTotal;
+            document.querySelector('.subtotal').textContent = `Rp${subtotal.toLocaleString()}`;
+            document.querySelector('.total td:last-child').textContent = `Rp${(subtotal - 500).toLocaleString()}`;
         }
 
         // Panggil `updateSubtotal` saat halaman selesai dimuat
         window.onload = function() {
             updateSubtotal();
         };
+
+        document.getElementById("checkoutButton").addEventListener("click", function() {
+            const selectedItems = [];
+            document.querySelectorAll(".item-row").forEach(row => {
+                const checkbox = row.querySelector(".item-checkbox");
+                if (checkbox.checked) {
+                    const itemName = row.querySelector(".item-name").innerText;
+                    const itemPrice = row.querySelector(".item-price").innerText;
+                    const itemQuantity = row.querySelector(".item-quantity").value;
+                    selectedItems.push({
+                        name: itemName,
+                        price: itemPrice,
+                        quantity: itemQuantity
+                    });
+                }
+            });
+
+            if (selectedItems.length > 0) {
+                console.log("Selected items:", selectedItems);
+            } else {
+                alert("Pilih barang terlebih dahulu!");
+            }
+        });
     </script>
 </body>
 

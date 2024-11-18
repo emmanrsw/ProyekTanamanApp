@@ -42,7 +42,22 @@ Route::put('/cart/decrease/{rowId}', [CartController::class, 'decrease_cart_quan
 Route::put('/cart/increase/{rowId}', [CartController::class, 'increase_cart_quantity'])->name('cart.increaseqty');
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\TransaksiController;
-Route::post('/transaksi', [TransaksiController::class, 'store']);
+// Route::post('/transaksi', [TransaksiController::class, 'store']);
 Route::get('/transaksi', [TransaksiController::class, 'index']);
 Route::put('/transaksi/{idTJual}', [TransaksiController::class, 'updateStatus']);
+Route::get('/transaksi', [TransaksiController::class, 'show']);
+Route::get('/transaksi', [TransaksiController::class, 'show'])->name('transaksi');
+
+
+// Rute untuk menampilkan halaman pembayaran
+// Route::get('/transaksi', [TransaksiController::class, 'show'])->name('transaksi.show');
+
+// // Rute untuk memproses pembayaran (opsional, jika ada aksi pembayaran lebih lanjut)
+// Route::post('/transaksi/bayar', [TransaksiController::class, 'bayar'])->name('transaksi.bayar');
+
+
+// -----------------------------------------------------------------------------------------------------------
+use App\Http\Controllers\pesananController;
+Route::get('/pesanan', [pesananController::class, 'show']);
+// Route::get('/tanaman', [tanamanController::class, 'listTanaman'])->name('listTanaman');
 

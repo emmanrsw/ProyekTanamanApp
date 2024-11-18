@@ -10,6 +10,22 @@ use Illuminate\Support\Facades\Storage;
 class TransaksiController extends Controller
 {
 
+    public function show()
+    {
+        return view('transaksi');
+    }
+
+
+    public function bayar(Request $request)
+    {
+        // Logika pembayaran
+        // Misalnya, menyimpan data transaksi ke database
+        // $request->input('amount'); // Contoh input jumlah pembayaran
+
+        return redirect()->route('transaksi.show')->with('success', 'Pembayaran berhasil!');
+    }
+
+
     // Tambah Transaksi
     public function store(Request $request)
     {
