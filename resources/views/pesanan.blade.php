@@ -335,7 +335,7 @@
 
             // Aksi tombol Belanja
             belanjaBtn.addEventListener("click", function () {
-                window.location.href = "/shop"; // Ganti dengan URL halaman belanja yang sesuai
+                window.location.href = "/tanaman"; // Ganti dengan URL halaman belanja yang sesuai
             });
         };
 

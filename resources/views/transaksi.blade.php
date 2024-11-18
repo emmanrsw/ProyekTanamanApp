@@ -216,6 +216,50 @@
         text-decoration: none;
         margin-bottom: 5px;
     }
+
+    .popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+    }
+
+    .popup-content {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        text-align: center;
+        width: 300px;
+    }
+
+    .popup-content h2 {
+        margin-bottom: 15px;
+    }
+
+    .popup-content .btn-close {
+        background-color: #dc3545;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    .popup-content .btn-close:hover {
+        background-color: #c82333;
+    }
 </style>
 </head>
 
@@ -228,11 +272,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="home">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tentang Kami</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Pesanan Saya</a></li>
+                <li class="nav-item"><a class="nav-link" href="pesanan">Pesanan Saya</a></li>
             </ul>
         </div>
         <div class="navbar-icons d-flex align-items-center">
@@ -264,10 +308,10 @@
     </nav>
     <!-- Session Message -->
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     @endif
     <div class="main-content">
         <div class="product-details">
@@ -299,17 +343,18 @@
                     Silakan lakukan pembayaran langsung ke rekening bank kami. Harap gunakan ID Pesanan Anda sebagai
                     referensi pembayaran. Pesanan Anda tidak akan dikirimkan sampai dana kami terima di rekening.
                 </p>
-                <label>
-                    <input type="radio" name="payment" /> Transfer
-                </label>
-                <p class="note">
-                    Data pribadi Anda akan digunakan untuk mendukung pengalaman Anda di seluruh situs web ini, untuk
-                    mengelola akses ke akun Anda, dan untuk tujuan lain yang dijelaskan dalam kebijakan privasi
-                    kami.
-                </p>
-                <button class="btn">BAYAR SEKARANG</button>
+                <button class="btn" onclick="showPopup()">BAYAR SEKARANG</button>
             </div>
         </div>
+
+        <!-- Popup -->
+        <div class="popup-overlay" id="popupOverlay"></div>
+        <div class="popup-content" id="popupContent">
+            <h2>Transaksi Berhasil!</h2>
+            <p>Terima kasih atas pembayaran Anda!</p>
+            <button class="btn-close" onclick="closePopup()">Tutup</button>
+            <a href="{{ route('pesanan') }}" class="btn btn-primary">Lihat Pesanan</a>
+            </div>
         <div class="summary">
             <div class="shipping-info">
                 <h3>Shipping Information</h3>
@@ -349,6 +394,8 @@
             </div>
         </div>
     </div>
+
+
     <footer>
         <div class="footer-links">
             <div>
@@ -378,6 +425,17 @@
             Privacy Policy | Terms & Conditions
         </p>
     </footer>
+    <script>
+        function showPopup() {
+            document.getElementById('popupOverlay').style.display = 'block';
+            document.getElementById('popupContent').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+            document.getElementById('popupContent').style.display = 'none';
+        }
+    </script>
     </div>
 </body>
 

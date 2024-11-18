@@ -58,7 +58,7 @@ Route::get('/transaksi', [TransaksiController::class, 'show'])->name('transaksi'
 
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\pesananController;
-Route::get('/pesanan', [pesananController::class, 'show']);
+Route::get('/pesanan', [PesananController::class, 'show'])->name('pesanan');
 // Route::get('/tanaman', [tanamanController::class, 'listTanaman'])->name('listTanaman');
 
 
