@@ -296,7 +296,7 @@
                     <i class="fa fa-bars"></i>
                 </a>
                 <div id="myLinks" style="display: none;">
-                    <a href="{{ route('profile') }}" class="nav-link">
+                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
                         <i class="fa fa-user"></i> {{ session('usernameCust') }}
                     </a>
                     <a href="#" style="font-size: 1rem;">Ubah Password</a>
