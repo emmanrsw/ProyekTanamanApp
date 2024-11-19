@@ -90,13 +90,6 @@
         /* Transisi halus */
     }
 
-    .icon-container.active {
-        color: gray;
-        /* Warna saat ikon aktif */
-        opacity: 0.6;
-        /* Efek redup saat ikon diklik */
-    }
-
     .text {
         margin-top: 5px;
         /* Memberikan jarak antara ikon dan teks */
@@ -183,43 +176,64 @@
         margin-top: 100px;
         /* Memberikan jarak dari banner */
     }
+
     /* Tampilan jika barang ada */
-#barangAda {
-    background-color: #28a745; /* Hijau */
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-}
+    #barangAda {
+        background-color: #28a745;
+        /* Hijau */
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+    }
 
-/* Tampilan jika barang tidak ada */
-#barangTidakAda {
-    background-color: #dc3545; /* Merah */
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-}
+    /* Tampilan jika barang tidak ada */
+    #barangTidakAda {
+        background-color: #dc3545;
+        /* Merah */
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+    }
 
-/* Menyembunyikan tombol belanja */
-#belanjaBtn.hidden {
-    display: none;
-}
+    /* Menyembunyikan tombol belanja */
+    #belanjaBtn.hidden {
+        display: none;
+    }
 
+    /* Gaya untuk elemen yang tidak aktif */
+    #sedangDikemas,
+    #dikirim,
+    #selesai {
+        opacity: 0.5;
+        /* Redup */
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Gaya untuk elemen yang aktif */
+    #sedangDikemas.active,
+    #dikirim.active,
+    #selesai.active {
+        opacity: 1;
+        /* Nyala */
+        transform: scale(1.1);
+        /* Sedikit membesar */
+    }
 </style>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="{{ route('home') }}"><span>Tanam</span><span class="highlight">.in</span></a>
+        <a class="navbar-brand" href="#"><span>Tanam</span><span class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tentang Kami</a></li>
-                <li class="nav-item"><a class="nav-link" href="pesanan">Pesanan Saya</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Pesanan Saya</a></li>
             </ul>
         </div>
         <div class="navbar-icons d-flex align-items-center">
@@ -239,7 +253,7 @@
                     <i class="fa fa-bars"></i>
                 </a>
                 <div id="myLinks" style="display: none;">
-                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                    <a href="{{ route('profile') }}" class="nav-link">
                         <i class="fa fa-user"></i> {{ session('usernameCust') }}
                     </a>
                     <a href="#" style="font-size: 1rem;">Ubah Password</a>
@@ -285,7 +299,7 @@
     </div>
 
     <script>
-        isBarangAda = true; // Ganti dengan kondisi nyata dari data Anda
+        let isBarangAda = true; // Ganti dengan kondisi nyata dari data Anda
 
         if (isBarangAda) {
             // Ubah teks dan tampilkan indikator barang sudah ada
@@ -307,7 +321,7 @@
 
 
     <script>
-        isBarangAda = false; // Ganti dengan kondisi nyata dari data Anda
+        let isBarangAda = false; // Ganti dengan kondisi nyata dari data Anda
 
         // Cek jika ada barang atau tidak
         if (isBarangAda) {
@@ -335,11 +349,17 @@
 
             // Aksi tombol Belanja
             belanjaBtn.addEventListener("click", function () {
-                window.location.href = "/tanaman"; // Ganti dengan URL halaman belanja yang sesuai
+                window.location.href = "/shop"; // Ganti dengan URL halaman belanja yang sesuai
             });
         };
 
-        // Elemen untuk menampilkan pesan tambahan
+        // Fungsi untuk mereset kelas aktif pada semua tombol
+        function resetActive() {
+            document.getElementById("sedangDikemas").classList.remove("active");
+            document.getElementById("dikirim").classList.remove("active");
+            document.getElementById("selesai").classList.remove("active");
+        }
+
         document.getElementById("sedangDikemas").addEventListener("click", function () {
             // Sembunyikan #message1
             document.getElementById("message1").style.display = "none";
@@ -349,29 +369,37 @@
             messageElement.textContent = "Tidak ada barang yang sedang dikemas";
             messageElement.style.display = "block";
 
-            // Atur ikon menjadi aktif dengan menambah kelas 'active'
+            // Reset semua tombol dan atur tombol ini sebagai aktif
+            resetActive();
             this.classList.add("active");
         });
 
-
         document.getElementById("dikirim").addEventListener("click", function () {
-            // Menyembunyikan #message1
+            // Sembunyikan #message1
             document.getElementById("message1").style.display = "none";
 
-            // Menampilkan pesan di bawah banner
+            // Tampilkan pesan di bawah banner
             var messageElement = document.getElementById("message");
             messageElement.textContent = "Tidak ada barang yang dikirim";
             messageElement.style.display = "block";
+
+            // Reset semua tombol dan atur tombol ini sebagai aktif
+            resetActive();
+            this.classList.add("active");
         });
 
         document.getElementById("selesai").addEventListener("click", function () {
-            // Menyembunyikan #message1
+            // Sembunyikan #message1
             document.getElementById("message1").style.display = "none";
 
-            // Menampilkan pesan di bawah banner
+            // Tampilkan pesan di bawah banner
             var messageElement = document.getElementById("message");
             messageElement.textContent = "Belum ada barang yang terselesaikan";
             messageElement.style.display = "block";
+
+            // Reset semua tombol dan atur tombol ini sebagai aktif
+            resetActive();
+            this.classList.add("active");
         });
     </script>
 
