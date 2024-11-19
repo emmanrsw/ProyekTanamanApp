@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pelanggan;
+use App\Models\pelangganModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller;
 //import Http Request
@@ -13,61 +13,77 @@ use Illuminate\Support\Facades\Session;
 
 class PelangganController extends Controller
 {
+    public function showProfile()
+    {
+        $customer = Auth::guard('pelanggan')->user();
+        if (!$customer) {
+            return redirect()->route('login.login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
+        return view('profilPage', ['customer' => $customer]);
+    }
     public function edit()
     {
-        // $user = Session::get('customer');
-        // if (!$user) {
-        //     return redirect()->route('login');
-        // }
-        // return view('editProfil', ['customer' => $user]);
-        // Ambil ID customer dari session
-        $customerId = Session::get('idCust');
+        // Dapatkan pelanggan yang sedang login
+        $customer = Auth::guard('pelanggan')->user();
 
-        // Jika session kosong, arahkan ke halaman login
-        if (!$customerId) {
-            return redirect()->route('login');
-        }
-
-        // Ambil data customer dari database berdasarkan ID
-        $customer = Pelanggan::find($customerId);
-
-        // Jika customer tidak ditemukan, arahkan ke halaman login atau tampilkan error
+        // Jika pelanggan tidak ditemukan, arahkan ke halaman login
         if (!$customer) {
-            return redirect()->route('login')->with('error', 'Customer not found.');
+            return redirect()->route('login.login')->with('error', 'Anda harus login terlebih dahulu.');
         }
 
-        // Kirim data customer ke view
+        // Kirim data pelanggan ke view
         return view('editProfil', ['customer' => $customer]);
     }
     public function updateProfile(Request $request)
     {
-        // // $user = Session::get('customer');
-        // // Ambil ID pelanggan dari session
-        // $user = Session::get('customer');
+        // Validasi input
+        $request->validate([
+            'namaCust' => 'required|string|max:255',
+            'emailCust' => 'required|email|max:255',
+            'notelp' => 'required|string|max:15',
+            'alamatCust' => 'required|string|max:255',
+        ]);
 
-        // // Ambil data pelanggan dari database berdasarkan ID
+        $customerId = Auth::id(); // Mengambil ID pelanggan dari sesi autentikasi
+        $customer = pelangganModel::find($customerId);
 
-        // // Lihat apakah `customer_id` memiliki nilai yang benar
-        // $pelanggan = Pelanggan::where('idCust', $user->idCust)->first();
-        // // dd($user->idCust);
-        // $pelanggan->update($request->only(['namaCust', 'emailCust', 'notelp', 'alamatCust']));
-        // // dd($pelanggan);     
-        // return view('profilPage', ['customer' => $pelanggan]);
-        // Ambil ID pelanggan dari session
-        $customerId = Session::get('idCust');
-
-        // Ambil data pelanggan dari database berdasarkan ID
-        $pelanggan = Pelanggan::where('idCust', $customerId)->first();
-
-        // Pastikan pelanggan ditemukan
-        if (!$pelanggan) {
-            return redirect()->route('profile')->with('error', 'Customer not found.');
+        if (!$customer) {
+            return redirect()->route('profile')->with('error', 'Pelanggan tidak ditemukan.');
         }
 
-        // Update data pelanggan berdasarkan input form
-        $pelanggan->update($request->only(['namaCust', 'emailCust', 'notelp', 'alamatCust']));
+        // Update data pelanggan
+        $customer->update($request->only(['namaCust', 'emailCust', 'notelp', 'alamatCust']));
 
-        // Kembali ke halaman profil setelah update berhasil
-        return view('profilPage', ['customer' => $pelanggan]);
+        // Redirect ke halaman profil dengan pesan sukses
+        return redirect()->route('pelanggan.profile')->with('success', 'Profil berhasil diperbarui.');
+    }
+    public function updateProfilePicture(Request $request)
+    {
+        // Validasi file yang diupload
+        $request->validate([
+            'profileImage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        // Mengambil file yang diupload
+        $image = $request->file('profileImage');
+
+        // Menyimpan gambar ke penyimpanan lokal/public (atau bisa menggunakan cloud storage)
+        $imagePath = $image->storeAs('gambarCust', time() . '.' . $image->getClientOriginalExtension(), 'public');
+
+        // Menggunakan guard 'pelanggans' untuk mendapatkan pelanggan yang sedang login
+        $customerId = Auth::id(); // Mengambil ID pelanggan dari sesi autentikasi
+        $customer = pelangganModel::find($customerId);
+
+        // Jika pelanggan tidak ditemukan, kembalikan dengan error
+        if (!$customer) {
+            return back()->with('error', 'Pelanggan tidak ditemukan.');
+        }
+
+        // Simpan path gambar ke database (ubah 'profile_picture' menjadi 'gambarCust')
+        $customer->gambarCust = $imagePath;  // Menggunakan kolom 'gambarCust' yang benar
+        $customer->save();
+
+        return back()->with('success', 'Gambar profil berhasil diperbarui');
     }
 }

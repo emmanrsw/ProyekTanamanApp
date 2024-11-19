@@ -126,11 +126,14 @@
     }
 
     #myLinks {
-        display: none;
-    }
-
-    #myLinks.show {
-        display: block;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #333;
+        border-radius: 5px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        font-size: 14px;
     }
 
     #myLinks a {
@@ -138,6 +141,11 @@
         padding: 12px 16px;
         text-decoration: none;
         display: block;
+    }
+
+    #myLinks a:hover {
+        background-color: #ddd;
+        color: black;
     }
 
     .img-fluid {
@@ -151,7 +159,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="{{ route('home') }}"><span>Tanam</span><span class="highlight">.in</span></a>
+        <a class="navbar-brand" href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -172,14 +180,21 @@
             <a href="{{ route('cart') }}" class="nav-link">
                 <i class="fa fa-shopping-cart"></i>
             </a>
+            <!-- User Icon -->
             <div class="topnav">
-                <a href="javascript:void(0);" class="icon" onclick="toggleUserMenu()">
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     <i class="fa fa-user"></i>
                 </a>
-                <div id="myLinks">
-                    <a href="{{ route('profile') }}" class="nav-link">{{ session('usernameCust') }}</a>
+                <div id="myLinks" style="display: none;">
+                    @if(Auth::guard('pelanggan')->check())
+                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                        {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                    </a>
                     <a href="#" style="font-size: 1rem;">Ubah Password</a>
                     <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                    @else
+                    <a href="{{ route('login.login') }}" class="nav-link">Login</a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -196,11 +211,9 @@
                         <p><strong>Price</strong></p>
                         <form action="{{ route('tanaman.show') }}" method="GET">
                             <div class="d-flex">
-                                <input type="number" name="min_price" class="form-control form-control-sm"
-                                    placeholder="Min" value="{{ request('min_price') }}">
+                                <input type="number" name="min_price" class="form-control form-control-sm" placeholder="Min" value="{{ request('min_price') }}">
                                 <span class="mx-2">-</span>
-                                <input type="number" name="max_price" class="form-control form-control-sm"
-                                    placeholder="Max" value="{{ request('max_price') }}">
+                                <input type="number" name="max_price" class="form-control form-control-sm" placeholder="Max" value="{{ request('max_price') }}">
                             </div>
                             <button type="submit" class="btn btn-custom mt-3">Apply Filter</button>
                         </form>
@@ -210,30 +223,24 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h3>Tanaman</h3>
                         <form method="GET" action="{{ route('tanaman.show') }}">
-                            <select class="form-select" aria-label="Sort by" name="sort"
-                                onchange="this.form.submit()">
-                                <option value="default" {{ request('sort') == 'default' ? 'selected' : '' }}>Default
-                                </option>
-                                <option value="price_low_high"
-                                    {{ request('sort') == 'price_low_high' ? 'selected' : '' }}>Price: Low to High
-                                </option>
-                                <option value="price_high_low"
-                                    {{ request('sort') == 'price_high_low' ? 'selected' : '' }}>Price: High to Low
-                                </option>
+                            <select class="form-select" aria-label="Sort by" name="sort" onchange="this.form.submit()">
+                                <option value="default" {{ request('sort') == 'default' ? 'selected' : '' }}>Default</option>
+                                <option value="price_low_high" {{ request('sort') == 'price_low_high' ? 'selected' : '' }}>Price: Low to High</option>
+                                <option value="price_high_low" {{ request('sort') == 'price_high_low' ? 'selected' : '' }}>Price: High to Low</option>
                             </select>
                         </form>
                     </div>
                     <div class="product-grid">
                         @foreach ($tanaman as $tanaman)
-                            <div class="product-card">
-                                <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
-                                    alt="{{ $tanaman->namaTanaman }}">
-                                <h5>{{ $tanaman->namaTanaman }}</h5>
-                                <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
-                                <button class="btn btn-primary btn-add-to-cart"
-                                    data-product='@json($tanaman)'>View Details</button>
-                                <meta name="csrf-token" content="{{ csrf_token() }}">
-                            </div>
+                        <div class="product-card">
+                            <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
+                                alt="{{ $tanaman->namaTanaman }}">
+                            <h5>{{ $tanaman->namaTanaman }}</h5>
+                            <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
+                            <button class="btn btn-primary btn-add-to-cart"
+                                data-product='@json($tanaman)'>View Details</button>
+                            <meta name="csrf-token" content="{{ csrf_token() }}">
+                        </div>
                         @endforeach
                     </div>
                 </div>
@@ -262,15 +269,13 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="d-flex justify-content-center">
                             <img src="${product.gambar ? '/images/' + product.gambar : '/default-image.png'}" class="img-fluid" alt="${product.namaTanaman}">
-                            </div>
                             <p>Harga: Rp${product.hargaTanaman.toLocaleString()}</p>
                             <p>Deskripsi: ${product.deskripsi || "Deskripsi tidak tersedia"}</p>
                             <!-- Input untuk jumlah -->
-                            <div class="d-flex align-items-center mt-3">
-                                <label for="jumlah" class="me-2">Jumlah:</label>
-                                <input type="number" id="jumlah" class="form-control w-50" value="1" min="1" max="100">
+                            <div class="mt-3">
+                                <label for="jumlah">Jumlah:</label>
+                                <input type="number" id="jumlah" class="form-control" value="1" min="1" max="100">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -327,12 +332,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        text: data.message || "Produk berhasil ditambahkan ke keranjang!",
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    })
+                    alert(data.message || "Produk berhasil ditambahkan ke keranjang!");
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -344,6 +344,15 @@
 
             // Mengarahkan ke URL dengan query string untuk pengurutan
             window.location.href = `?sortBy=${sortBy}`;
+        }
+
+        function myFunction() {
+            var x = document.getElementById("myLinks");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
         }
     </script>
 </body>

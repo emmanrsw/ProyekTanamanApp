@@ -10,8 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class pelangganModel extends Authenticatable
 {
-    // use AuthenticatableTrait; // Ini akan menambahkan fungsionalitas autentikasi
-    use AuthenticatableTrait, HasFactory; 
+    use HasFactory;
 
     protected $table = 'pelanggan'; // Pastikan tabel yang sesuai
     protected $primaryKey = 'idCust'; // Sesuaikan dengan primary key

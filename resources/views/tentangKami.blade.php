@@ -315,7 +315,7 @@
                     <i class="fa fa-user"></i>
                 </a>
                 <div id="myLinks">
-                    <a href="{{ route('profile') }}" class="nav-link">{{ session('usernameCust') }}</a>
+                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">{{ session('usernameCust') }}</a>
                     <a href="#" style="font-size: 1rem;">Ubah Password</a>
                     <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
                 </div>

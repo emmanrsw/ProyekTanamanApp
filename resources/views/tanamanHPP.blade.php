@@ -179,14 +179,14 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#"><span>Tanam</span><span class="highlight">.in</span></a>
+        <a class="navbar-brand" href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="tanaman">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
@@ -195,7 +195,7 @@
         </div>
         <div class="navbar-icons d-flex align-items-center">
             <!-- Search Icon -->
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#searchModal">
                 <i class="fa fa-search"></i>
             </a>
 
@@ -203,29 +203,27 @@
             <a href="{{ route('cart') }}" class="nav-link">
                 <i class="fa fa-shopping-cart"></i>
             </a>
+
             <!-- User Icon -->
             <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                    <i class="fa fa-bars"></i>
+                    <i class="fa fa-user"></i>
                 </a>
                 <div id="myLinks" style="display: none;">
-                    <a href="{{ route('profile') }}" class="nav-link">
-                        <i class="fa fa-user"></i> {{ session('usernameCust') }}
+                    @if(Auth::guard('pelanggan')->check())
+                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                        {{ Auth::guard('pelanggan')->user()->usernameCust }}
                     </a>
                     <a href="#" style="font-size: 1rem;">Ubah Password</a>
                     <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                    @else
+                    <a href="{{ route('login.login') }}" class="nav-link">Login</a>
+                    @endif
                 </div>
             </div>
-
         </div>
     </nav>
-    <!-- Session Message -->
-    @if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
+
     <!-- Search Modal -->
     <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -251,7 +249,9 @@
             <h1>Bonsai</h1>
             <p>Temukan semua yang perlu Anda ketahui tentang tanaman Anda, perlakukan mereka dengan baik dan mereka akan
                 menjaga Anda.</p>
-            <a href="{{ route('listTanaman') }}" class="btn-custom">Jelajahi Lebih Lanjut</a>
+            <a href="{{ Auth::guard('pelanggan')->check() ? route('listTanaman') : route('register') }}" class="btn-custom">
+                Jelajahi Lebih Lanjut
+            </a>
         </div>
         <div class="banner-image">
             <img src="Img/bonsai.png" alt="Bonsai" />
