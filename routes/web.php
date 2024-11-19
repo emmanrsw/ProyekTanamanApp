@@ -8,6 +8,9 @@ Route::get('/', function () {
 Route::get('/tentangKami', function () {
     return view('tentangKami');
 });
+Route::get('/kontak', function () {
+    return view('kontak');
+});
 
 use App\Http\Controllers\AuthController;
 Route::get('/register', [AuthController::class, 'register'])->name('register');
