@@ -222,18 +222,18 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#"><span>Tanam</span><span class="highlight">.in</span></a>
+        <a class="navbar-brand" href="{{route('home')}}"><span>Tanam</span><span class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#{{route('home')}}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tentang Kami</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Pesanan Saya</a></li>
+                <li class="nav-item"><a class="nav-link" href="#pesanan">Pesanan Saya</a></li>
             </ul>
         </div>
         <div class="navbar-icons d-flex align-items-center">
@@ -253,7 +253,7 @@
                     <i class="fa fa-bars"></i>
                 </a>
                 <div id="myLinks" style="display: none;">
-                    <a href="{{ route('profile') }}" class="nav-link">
+                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
                         <i class="fa fa-user"></i> {{ session('usernameCust') }}
                     </a>
                     <a href="#" style="font-size: 1rem;">Ubah Password</a>
@@ -299,7 +299,7 @@
     </div>
 
     <script>
-        let isBarangAda = true; // Ganti dengan kondisi nyata dari data Anda
+        isBarangAda = true; // Ganti dengan kondisi nyata dari data Anda
 
         if (isBarangAda) {
             // Ubah teks dan tampilkan indikator barang sudah ada
@@ -321,7 +321,7 @@
 
 
     <script>
-        let isBarangAda = false; // Ganti dengan kondisi nyata dari data Anda
+        isBarangAda = false; // Ganti dengan kondisi nyata dari data Anda
 
         // Cek jika ada barang atau tidak
         if (isBarangAda) {
@@ -349,7 +349,7 @@
 
             // Aksi tombol Belanja
             belanjaBtn.addEventListener("click", function () {
-                window.location.href = "/shop"; // Ganti dengan URL halaman belanja yang sesuai
+                window.location.href = "/tanaman"; // Ganti dengan URL halaman belanja yang sesuai
             });
         };
 
