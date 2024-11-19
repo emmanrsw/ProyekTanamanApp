@@ -89,6 +89,11 @@
         }
 
         .cart-summary {
+            position: fixed;
+            /* Tetap di tempatnya */
+            top: 150px;
+            /* Sesuaikan dengan jarak dari atas */
+            right: 40px;
             width: 22%;
             height: auto;
             background-color: #f4f4f4;
@@ -129,17 +134,28 @@
             padding-right: 10px;
         }
 
-        .cart-summary .checkout-btn {
+        .checkout-btn {
             font-size: 0.9rem;
             padding: 12px;
-            background-color: #000;
+            background-color: #999;
+            /* Default disabled state */
             color: #fff;
             border-radius: 8px;
-            cursor: pointer;
+            cursor: not-allowed;
             text-decoration: none;
             display: block;
             margin-top: 15px;
             text-align: center;
+            pointer-events: none;
+            /* Prevent click */
+        }
+
+        .checkout-btn.enabled {
+            background-color: black;
+            /* Active state */
+            cursor: pointer;
+            pointer-events: auto;
+            /* Enable click */
         }
 
         .quantity-wrapper {
@@ -362,7 +378,7 @@
                         <td class="subtotal">Rp0</td>
                     </tr>
                     <tr>
-                        <td>PAJAK (10%)</td>
+                        <td>PAJAK (5%)</td>
                         <td id="tax">Rp0</td>
                     </tr>
                     <tr class="total">
@@ -371,10 +387,13 @@
                     </tr>
                 </table>
 
-                <form action="{{ route('transaksi') }}" method="GET">
+                <form action="{{ route('transaksi') }}" method="POST" id="checkoutForm">
                     @csrf
-                    <button class="checkout-btn">Lanjutkan Ke Pembayaran</button>
+                    <!-- Elemen hidden input untuk mengirim data checkbox -->
+                    <input type="hidden" name="selectedItems" id="selectedItems">
+                    <button type="submit" class="checkout-btn" id="checkoutButton" disabled>Lanjutkan Ke Pembayaran</button>
                 </form>
+
             </div>
 
         </div>
@@ -397,61 +416,34 @@
         });
     </script>
     <script>
-        // Fungsi untuk memperbarui ringkasan keranjang
-        function updateSummary() {
-            const checkboxes = document.querySelectorAll('.plant-checkbox:checked'); // Pilih checkbox yang dicentang
-            let subtotal = 0;
-
-            // Hitung subtotal dari checkbox yang dicentang
-            checkboxes.forEach(checkbox => {
-                subtotal += parseFloat(checkbox.dataset.total); // Ambil nilai `data-total` dari produk
-            });
-
-            const taxRate = 0.1; // Pajak 10%
-            const tax = subtotal * taxRate;
-            const total = subtotal + tax;
-
-            // Update nilai di DOM
-            document.getElementById('subtotal').textContent = `Rp${subtotal.toLocaleString()}`;
-            document.getElementById('tax').textContent = `Rp${tax.toLocaleString()}`;
-            document.getElementById('total').textContent = `Rp${total.toLocaleString()}`;
-
-            // Aktifkan tombol checkout jika subtotal lebih dari 0
-            const checkoutButton = document.getElementById('checkoutButton');
-            if (subtotal > 0) {
-                checkoutButton.classList.add('enabled');
-                checkoutButton.disabled = false;
-            } else {
-                checkoutButton.classList.remove('enabled');
-                checkoutButton.disabled = true;
-            }
-        }
-
-        // Event listener untuk setiap checkbox
-        document.querySelectorAll('.plant-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', updateSummary);
-        });
-
-        // Panggil fungsi saat halaman pertama kali dimuat
-        updateSummary();
-
         function updateCheckoutButtonState() {
             const checkboxes = document.querySelectorAll('.plant-checkbox');
             const checkoutButton = document.getElementById('checkoutButton');
+            const selectedItemsInput = document.getElementById('selectedItems');
 
-            // Periksa jika ada checkbox yang dicentang
-            const isAnyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            let selectedItems = [];
 
-            if (isAnyChecked) {
+            // Iterasi checkbox untuk memeriksa mana yang dicentang
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedItems.push(checkbox.dataset.itemId); // Simpan ID item yang dicentang
+                }
+            });
+
+            // Update nilai input hidden dengan ID item yang dipilih
+            selectedItemsInput.value = JSON.stringify(selectedItems);
+
+            // Aktifkan atau nonaktifkan tombol berdasarkan apakah ada checkbox yang dicentang
+            if (selectedItems.length > 0) {
                 checkoutButton.classList.add('enabled');
-                checkoutButton.classList.remove('disabled');
+                checkoutButton.removeAttribute('disabled'); // Aktifkan tombol
             } else {
                 checkoutButton.classList.remove('enabled');
-                checkoutButton.classList.add('disabled');
+                checkoutButton.setAttribute('disabled', true); // Nonaktifkan tombol
             }
         }
 
-        // Tambahkan event listener untuk semua checkbox
+        // Tambahkan event listener untuk setiap checkbox
         document.querySelectorAll('.plant-checkbox').forEach(checkbox => {
             checkbox.addEventListener('change', updateCheckoutButtonState);
         });
@@ -459,36 +451,45 @@
         function updateSubtotal() {
             let subtotal = 0;
 
-            // Iterate over all checkboxes
+            // Iterasi semua checkbox
             document.querySelectorAll('.plant-checkbox').forEach(checkbox => {
                 if (checkbox.checked) {
-                    // Add the total price of the checked item to subtotal
+                    // Tambahkan total harga item yang dicentang ke subtotal
                     subtotal += parseFloat(checkbox.dataset.total);
                 }
             });
 
-            // Format subtotal with thousands separator (Rp xxx.xxx)
+            // Format subtotal dengan separator ribuan (Rp xxx.xxx)
             const formattedSubtotal = new Intl.NumberFormat('id-ID').format(subtotal);
 
-            // Update the subtotal display
+            // Update tampilan subtotal
             document.querySelector('.subtotal').textContent = "Rp " + formattedSubtotal;
 
-            // Calculate total (apply discount if available)
-            let discount = 0; // default: no discount
-            let total = subtotal - discount;
+            // Hitung pajak (10% dari subtotal)
+            const tax = subtotal * 0.05;
 
-            // Format the total with thousands separator (Rp xxx.xxx)
+            // Format pajak dengan separator ribuan
+            const formattedTax = new Intl.NumberFormat('id-ID').format(tax);
+
+            // Update tampilan pajak
+            document.querySelector('#tax').textContent = "Rp " + formattedTax;
+
+            // Hitung total (subtotal + pajak)
+            const total = subtotal + tax;
+
+            // Format total dengan separator ribuan
             const formattedTotal = new Intl.NumberFormat('id-ID').format(total);
 
-            // Update the total display
+            // Update tampilan total
             document.querySelector('.total td:last-child').textContent = "Rp " + formattedTotal;
         }
 
-        // Initialize subtotal and total when page loads
+        // Inisialisasi subtotal, pajak, dan total ketika halaman dimuat
         window.onload = function() {
             updateSubtotal();
             updateCheckoutButtonState();
         };
+
 
         function myFunction() {
             var x = document.getElementById("myLinks");

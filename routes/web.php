@@ -57,7 +57,7 @@ use App\Http\Controllers\TransaksiController;
 Route::get('/transaksi', [TransaksiController::class, 'index']);
 Route::put('/transaksi/{idTJual}', [TransaksiController::class, 'updateStatus']);
 Route::get('/transaksi', [TransaksiController::class, 'show']);
-Route::get('/transaksi', [TransaksiController::class, 'show'])->name('transaksi');
+Route::post('/transaksi', [TransaksiController::class, 'show'])->name('transaksi');
 
 
 // Rute untuk menampilkan halaman pembayaran
