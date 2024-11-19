@@ -159,7 +159,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <li class="nav-item"><a class="nav-link" href="{{ Auth::guard('pelanggans')->check() ? route('homePage') : route('register') }}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"></a></li>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -186,9 +186,9 @@
                     <i class="fa fa-user"></i>
                 </a>
                 <div id="myLinks" style="display: none;">
-                    @if(Auth::guard('pelanggans')->check())
+                    @if(Auth::guard('pelanggan')->check())
                     <a href="{{ route('pelanggan.profile') }}" class="nav-link">
-                        {{ Auth::guard('pelanggans')->user()->usernameCust }}
+                        {{ Auth::guard('pelanggan')->user()->usernameCust }}
                     </a>
                     <a href="#" style="font-size: 1rem;">Ubah Password</a>
                     <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
