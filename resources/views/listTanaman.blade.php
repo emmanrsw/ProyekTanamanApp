@@ -159,7 +159,9 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span class="highlight">.in</span></a>
+        <a class="navbar-brand"
+            href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span
+                class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -187,13 +189,13 @@
                 </a>
                 <div id="myLinks" style="display: none;">
                     @if(Auth::guard('pelanggan')->check())
-                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
-                        {{ Auth::guard('pelanggan')->user()->usernameCust }}
-                    </a>
-                    <a href="#" style="font-size: 1rem;">Ubah Password</a>
-                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                        </a>
+                        <a href="#" style="font-size: 1rem;">Ubah Password</a>
+                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
                     @else
-                    <a href="{{ route('login.login') }}" class="nav-link">Login</a>
+                        <a href="{{ route('login.login') }}" class="nav-link">Login</a>
                     @endif
                 </div>
             </div>
@@ -211,9 +213,11 @@
                         <p><strong>Price</strong></p>
                         <form action="{{ route('tanaman.show') }}" method="GET">
                             <div class="d-flex">
-                                <input type="number" name="min_price" class="form-control form-control-sm" placeholder="Min" value="{{ request('min_price') }}">
+                                <input type="number" name="min_price" class="form-control form-control-sm"
+                                    placeholder="Min" value="{{ request('min_price') }}">
                                 <span class="mx-2">-</span>
-                                <input type="number" name="max_price" class="form-control form-control-sm" placeholder="Max" value="{{ request('max_price') }}">
+                                <input type="number" name="max_price" class="form-control form-control-sm"
+                                    placeholder="Max" value="{{ request('max_price') }}">
                             </div>
                             <button type="submit" class="btn btn-custom mt-3">Apply Filter</button>
                         </form>
@@ -224,7 +228,8 @@
                         <h3>Tanaman</h3>
                         <form method="GET" action="{{ route('tanaman.show') }}">
                             <select class="form-select" aria-label="Sort by" name="sort" onchange="this.form.submit()">
-                                <option value="default" {{ request('sort') == 'default' ? 'selected' : '' }}>Default</option>
+                                <option value="default" {{ request('sort') == 'default' ? 'selected' : '' }}>Default
+                                </option>
                                 <option value="price_low_high" {{ request('sort') == 'price_low_high' ? 'selected' : '' }}>Price: Low to High</option>
                                 <option value="price_high_low" {{ request('sort') == 'price_high_low' ? 'selected' : '' }}>Price: High to Low</option>
                             </select>
@@ -232,15 +237,15 @@
                     </div>
                     <div class="product-grid">
                         @foreach ($tanaman as $tanaman)
-                        <div class="product-card">
-                            <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
-                                alt="{{ $tanaman->namaTanaman }}">
-                            <h5>{{ $tanaman->namaTanaman }}</h5>
-                            <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
-                            <button class="btn btn-primary btn-add-to-cart"
-                                data-product='@json($tanaman)'>View Details</button>
-                            <meta name="csrf-token" content="{{ csrf_token() }}">
-                        </div>
+                            <div class="product-card">
+                                <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
+                                    alt="{{ $tanaman->namaTanaman }}">
+                                <h5>{{ $tanaman->namaTanaman }}</h5>
+                                <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
+                                <button class="btn btn-primary btn-add-to-cart" data-product='@json($tanaman)'>View
+                                    Details</button>
+                                <meta name="csrf-token" content="{{ csrf_token() }}">
+                            </div>
                         @endforeach
                     </div>
                 </div>
@@ -250,7 +255,7 @@
 
     <script>
         document.querySelectorAll('.btn-add-to-cart').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const product = JSON.parse(this.getAttribute('data-product'));
                 showProductModal(product);
             });
@@ -320,19 +325,24 @@
             }
 
             fetch(`/cart/add/${productId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        productId: productId,
-                        jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
-                    })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    productId: productId,
+                    jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
                 })
+            })
                 .then(response => response.json())
                 .then(data => {
-                    alert(data.message || "Produk berhasil ditambahkan ke keranjang!");
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: data.message || "Produk berhasil ditambahkan ke keranjang!",
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    })
                 })
                 .catch(error => {
                     console.error('Error:', error);

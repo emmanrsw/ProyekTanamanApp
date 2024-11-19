@@ -41,7 +41,7 @@ class PelangganController extends Controller
         $request->validate([
             'namaCust' => 'required|string|max:255',
             'emailCust' => 'required|email|max:255',
-            'notelp' => 'required|string|max:15',
+            'notelpCust' => 'required|string|max:15',
             'alamatCust' => 'required|string|max:255',
         ]);
 
@@ -49,11 +49,11 @@ class PelangganController extends Controller
         $customer = pelangganModel::find($customerId);
 
         if (!$customer) {
-            return redirect()->route('profile')->with('error', 'Pelanggan tidak ditemukan.');
+            return redirect()->route('pelanggan.profile')->with('error', 'Pelanggan tidak ditemukan.');
         }
 
         // Update data pelanggan
-        $customer->update($request->only(['namaCust', 'emailCust', 'notelp', 'alamatCust']));
+        $customer->update($request->only(['namaCust', 'emailCust', 'notelpCust', 'alamatCust']));
 
         // Redirect ke halaman profil dengan pesan sukses
         return redirect()->route('pelanggan.profile')->with('success', 'Profil berhasil diperbarui.');

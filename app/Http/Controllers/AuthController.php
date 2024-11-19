@@ -182,8 +182,8 @@ class AuthController extends Controller
         // Validasi input
         $cradential = $request->validate([
             'namaCust' => 'required',
-            'usernameCust' => 'required|unique:pelanggans,usernameCust',
-            'emailCust' => 'required|email|unique:pelanggans,emailCust',
+            'usernameCust' => 'required|unique:pelanggan,usernameCust',
+            'emailCust' => 'required|email|unique:pelanggan,emailCust',
             'alamatCust' => 'required',
             'passwordCust' => 'required|min:6|regex:/[A-Z]/|regex:/[a-z]/|regex:/[0-9]/|regex:/[!@#$%^&*._]/',
             'passwordCust_confirmation' => 'required|min:6|regex:/[A-Z]/|regex:/[a-z]/|regex:/[0-9]/|regex:/[!@#$%^&*._]/',

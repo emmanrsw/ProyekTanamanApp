@@ -20,6 +20,7 @@ class AuthModel extends Authenticatable
         'namaCust',
         'usernameCust',
         'emailCust',
+        'notelpCust',
         'passwordCust',
         'alamatCust'
     ];
