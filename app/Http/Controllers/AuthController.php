@@ -169,7 +169,7 @@ class AuthController extends Controller
 
         // Jika tidak ditemukan
         session()->flash('error_message', 'Username atau password salah.');
-        return redirect()->route('login');
+        return redirect()->route('login.login');
     }
 
     public function register()

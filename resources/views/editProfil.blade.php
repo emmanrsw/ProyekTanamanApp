@@ -224,14 +224,14 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="{{ route('homePage') }}"><span>Tanam</span><span class="highlight">.in</span></a>
+        <a class="navbar-brand" href="{{ route('home') }}"><span>Tanam</span><span class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{{ route('homePage') }}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tentang Kami</a></li>
@@ -260,7 +260,7 @@
         <div class="profile-info">
                 <!-- Displaying the profile image -->
                 <img src="{{ asset('storage/app/public/gambarCust/' . $customer->gambarCust) }}" alt="Profile Picture">
-                <h2>{{ Auth::guard('pelanggans')->user()->usernameCust }}</h2>
+                <h2>{{ Auth::guard('pelanggan')->user()->usernameCust }}</h2>
                 <i class="fas fa-edit edit-profile" title="Ubah Profil" data-bs-toggle="modal" data-bs-target="#editProfileModal"></i>
             </div>
 

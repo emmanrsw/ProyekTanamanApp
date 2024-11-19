@@ -208,14 +208,14 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#"><span>Tanam</span><span class="highlight">.in</span></a>
+        <a class="navbar-brand" href="{{ route('home') }}"><span>Tanam</span><span class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tentang Kami</a></li>
@@ -239,7 +239,7 @@
                     <i class="fa fa-bars"></i>
                 </a>
                 <div id="myLinks" style="display: none;">
-                    <a href="{{ route('profile') }}" class="nav-link">
+                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
                         <i class="fa fa-user"></i> {{ session('usernameCust') }}
                     </a>
                     <a href="#" style="font-size: 1rem;">Ubah Password</a>

@@ -28,7 +28,7 @@ Route::post('/login', [AuthController::class, 'loginProcess'])->name('loginProce
 Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('forgot-password');
 Route::post('/forgot-password', [AuthController::class, 'submitForgotPasswordForm'])->name('forgot-password.submit');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
+// Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\karyawanController;
 // -----------------------------------------------------------------------------------------------------------

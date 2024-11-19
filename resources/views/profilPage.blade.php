@@ -224,14 +224,14 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#"><span>Tanam</span><span class="highlight">.in</span></a>
+        <a class="navbar-brand" href="{{ route('home') }}"><span>Tanam</span><span class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tentang Kami</a></li>
@@ -249,7 +249,7 @@
                 <i class="fa fa-shopping-cart"></i>
             </a>
             <!-- User Icon -->
-            <a href="{{ route('profile') }}" class="nav-link">
+            <a href="{{ route('pelanggan.profile') }}" class="nav-link">
                 <i class="fa fa-user"></i>
             </a>
         </div>
@@ -258,8 +258,8 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="profile-info">
-                <img alt="Profile Picture" src="https://storage.googleapis.com/a1aa/image/IUumCn3Pf026ASXATjTWM5TIo8kGxo2O0cEfhGXF7DPOaajTA.jpg" />
-                <h2>{{$customer->usernameCust}}</h2>
+                <img src="{{ asset('storage/app/public/gambarCust/' . $customer->gambarCust) }}" alt="Profile Picture">
+                <h2>{{ Auth::guard('pelanggan')->user()->usernameCust }}</h2>
                 <i class="fas fa-edit edit-profile" title="Ubah Profil"></i>
             </div>
             <a class="active" href="#"><i class="fas fa-user"></i> Akun Saya</a>
@@ -273,7 +273,7 @@
             <p>Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun</p>
 
             <!-- Form Profil Page -->
-            <form action="{{ route('editProfile') }}" method="POST">
+            <form action="{{ route('pelanggan.edit') }}" method="POST">
                 @csrf <!-- Token CSRF untuk keamanan -->
                 <div class="form-group">
                     <label>Username</label>
@@ -296,7 +296,7 @@
                     <input type="text" id="alamatCust" name="alamatCust" value="{{$customer->alamatCust}}" readonly>
                 </div>
                 <button type="submit" class="btn btn-primary">Edit</button>
-                <a href="{{ route('homePage') }}" class="btn btn-primary">Kembali</a>
+                <a href="{{ route('home') }}" class="btn btn-primary">Kembali</a>
             </form>
         </div>
 </body>
