@@ -274,21 +274,25 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Keranjang Anda kosong.</p>
+                    <!-- Contoh daftar item di keranjang -->
+                    <ul class="list-group">
+                        @forelse ($cartItems as $item)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ $item['name'] }} ({{ $item['quantity'] }})
+                            <span class="badge bg-primary rounded-pill">Rp{{ number_format($item['price'], 0, ',', '.') }}</span>
+                        </li>
+                        @empty
+                        <p>Keranjang Anda kosong.</p>
+                        @endforelse
+                    </ul>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-
-                    <form action="/transaksi" method="GET">
-                        @csrf
-                        <button class="btn">BAYAR SEKARANG</button>
-                    </form>
 
                 </div>
             </div>
         </div>
     </div>
-
     <div class="container">
 
         @if (session('success'))

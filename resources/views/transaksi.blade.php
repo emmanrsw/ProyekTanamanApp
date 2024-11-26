@@ -316,24 +316,40 @@
     <div class="main-content">
         <div class="product-details">
             <h2>Product</h2>
-            <table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nama Tanaman</th>
+                        <th>Harga Satuan</th>
+                        <th>Jumlah</th>
+                        <th>Total Harga</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($tanamanDipilih as $tanaman)
+                    <tr>
+                        <td>{{ $tanaman->namaTanaman }}</td>
+                        <td>{{ number_format($tanaman->harga_satuan, 0, ',', '.') }}</td> <!-- Format harga satuan -->
+                        <td>{{ $tanaman->jumlah }}</td>
+                        <td>{{ number_format($tanaman->harga_satuan * $tanaman->jumlah, 0, ',', '.') }}</td> <!-- Total harga -->
+                    </tr>
+                    @endforeach
+                </tbody>
+                <!-- Tampilkan subtotal, pajak, dan total -->
                 <tr>
-                    <th>Product</th>
-                    <th>Subtotal</th>
+                    <td colspan="3"><strong>Subtotal</strong></td>
+                    <td>{{ number_format($subtotal, 0, ',', '.') }}</td>
                 </tr>
                 <tr>
-                    <td>KUPING GAJAH x 1</td>
-                    <td>Rp. 250,000.00</td>
+                    <td colspan="3"><strong>Pajak (5%)</strong></td>
+                    <td>{{ number_format($tax, 0, ',', '.') }}</td>
                 </tr>
                 <tr>
-                    <td>Subtotal</td>
-                    <td>Rp. 250,000.00</td>
-                </tr>
-                <tr>
-                    <td>Total</td>
-                    <td class="total">Rp. 250,000.00</td>
+                    <td colspan="3"><strong>Total</strong></td>
+                    <td>{{ number_format($total, 0, ',', '.') }}</td>
                 </tr>
             </table>
+
             <div class="payment-methods">
                 <h3>Direct Bank Transfer</h3>
                 <label>
@@ -354,7 +370,7 @@
             <p>Terima kasih atas pembayaran Anda!</p>
             <button class="btn-close" onclick="closePopup()">Tutup</button>
             <a href="{{ route('pesanan') }}" class="btn btn-primary">Lihat Pesanan</a>
-            </div>
+        </div>
         <div class="summary">
             <div class="shipping-info">
                 <h3>Shipping Information</h3>

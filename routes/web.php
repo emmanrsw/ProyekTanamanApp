@@ -54,13 +54,14 @@ Route::put('/cart/increase/{rowId}', [CartController::class, 'increase_cart_quan
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\TransaksiController;
 // Route::post('/transaksi', [TransaksiController::class, 'store']);
-Route::get('/transaksi', [TransaksiController::class, 'index']);
-Route::put('/transaksi/{idTJual}', [TransaksiController::class, 'updateStatus']);
-Route::get('/transaksi', [TransaksiController::class, 'show']);
-Route::post('/transaksi', [TransaksiController::class, 'show'])->name('transaksi');
+// Route::get('/transaksi', [TransaksiController::class, 'index']);
+// Route::put('/transaksi/{idTJual}', [TransaksiController::class, 'updateStatus']);
+// Route::get('/transaksi', [TransaksiController::class, 'show']);
+// Route::post('/transaksi', [TransaksiController::class, 'showTran'])->name('transaksi');
 
+// Route::post('/transaksi', [TransaksiController::class, 'store']);
 
-// Rute untuk menampilkan halaman pembayaran
+// Rute untuk menampilkan halaman pembayaranz
 // Route::get('/transaksi', [TransaksiController::class, 'show'])->name('transaksi.show');
 
 // // Rute untuk memproses pembayaran (opsional, jika ada aksi pembayaran lebih lanjut)
@@ -80,3 +81,9 @@ Route::get('/orders/{id}/edit', [TransaksiController::class, 'edit'])->name('ord
 Route::put('/orders/{id}', [TransaksiController::class, 'update'])->name('orders.update');
 // Route::delete('/orders/{id}', [TransaksiController::class, 'destroy'])->name('orders.destroy');
 
+
+
+// hari ini
+Route::post('/checkout', [TransaksiController::class, 'show'])->name('checkout');
+Route::post('/transaksi', [TransaksiController::class, 'prosesTransaksi'])->name('transaksi');
+// Route::post('/proses-transaksi', [TransaksiController::class, 'prosesTransaksi'])->middleware('auth');
