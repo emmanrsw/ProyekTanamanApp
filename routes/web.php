@@ -70,7 +70,7 @@ use App\Http\Controllers\TransaksiController;
 
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\pesananController;
-Route::get('/pesanan', [PesananController::class, 'show'])->name('pesanan');
+// Route::get('/pesanan', [PesananController::class, 'show'])->name('pesanan');
 // Route::get('/tanaman', [tanamanController::class, 'listTanaman'])->name('listTanaman');
 
 
@@ -85,5 +85,11 @@ Route::put('/orders/{id}', [TransaksiController::class, 'update'])->name('orders
 
 // hari ini
 Route::post('/checkout', [TransaksiController::class, 'show'])->name('checkout');
-Route::post('/transaksi', [TransaksiController::class, 'prosesTransaksi'])->name('transaksi');
+// Route::post('/transaksi', [TransaksiController::class, 'prosesTransaksi'])->name('transaksi');
 // Route::post('/proses-transaksi', [TransaksiController::class, 'prosesTransaksi'])->middleware('auth');
+
+
+// lala push
+Route::post('/transaksi', [TransaksiController::class, 'prosesTransaksi'])->name('transaksi');
+Route::post('/transaksi/simpan', [TransaksiController::class, 'simpanTransaksi'])->name('transaksi.simpan');
+Route::get('/pesanan', [TransaksiController::class, 'show'])->name('pesanan');
