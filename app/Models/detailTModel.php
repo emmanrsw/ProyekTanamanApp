@@ -2,21 +2,29 @@
 
 namespace App\Models;
 
-// use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class detailTModel extends Model
 {
-    // use HasFactory;
-    public $timestamps = false; // Nonaktifkan timestamps
+    use HasFactory;
 
     protected $table = 'detailtransaksijual';
-    // protected $primaryKey = 'idTJual';
+    protected $primaryKey = 'idDetailTransaksi';
+    public $timestamps = false;
 
     protected $fillable = [
         'idTJual',
         'idTanaman',
-        'jmlTJual',
-        'hargaTjual',
+        'nama_tanaman',
+        'harga_satuan',
+        'jumlah',
+        'total_harga'
     ];
+
+    public function transaksi()
+    {
+        // Menggunakan 'idTJual' sebagai foreign key yang mengarah ke 'id' pada tabel transaksi
+        return $this->belongsTo(transaksiModel::class, 'idTJual', 'id');
+    }
 }

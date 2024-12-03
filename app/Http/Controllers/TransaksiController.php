@@ -2,55 +2,59 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use App\Models\cartModel;
 use App\Models\transaksiModel;
-use Illuminate\Http\Request;
-use App\Models\transkasiModel;
 use App\Models\detailTModel;
-use App\Models\tanamanModel;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class TransaksiController extends Controller
 {
-
     public function prosesTransaksi(Request $request)
     {
         // Validasi input
         $request->validate([
             'selectedItems' => 'required', // Pastikan ada data yang dikirim
         ]);
-    
+
         // Ambil ID tanaman yang dipilih dari hidden input
         $selectedItems = $request->input('selectedItems');
-    
+
         // Jika data berupa string dengan tanda kurung, ubah menjadi array
         if (is_string($selectedItems)) {
             // Menghapus tanda kurung dengan json_decode
             $selectedItems = json_decode($selectedItems, true); // Mengubah string menjadi array
         }
-    
+
         // Debugging: Tampilkan selectedItems yang diterima
         // dd($selectedItems); // Akan menampilkan array ID tanaman yang benar
-    
-        // Query data tanaman berdasarkan ID yang dipilih
-        $tanamanDipilih = cartModel::whereIn('idTanaman', $selectedItems)->get();
-    
+
+        $idCust = Auth::id(); // Ambil ID pengguna yang sedang login
+
+        $tanamanDipilih = cartModel::where('idCust', $idCust)
+            ->whereIn('idTanaman', $selectedItems)
+            ->get();
+
+
+        // dd($tanamanDipilih->toArray());
+
         // Periksa apakah ada tanaman yang dipilih
         if ($tanamanDipilih->isEmpty()) {
             return redirect()->back()->with('error', 'Tanaman yang dipilih tidak ditemukan.');
         }
-    
+
         // Hitung subtotal dan total
         $subtotal = $tanamanDipilih->sum(function ($item) {
             return $item->harga_satuan * $item->jumlah;
         });
-    
+
         // Hitung pajak 5%
         $tax = $subtotal * 0.05;
         $total = $subtotal + $tax;
-    
+
         // Kirim data ke view transaksi
         return view('transaksi', [
             'tanamanDipilih' => $tanamanDipilih,
@@ -58,17 +62,129 @@ class TransaksiController extends Controller
             'tax' => $tax,
             'total' => $total,
         ]);
+        
     }
 
-    
-    
 
-
-
-    // public function showTran()
+    // public function simpanTransaksi(Request $request)
     // {
-    //     return view('transaksi');
+    //     // Validasi data
+    //     $request->validate([
+    //         'subtotal' => 'required|numeric',
+    //         'pajak' => 'required|numeric',
+    //         'total_harga' => 'required|numeric',
+    //         'alamat_kirim' => 'required|string',
+    //         'metode_bayar' => 'required|string',
+    //     ]);
+
+    //     // Simpan data transaksi ke tabel transaksi
+    //     $transaksi = new Transaksi();
+    //     $transaksi->idCust = Auth::id(); // ID pelanggan yang sedang login
+    //     // $transaksi->idKywn = null; // Kosongkan jika tidak ada karyawan terkait
+    //     $transaksi->subtotal = $request->subtotal;
+    //     $transaksi->pajak = $request->pajak;
+    //     $transaksi->total_harga = $request->total_harga;
+    //     $transaksi->alamat_kirim = $request->alamat_kirim;
+    //     $transaksi->tglTJual = Carbon::now()->toDateString(); // Tanggal transaksi
+    //     $transaksi->waktuTJual = Carbon::now()->toTimeString(); // Waktu transaksi
+    //     $transaksi->metodeByr = $request->metode_bayar;
+    //     $transaksi->statusTJual = 'Pending'; // Default status
+    //     $transaksi->save();
+
+    //     // // Pastikan ID transaksi sudah terisi
+    //     if (!$transaksi->id) {
+    //         return redirect()->back()->with('error', 'Gagal menyimpan transaksi.');
+    //     }
+
+    //     // Simpan data detail transaksi
+    //     foreach ($request->tanaman as $item) {
+    //         $detail = new DetailT();
+    //         $detail->idTJual = $transaksi->id; // Ambil ID transaksi yang baru dibuat
+    //         $detail->idTanaman = $item['idTanaman'];
+    //         $detail->jumlah = $item['jumlah'];
+    //         $detail->harga_satuan = $item['harga_satuan'];
+    //         $detail->total_harga = $item['subtotal'];
+    //         $detail->save();
+    //     }
+
+    //     // Redirect ke halaman sukses
+    //     return redirect()->route('pesanan')->with('success', 'Transaksi berhasil disimpan!');
     // }
+
+
+
+    // public function show()
+    // {
+    //     // Ambil data pesanan atau transaksi yang relevan
+    //     $pesanan = Transaksi::where('idCust', Auth::id())->get();  // Ambil pesanan berdasarkan idCust
+
+    //     // Kirim data ke view pesanan
+    //     return view('pesanan', compact('pesanan'));
+
+    // }
+
+    public function simpanTransaksi(Request $request)
+    {
+        // dd($request->all);  // Menampilkan data tanaman yang dikirimkan
+
+        // Validasi data transaksi
+        $request->validate([
+            'subtotal' => 'required|numeric',
+            'pajak' => 'required|numeric',
+            'total_harga' => 'required|numeric',
+            'alamat_kirim' => 'required|string',
+            'metode_bayar' => 'required|string',
+        ]);
+
+        // Simpan data transaksi ke tabel Transaksi
+        $transaksi = new transaksiModel();
+        $transaksi->idCust = Auth::id(); // ID pelanggan yang sedang login
+        $transaksi->subtotal = $request->subtotal;
+        $transaksi->pajak = $request->pajak;
+        $transaksi->total_harga = $request->total_harga;
+        $transaksi->alamat_kirim = $request->alamat_kirim;
+        $transaksi->tglTJual = Carbon::now()->toDateString(); // Tanggal transaksi
+        $transaksi->waktuTJual = Carbon::now()->toTimeString(); // Waktu transaksi
+        $transaksi->metodeByr = $request->metode_bayar;
+        $transaksi->statusTJual = 'Pending'; // Default status
+        $transaksi->save();
+        
+        foreach ($request->tanaman as $item) {
+        
+            $detail = new detailTModel();
+            $detail->idTJual = $transaksi->idTJual; // ID transaksi yang baru dibuat
+            $detail->idTanaman = $item['idTanaman'];
+            $detail->jumlah = $item['jumlah'];
+            $detail->harga_satuan = $item['harga_satuan'];
+            $detail->total_harga = $item['subtotal'];
+            $detail->nama_tanaman = $item['namaTanaman'];  // Periksa key ini
+            $detail->save();
+        }
+        
+        // Redirect ke halaman sukses setelah transaksi berhasil
+        return redirect()->route('pesanan')->with('success', 'Transaksi berhasil disimpan!');
+    }
+
+    public function show()
+    {
+        // Ambil data pesanan yang relevan untuk pelanggan yang sedang login
+        $pesanan = transaksiModel::where('idCust', Auth::id())->get();
+
+        // Kirim data pesanan ke view
+        return view('pesanan', compact('pesanan'));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     // public function showTran(Request $request)
     // // public function showTran()
@@ -117,119 +233,6 @@ class TransaksiController extends Controller
     //         ->with('success', 'Pembayaran berhasil diproses.');
 
 
-        // return view('transaksi', compact('cartItems', 'subtotal', 'tax', 'total'));
+    // return view('transaksi', compact('cartItems', 'subtotal', 'tax', 'total'));
 
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // Menampilkan data transaksi
-    // public function showTrans()
-    // {
-    //     // Ambil semua data tanaman dari database
-    //     $products = tanamanModel::all(); // Ambil semua data tanaman dari database
-
-    //     // Hitung subtotal (total harga dari semua produk yang dibeli)
-    //     $subtotal = $products->sum(function ($product) {
-    //         return $product->hargaTanaman * $product->jmlTanaman;
-    //     });
-
-    //     // Kirim data produk dan subtotal ke view
-    //     return view('transaksi', compact('products', 'subtotal'));
-    // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // public function bayar(Request $request)
-    // {
-    //     // Validasi input
-    //     $request->validate([
-    //         'idCust' => 'required',
-    //         'idKywn' => 'required',
-    //         'metodeByr' => 'required',
-    //         'statusTJual' => 'nullable', // Default "Pending" jika tidak diisi
-    //     ]);
-
-    //     // Jika tglTJual dan waktuTJual tidak diisi, maka set dengan waktu saat ini
-    //     $tglTJual = $request->tglTJual ?? now()->toDateString(); // Default ke tanggal saat ini jika kosong
-    //     $waktuTJual = $request->waktuTJual ?? now()->toTimeString(); // Default ke waktu saat ini jika kosong
-
-    //     // Buat transaksi utama ke model `transaksiJual`
-    //     $transaksiJual = transaksiModel::create([
-    //         'idCust' => $request->idCust,
-    //         'idKywn' => $request->idKywn,
-    //         'tglTJual' => $tglTJual,
-    //         'waktuTJual' => $waktuTJual,
-    //         'metodeByr' => $request->metodeByr,
-    //         'statusTJual' => $request->statusTJual ?? 'Pending', // Default status jika tidak diisi
-    //     ]);
-
-    //     // Ambil ID transaksi yang baru dibuat
-    //     $idTJual = $transaksiJual->idTJual;
-
-    //     // Ambil produk yang dipilih dari form
-    //     $selectedProducts = $request->input('products');
-
-    //     // Proses detail transaksi untuk setiap produk yang dipilih
-    //     $products = collect($selectedProducts)->map(function ($product) use ($idTJual) {
-    //         list($name, $price, $quantity) = explode('|', $product);
-
-    //         // Cari ID tanaman berdasarkan nama
-    //         $tanaman = tanamanModel::where('namaTanaman', $name)->first();
-    //         if (!$tanaman) {
-    //             throw new \Exception("Tanaman dengan nama '{$name}' tidak ditemukan.");
-    //         }
-
-    //         // Simpan detail transaksi ke tabel detailTModel
-    //         $detail = detailTModel::create([
-    //             'idTJual' => $idTJual,
-    //             'idTanaman' => $tanaman->idTanaman,
-    //             'jmlTJual' => $quantity,
-    //             'hargaTjual' => $price,
-    //         ]);
-
-    //         // Kembalikan data detail transaksi
-    //         return [
-    //             'namaTanaman' => $name,
-    //             'hargaTjual' => $price,
-    //             'jmlTJual' => $quantity,
-    //         ];
-    //     });
-
-    //     // Hitung subtotal
-    //     $subtotal = $products->sum(function ($product) {
-    //         return $product['hargaTjual'] * $product['jmlTJual'];
-    //     });
-
-    //     // Kirim data ke view
-    //     return view('transaksi', [
-    //         'products' => $products,
-    //         'subtotal' => $subtotal,
-    //     ]);
-    // }
-// }
+}
