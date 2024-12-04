@@ -56,3 +56,7 @@ use App\Http\Controllers\TransaksiController;
 Route::post('/transaksi', [TransaksiController::class, 'prosesTransaksi'])->name('transaksi');
 Route::post('/transaksi/simpan', [TransaksiController::class, 'simpanTransaksi'])->name('transaksi.simpan');
 Route::get('/pesanan', [TransaksiController::class, 'show'])->name('pesanan');
+
+// ----------------------------- transaksi di karyawan
+Route::get('/orderlist', [TransaksiController::class, 'show_order'])->name('orderlist');
+Route::put('/update-status/{idTJual}', [TransaksiController::class, 'updateStatus'])->name('updateStatus');

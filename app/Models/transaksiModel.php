@@ -15,20 +15,26 @@ class transaksiModel extends Model
     protected $primaryKey = 'idTJual';
 
     protected $fillable = [
-        'idCust', 
-        // 'idKywn', 
-        'subtotal', 
-        'pajak', 
-        'total_harga', 
-        'alamat_kirim', 
-        'tglTJual', 
-        'waktuTJual', 
-        'metodeByr', 
+        'idCust',
+        'subtotal',
+        'pajak',
+        'total_harga',
+        'alamat_kirim',
+        'tglTJual',
+        'waktuTJual',
+        'metodeByr',
         'statusTJual'
     ];
 
+// ini awal code aslinya
+    // public function details()
+    // {
+    //     return $this->hasMany(detailTModel::class, 'idTransaksi', 'idTJual');
+    // }
+
     public function details()
     {
-        return $this->hasMany(detailTModel::class, 'idTransaksi', 'idTJual');
+        // Mengubah foreign key menjadi 'idTJual'
+        return $this->hasMany(detailTModel::class, 'idTJual', 'idTJual');
     }
 }

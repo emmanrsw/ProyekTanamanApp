@@ -22,9 +22,16 @@ class detailTModel extends Model
         'total_harga'
     ];
 
+    // ini awal aslinya 
+    // public function transaksi()
+    // {
+    //     // Menggunakan 'idTJual' sebagai foreign key yang mengarah ke 'id' pada tabel transaksi
+    //     return $this->belongsTo(transaksiModel::class, 'idTJual', 'id');
+    // }
+
     public function transaksi()
     {
-        // Menggunakan 'idTJual' sebagai foreign key yang mengarah ke 'id' pada tabel transaksi
-        return $this->belongsTo(transaksiModel::class, 'idTJual', 'id');
+        // Mengubah foreign key menjadi 'idTJual'
+        return $this->belongsTo(transaksiModel::class, 'idTJual', 'idTJual');
     }
 }

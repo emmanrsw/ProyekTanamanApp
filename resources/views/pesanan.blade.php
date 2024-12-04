@@ -265,10 +265,10 @@
     </nav>
     <!-- Session Message -->
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     @endif
 
     <!-- <! Banner Section -->
@@ -286,7 +286,7 @@
             <span class="text">Selesai</span>
         </div>
     </section>
-    
+
     <!-- Elemen pesan yang akan ditampilkan di bawah banner -->
     <div id="message1"
         style="text-align: center; font-size: 1.2rem; color: #333; margin-top: 150px; position: relative;">
@@ -317,22 +317,11 @@
             // Tampilkan tombol belanja
             document.getElementById("belanjaBtn").classList.remove("hidden");
         }
-
     </script>
 
-
-    <script>
-        isBarangAda = false; // Ganti dengan kondisi nyata dari data Anda
-
-        // Cek jika ada barang atau tidak
-        if (isBarangAda) {
-            document.getElementById("messageText").innerText = "Barang sudah ada!";
-            document.getElementById("belanjaBtn").style.display = "none"; // Sembunyikan tombol belanja
-        } else {
-            document.getElementById("messageText").innerText = "Belum Ada! Silahkan klik dibawah ini.";
-            document.getElementById("belanjaBtn").style.display = "inline-block"; // Tampilkan tombol belanja
-        }
-    </script>
+<!-- // ----------------------------------------------------------------------------------------------------------------------- -->
+<!-- // yang asli punya gisel ke file tumpang -->
+<!-- // ----------------------------------------------------------------------------------------------------------------------- -->
 
 
     <!-- Elemen pesan yang akan ditampilkan di bawah banner -->
@@ -341,7 +330,7 @@
     </div>
 
     <script>
-        window.onload = function () {
+        window.onload = function() {
             var messageElement = document.getElementById("message1");
             var belanjaBtn = document.getElementById("belanjaBtn");
 
@@ -349,7 +338,7 @@
             messageElement.style.display = "block"; // Pastikan pesan muncul langsung
 
             // Aksi tombol Belanja
-            belanjaBtn.addEventListener("click", function () {
+            belanjaBtn.addEventListener("click", function() {
                 window.location.href = "/tanaman"; // Ganti dengan URL halaman belanja yang sesuai
             });
         };
@@ -361,47 +350,89 @@
             document.getElementById("selesai").classList.remove("active");
         }
 
-        document.getElementById("sedangDikemas").addEventListener("click", function () {
-            // Sembunyikan #message1
+
+        // Variabel status barang
+        const isBarangAda = {
+            sedangDikemas: false, // Sesuaikan dengan kondisi nyata
+            dikirim: false, // Sesuaikan dengan kondisi nyata
+            selesai: false // Sesuaikan dengan kondisi nyata
+        };
+
+        // Fungsi untuk menampilkan pesan default jika tidak ada barang sama sekali
+        function cekBarang() {
+            if (!isBarangAda.sedangDikemas && !isBarangAda.dikirim && !isBarangAda.selesai) {
+                // Barang tidak ada sama sekali
+                document.getElementById("messageText").innerText = "Belum Ada! Silahkan klik dibawah ini.";
+                document.getElementById("belanjaBtn").style.display = "inline-block"; // Tampilkan tombol belanja
+                document.getElementById("message1").style.display = "none"; // Sembunyikan banner jika ada
+            } else {
+                // Barang ada, sembunyikan pesan default
+                document.getElementById("messageText").innerText = "";
+                document.getElementById("belanjaBtn").style.display = "none"; // Sembunyikan tombol belanja
+            }
+        }
+
+        // Fungsi untuk reset tombol aktif
+        function resetActive() {
+            document.querySelectorAll(".status-button").forEach(button => {
+                button.classList.remove("active");
+            });
+        }
+
+        // Event Listener untuk "Sedang Dikemas"
+        document.getElementById("sedang dikemas").addEventListener("click", function() {
             document.getElementById("message1").style.display = "none";
-
-            // Tampilkan pesan di bawah banner
             var messageElement = document.getElementById("message");
-            messageElement.textContent = "Tidak ada barang yang sedang dikemas";
-            messageElement.style.display = "block";
 
-            // Reset semua tombol dan atur tombol ini sebagai aktif
+            if (isBarangAda.sedangDikemas) {
+                messageElement.textContent = "Barang sedang dikemas.";
+            } else {
+                messageElement.textContent = "Tidak ada barang yang sedang dikemas.";
+            }
+
+            messageElement.style.display = "block";
             resetActive();
             this.classList.add("active");
         });
 
-        document.getElementById("dikirim").addEventListener("click", function () {
-            // Sembunyikan #message1
+        // Event Listener untuk "Dikirim"
+        document.getElementById("dikirim").addEventListener("click", function() {
             document.getElementById("message1").style.display = "none";
-
-            // Tampilkan pesan di bawah banner
             var messageElement = document.getElementById("message");
-            messageElement.textContent = "Tidak ada barang yang dikirim";
-            messageElement.style.display = "block";
 
-            // Reset semua tombol dan atur tombol ini sebagai aktif
+            if (isBarangAda.dikirim) {
+                messageElement.textContent = "Barang sedang dikirim.";
+            } else {
+                messageElement.textContent = "Tidak ada barang yang dikirim.";
+            }
+
+            messageElement.style.display = "block";
             resetActive();
             this.classList.add("active");
         });
 
-        document.getElementById("selesai").addEventListener("click", function () {
-            // Sembunyikan #message1
+        // Event Listener untuk "Selesai"
+        document.getElementById("selesai").addEventListener("click", function() {
             document.getElementById("message1").style.display = "none";
-
-            // Tampilkan pesan di bawah banner
             var messageElement = document.getElementById("message");
-            messageElement.textContent = "Belum ada barang yang terselesaikan";
-            messageElement.style.display = "block";
 
-            // Reset semua tombol dan atur tombol ini sebagai aktif
+            if (isBarangAda.selesai) {
+                messageElement.textContent = "Barang sudah selesai dikirim.";
+            } else {
+                messageElement.textContent = "Belum ada barang yang terselesaikan.";
+            }
+
+            messageElement.style.display = "block";
             resetActive();
             this.classList.add("active");
         });
+
+        // Panggil fungsi cekBarang untuk menampilkan pesan default jika tidak ada barang
+        cekBarang();
+// -----------------------------------------------------------------------------------------------------------------------
+        // yang asli punya gisel ke file tumpang
+// ----------------------------------------------------------------------------------------------------------------------- -->
+
     </script>
 
     </div>

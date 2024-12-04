@@ -45,13 +45,10 @@
         <h4 class="text-center">Tanam.in</h4>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" href="#">Dashboard</a>
+                <a class="nav-link" href="homeKywn">All Products</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">All Products</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="orders">Order List</a>
+                <a class="nav-link" href="orderlist">Order List</a>
             </li>
         </ul>
     </div>
