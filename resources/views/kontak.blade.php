@@ -199,7 +199,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .hubungi-kami h3 {
+        .hubungi-kami h3 
             font-size: 24px;
             margin-bottom: 10px;
             font-weight: bold;
@@ -215,16 +215,17 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="{{ route('home') }}">
-            <span>Tanam</span><span class="highlight">.in</span>
-        </a>
+        <a class="navbar-brand"
+            href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span
+                class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
+                <li class="nav-item"><a class="nav-link"
+                        href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="tanaman">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="404">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
@@ -239,14 +240,21 @@
             <a href="{{ route('cart') }}" class="nav-link">
                 <i class="fa fa-shopping-cart"></i>
             </a>
+            <!-- User Icon -->
             <div class="topnav">
-                <a href="javascript:void(0);" class="icon" onclick="toggleUserMenu()">
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     <i class="fa fa-user"></i>
                 </a>
-                <div id="myLinks">
-                    <a href="{{ route('profile') }}" class="nav-link">{{ session('usernameCust') }}</a>
-                    <a href="#" style="font-size: 1rem;">Ubah Password</a>
-                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                <div id="myLinks" style="display: none;">
+                    @if (Auth::guard('pelanggan')->check())
+                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                        </a>
+                        <a href="#" style="font-size: 1rem;">Ubah Password</a>
+                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                    @else
+                        <a href="{{ route('login.login') }}" class="nav-link">Login</a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -431,6 +439,17 @@
                 </div>
             </div>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            function myFunction() {
+                var x = document.getElementById("myLinks");
+                if (x.style.display === "block") {
+                    x.style.display = "none";
+                } else {
+                    x.style.display = "block";
+                }
+            }
+        </script>
     </body>
 
 </html>

@@ -19,7 +19,7 @@
 
     .navbar {
         background-color: white;
-        padding: 20px 80px;
+        padding: 10px 20px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 0;
     }
@@ -77,12 +77,14 @@
 
     .navbar-icons a {
         margin-left: 20px;
-        color: #4B553D;
+        color: #000;
         font-size: 1.2rem;
     }
 
     .filter-section {
-        margin: 30px 0;
+        padding: 5px;
+        border-radius: 5px;
+        margin: 10px 0;
     }
 
     .product-grid {
@@ -155,11 +157,34 @@
         display: block;
         /* Diperlukan untuk margin bekerja pada elemen inline seperti gambar */
     }
+
+    .carousel-inner img {
+        width: 100%;
+        /* Menyesuaikan lebar gambar dengan container */
+        height: auto;
+        /* Memastikan tinggi tetap proporsional */
+        object-fit: cover;
+        /* Menangani kasus jika gambar memiliki rasio aspek berbeda */
+    }
+
+    .col-md-9 {
+        border-radius: 5px;
+        padding: 10px;
+        background-color: #f5f7f0;
+    }
+
+    .col-md-3 {
+        border-radius: 5px;
+        padding: 10px;
+        background-color: #f5f7f0;
+    }
 </style>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span class="highlight">.in</span></a>
+        <a class="navbar-brand"
+            href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span
+                class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -186,68 +211,86 @@
                     <i class="fa fa-user"></i>
                 </a>
                 <div id="myLinks" style="display: none;">
-                    @if(Auth::guard('pelanggan')->check())
-                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
-                        {{ Auth::guard('pelanggan')->user()->usernameCust }}
-                    </a>
-                    <a href="#" style="font-size: 1rem;">Ubah Password</a>
-                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                    @if (Auth::guard('pelanggan')->check())
+                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                        </a>
+                        <a href="#" style="font-size: 1rem;">Ubah Password</a>
+                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
                     @else
-                    <a href="{{ route('login.login') }}" class="nav-link">Login</a>
+                        <a href="{{ route('login.login') }}" class="nav-link">Login</a>
                     @endif
                 </div>
             </div>
         </div>
     </nav>
-    <div class="container">
-        <div class="jumbotron">
-            <img src="/img/jumbotron.png" alt="jumbotron" style="height: 50%; width: 100%;">
-        </div>
-
-        <div class="container">
-            <div class="row filter-section">
-                <div class="col-md-3">
-                    <div class="filter-price">
-                        <p><strong>Price</strong></p>
-                        <form action="{{ route('tanaman.show') }}" method="GET">
-                            <div class="d-flex">
-                                <input type="number" name="min_price" class="form-control form-control-sm" placeholder="Min" value="{{ request('min_price') }}">
-                                <span class="mx-2">-</span>
-                                <input type="number" name="max_price" class="form-control form-control-sm" placeholder="Max" value="{{ request('max_price') }}">
-                            </div>
-                            <button type="submit" class="btn btn-custom mt-3">Apply Filter</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h3>Tanaman</h3>
-                        <form method="GET" action="{{ route('tanaman.show') }}">
-                            <select class="form-select" aria-label="Sort by" name="sort" onchange="this.form.submit()">
-                                <option value="default" {{ request('sort') == 'default' ? 'selected' : '' }}>Default</option>
-                                <option value="price_low_high" {{ request('sort') == 'price_low_high' ? 'selected' : '' }}>Price: Low to High</option>
-                                <option value="price_high_low" {{ request('sort') == 'price_high_low' ? 'selected' : '' }}>Price: High to Low</option>
-                            </select>
-                        </form>
-                    </div>
-                    <div class="product-grid">
-                        @foreach ($tanaman as $tanaman)
-                        <div class="product-card">
-                            <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
-                                alt="{{ $tanaman->namaTanaman }}">
-                            <h5>{{ $tanaman->namaTanaman }}</h5>
-                            <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
-                            <button class="btn btn-primary btn-add-to-cart"
-                                data-product='@json($tanaman)'>View Details</button>
-                            <meta name="csrf-token" content="{{ csrf_token() }}">
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
+    {{-- <div class="container"> --}}
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/Img/1bg.png" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="/Img/2bg.png" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="/Img/3bg.png" class="d-block w-100" alt="...">
             </div>
         </div>
     </div>
+    {{-- </div> --}}
 
+    {{-- <div class="container"> --}}
+    <div class="row filter-section">
+        <div class="col-md-3">
+            <div class="filter-price">
+                <h5><strong>Price</strong></h5>
+                <form action="{{ route('tanaman.show') }}" method="GET">
+                    <div class="d-flex">
+                        <input type="number" name="min_price" class="form-control form-control-sm" placeholder="Min"
+                            value="{{ request('min_price') }}">
+                        <span class="mx-2">-</span>
+                        <input type="number" name="max_price" class="form-control form-control-sm" placeholder="Max"
+                            value="{{ request('max_price') }}">
+                    </div>
+                    <button type="submit" class="btn btn-custom mt-3">Apply Filter</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4><strong>Tanaman<strong></h4>
+                <form method="GET" action="{{ route('tanaman.show') }}">
+                    <select class="form-select" aria-label="Sort by" name="sort" onchange="this.form.submit()">
+                        <option value="default" {{ request('sort') == 'default' ? 'selected' : '' }}>Default
+                        </option>
+                        <option value="price_low_high" {{ request('sort') == 'price_low_high' ? 'selected' : '' }}>
+                            Price: Low to High
+                        </option>
+                        <option value="price_high_low" {{ request('sort') == 'price_high_low' ? 'selected' : '' }}>
+                            Price: High to Low
+                        </option>
+                    </select>
+                </form>
+            </div>
+            <div class="product-grid">
+                @foreach ($tanaman as $tanaman)
+                    <div class="product-card">
+                        <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
+                            alt="{{ $tanaman->namaTanaman }}">
+                        <h5>{{ $tanaman->namaTanaman }}</h5>
+                        <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
+                        <button class="btn btn-primary btn-add-to-cart"
+                            data-product='@json($tanaman)'>View Details</button>
+                        <meta name="csrf-token" content="{{ csrf_token() }}">
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
     <script>
         document.querySelectorAll('.btn-add-to-cart').forEach(button => {
             button.addEventListener('click', function() {
@@ -262,28 +305,51 @@
 
             const modalContent = `
             <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="productModalLabel">${product.namaTanaman}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <img src="${product.gambar ? '/images/' + product.gambar : '/default-image.png'}" class="img-fluid" alt="${product.namaTanaman}">
-                            <p>Harga: Rp${product.hargaTanaman.toLocaleString()}</p>
-                            <p>Deskripsi: ${product.deskripsi || "Deskripsi tidak tersedia"}</p>
-                            <!-- Input untuk jumlah -->
-                            <div class="mt-3">
-                                <label for="jumlah">Jumlah:</label>
-                                <input type="number" id="jumlah" class="form-control" value="1" min="1" max="100">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="addToCart(${product.idTanaman})">Tambah ke Keranjang</button>
-                        </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="productModalLabel" style="font-weight: bold; color: #4B553D; padding: 10px 20px; border-radius: 5px;">
+                    ${product.namaTanaman}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <!-- Gambar -->
+                <div class="d-flex justify-content-center mb-3">
+                    <img src="${product.gambar ? '/images/' + product.gambar : '/default-image.png'}" class="img-fluid" alt="${product.namaTanaman}" style="max-width: 100%; height: auto; border-radius: 8px;">
+                </div>
+
+                <!-- Detail Produk -->
+                <div class="product-details">
+                    <!-- Harga -->
+                    <div class="product-info border-top border-bottom pb-2 pt-2 mb-3">
+                        <span>Harga : </span>
+                        <span>Rp${product.hargaTanaman.toLocaleString()}</span>
+                    </div>
+                    <!-- Deskripsi -->
+                    <div class="product-info border-bottom pb-2 mb-3">
+                        <span>Deskripsi : </span>
+                        <span>${product.deskripsi || "Deskripsi tidak tersedia"}</span>
+                    </div>
+                    <!-- Jumlah -->
+                    <div class="product-info d-flex align-items-center">
+                        <span class="me-2">Jumlah : </span>
+                        <input type="number" id="jumlah" class="form-control" value="1" min="1" max="100" style="width: 80px;">
                     </div>
                 </div>
+            </div>
+            <!-- Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="addToCart(${product.idTanaman})" ; style="background-color:#4B553D">Tambah ke Keranjang</button>
+            </div>
+        </div>
+    </div>
+</div>
+
             </div>`;
 
             document.body.insertAdjacentHTML('beforeend', modalContent);
@@ -332,7 +398,12 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    alert(data.message || "Produk berhasil ditambahkan ke keranjang!");
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: data.message || "Produk berhasil ditambahkan ke keranjang!",
+                        icon: 'success',
+                        confirmButtonText: 'OK' 
+                    })
                 })
                 .catch(error => {
                     console.error('Error:', error);

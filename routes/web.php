@@ -18,7 +18,7 @@ use App\Http\Controllers\PelangganController;
 // Route::post('/updatePelanggan', [PelangganController::class, 'updateProfile'])->name('updateProfile');
 Route::middleware(['auth:pelanggan'])->group(function () {
     Route::get('/profile', [PelangganController::class, 'showProfile'])->name('pelanggan.profile');
-    Route::post('/profile/edit', [PelangganController::class, 'edit'])->name('pelanggan.edit');
+    Route::get('/profile/edit', [PelangganController::class, 'edit'])->name('pelanggan.edit');
     Route::post('/profile/update', [PelangganController::class, 'updateProfile'])->name('pelanggan.update');
     Route::post('/update-profile-picture', [PelangganController::class, 'updateProfilePicture'])->name('updateProfilePicture');
 });

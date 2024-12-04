@@ -130,7 +130,6 @@
         color: #333;
     }
 
-
     /* Navbar Icons */
     .navbar-icons {
         display: flex;
@@ -179,16 +178,19 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span class="highlight">.in</span></a>
+        <a class="navbar-brand"
+            href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span
+                class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">Home</a></li>
+                <li class="nav-item"><a class="nav-link"
+                        href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="tanaman">Tanaman</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
+                <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
                 <li class="nav-item"><a class="nav-link" href="pesanan">Pesanan Saya</a></li>
             </ul>
@@ -210,14 +212,14 @@
                     <i class="fa fa-user"></i>
                 </a>
                 <div id="myLinks" style="display: none;">
-                    @if(Auth::guard('pelanggan')->check())
-                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
-                        {{ Auth::guard('pelanggan')->user()->usernameCust }}
-                    </a>
-                    <a href="#" style="font-size: 1rem;">Ubah Password</a>
-                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                    @if (Auth::guard('pelanggan')->check())
+                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                        </a>
+                        <a href="#" style="font-size: 1rem;">Ubah Password</a>
+                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
                     @else
-                    <a href="{{ route('login.login') }}" class="nav-link">Login</a>
+                        <a href="{{ route('login.login') }}" class="nav-link">Login</a>
                     @endif
                 </div>
             </div>
@@ -249,7 +251,8 @@
             <h1>Bonsai</h1>
             <p>Temukan semua yang perlu Anda ketahui tentang tanaman Anda, perlakukan mereka dengan baik dan mereka akan
                 menjaga Anda.</p>
-            <a href="{{ Auth::guard('pelanggan')->check() ? route('listTanaman') : route('register') }}" class="btn-custom">
+            <a href="{{ Auth::guard('pelanggan')->check() ? route('listTanaman') : route('register') }}"
+                class="btn-custom">
                 Jelajahi Lebih Lanjut
             </a>
         </div>
