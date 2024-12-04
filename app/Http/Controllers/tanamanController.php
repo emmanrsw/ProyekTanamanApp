@@ -189,4 +189,24 @@ class tanamanController extends Controller
         // Redirect kembali dengan pesan sukses
         return redirect()->back()->with('success', 'Tanaman berhasil dihapus.');
     }
+
+    // UNTUK SEARCH
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Mencari tanaman berdasarkan namaTanaman saja
+        $tanamans = tanamanModel::where('namaTanaman', 'LIKE', "%{$query}%")->get();
+
+        // Jika hasil kosong, tambahkan pesan peringatan
+        if ($tanamans->isEmpty()) {
+            return view('search', [
+                'tanamans' => [],
+                'query' => $query,
+                'message' => 'Tanaman yang Anda cari tidak ditemukan.'
+            ]);
+        }
+
+        return view('search', compact('tanamans', 'query'));
+    }
 }

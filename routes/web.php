@@ -43,6 +43,7 @@ Route::post('/tanaman/update/{id}', [tanamanController::class, 'updateTanaman'])
 Route::post('/deleteTanaman', [tanamanController::class, 'destroy'])->name('deleteTanaman');
 Route::get('/tanaman', [tanamanController::class, 'listTanaman'])->name('listTanaman');
 Route::get('/tanaman/show', [TanamanController::class, 'showTanaman'])->name('tanaman.show');
+Route::get('/search', [TanamanController::class, 'search'])->name('searchTanaman');
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\CartController;
 Route::post('/cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add'); // Rute untuk menambah ke keranjang
