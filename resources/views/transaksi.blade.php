@@ -248,17 +248,62 @@
     }
 
     .popup-content .btn-close {
+        position: absolute;
+        /* Agar tombol posisinya bisa diatur */
+        top: 10px;
+        /* Jarak dari atas */
+        right: 10px;
+        /* Jarak dari kanan */
         background-color: #dc3545;
         color: #fff;
-        padding: 10px 20px;
+        padding: 5px 10px;
         border: none;
-        border-radius: 5px;
+        border-radius: 50%;
+        font-size: 20px;
+        /* Ukuran font untuk tombol X */
+        font-weight: bold;
+        text-align: center;
         cursor: pointer;
-        margin-top: 15px;
+        text-decoration: none;
+        /* Menghilangkan garis bawah */
+
     }
 
     .popup-content .btn-close:hover {
         background-color: #c82333;
+    }
+
+
+    .action-buttons {
+        display: flex;
+        /* Menggunakan flexbox untuk menata tombol secara bersebelahan */
+        gap: 10px;
+        /* Memberikan jarak antara tombol-tombol */
+        margin-top: 20px;
+        /* Menambahkan margin di atas tombol */
+    }
+
+    .action-buttons .btn {
+        padding: 10px 20px;
+        /* Padding pada tombol */
+        border-radius: 5px;
+        /* Menambahkan border radius pada tombol */
+        text-decoration: none;
+        /* Menghilangkan garis bawah pada link */
+    }
+
+    .action-buttons .btn-primary {
+        background-color: #007bff;
+        /* Warna latar belakang tombol */
+        color: white;
+        /* Warna teks tombol */
+        border: none;
+        /* Menghapus border tombol */
+    }
+
+    .action-buttons .btn-primary:hover {
+        opacity: 0.8;
+        /* Efek hover: sedikit transparan saat di-hover */
     }
 </style>
 </head>
@@ -387,10 +432,11 @@
                 <div class="popup-content" id="popupContent">
                     <h2>Transaksi Berhasil!</h2>
                     <p>Terima kasih atas pembayaran Anda!</p>
-                    <a href="{{ route('home') }}" class="btn-close" onclick="closePopup()">Tutup</a>
-                    <a href="{{ route('pesanan') }}" class="btn btn-primary">Lihat Pesanan</a>
+                    <div class="action-buttons">
+                        <a href="{{ route('home') }}" class="btn btn-primary">Tutup</a>
+                        <a href="{{ route('pesanan') }}" class="btn btn-primary">Lihat Pesanan</a>
+                    </div>
                 </div>
-
             </div>
         </div>
         <div class="summary">
