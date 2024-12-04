@@ -359,7 +359,27 @@
                     Silakan lakukan pembayaran langsung ke rekening bank kami. Harap gunakan ID Pesanan Anda sebagai
                     referensi pembayaran. Pesanan Anda tidak akan dikirimkan sampai dana kami terima di rekening.
                 </p>
-                <button class="btn" onclick="showPopup()">BAYAR SEKARANG</button>
+                
+                <form action="{{ route('transaksi.simpan') }}" method="POST">
+                    @csrf
+                    <!-- Data transaksi -->
+                    <input type="hidden" name="subtotal" value="{{ $subtotal }}">
+                    <input type="hidden" name="pajak" value="{{ $tax }}">
+                    <input type="hidden" name="total_harga" value="{{ $total }}">
+                    <input type="hidden" name="alamat_kirim" value="Mirpur-10, Road 14A, Dhaka, Bangladesh">
+                    <input type="hidden" name="metode_bayar" value="Direct Bank Transfer">
+
+                    <!-- Data detail transaksi -->
+                    @foreach ($tanamanDipilih as $tanaman)
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][idTanaman]" value="{{ $tanaman->idTanaman }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][namaTanaman]" value="{{ $tanaman->namaTanaman }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][jumlah]" value="{{ $tanaman->jumlah }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][harga_satuan]" value="{{ $tanaman->harga_satuan }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][subtotal]" value="{{ $tanaman->harga_satuan * $tanaman->jumlah }}">
+                    @endforeach
+
+                    <button type="submit" class="btn" onclick="showPopup()">BAYAR SEKARANG</button>
+                </form>
             </div>
         </div>
 

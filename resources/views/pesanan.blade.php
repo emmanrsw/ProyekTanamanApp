@@ -286,6 +286,7 @@
             <span class="text">Selesai</span>
         </div>
     </section>
+    
     <!-- Elemen pesan yang akan ditampilkan di bawah banner -->
     <div id="message1"
         style="text-align: center; font-size: 1.2rem; color: #333; margin-top: 150px; position: relative;">

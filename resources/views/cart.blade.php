@@ -397,7 +397,12 @@
                     <input type="hidden" name="selectedItems" id="selectedItems">
                     <button type="submit" class="checkout-btn" id="checkoutButton" disabled>Lanjutkan Ke Pembayaran</button>
                 </form>
-
+                <script>
+                    // Misalkan ada array 'selectedItems' yang berisi ID tanaman yang dipilih
+                    var selectedItems = [1, 2, 3]; // Contoh ID tanaman yang dipilih
+                    document.getElementById('selectedItems').value = JSON.stringify(selectedItems); // Mengisi hidden input
+                    document.getElementById('checkoutButton').disabled = false; // Aktifkan tombol submit
+                </script>
             </div>
 
         </div>

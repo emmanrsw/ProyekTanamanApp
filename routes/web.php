@@ -53,37 +53,6 @@ Route::put('/cart/decrease/{rowId}', [CartController::class, 'decrease_cart_quan
 Route::put('/cart/increase/{rowId}', [CartController::class, 'increase_cart_quantity'])->name('cart.increaseqty');
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\TransaksiController;
-// Route::post('/transaksi', [TransaksiController::class, 'store']);
-// Route::get('/transaksi', [TransaksiController::class, 'index']);
-// Route::put('/transaksi/{idTJual}', [TransaksiController::class, 'updateStatus']);
-// Route::get('/transaksi', [TransaksiController::class, 'show']);
-// Route::post('/transaksi', [TransaksiController::class, 'showTran'])->name('transaksi');
-
-// Route::post('/transaksi', [TransaksiController::class, 'store']);
-
-// Rute untuk menampilkan halaman pembayaranz
-// Route::get('/transaksi', [TransaksiController::class, 'show'])->name('transaksi.show');
-
-// // Rute untuk memproses pembayaran (opsional, jika ada aksi pembayaran lebih lanjut)
-// Route::post('/transaksi/bayar', [TransaksiController::class, 'bayar'])->name('transaksi.bayar');
-
-
-// -----------------------------------------------------------------------------------------------------------
-use App\Http\Controllers\pesananController;
-Route::get('/pesanan', [PesananController::class, 'show'])->name('pesanan');
-// Route::get('/tanaman', [tanamanController::class, 'listTanaman'])->name('listTanaman');
-
-
-Route::get('/orders', [TransaksiController::class, 'index'])->name('orders.index');
-Route::get('/orders/create', [TransaksiController::class, 'create'])->name('orders.create');
-Route::post('/orders', [TransaksiController::class, 'store'])->name('orders.store');
-Route::get('/orders/{id}/edit', [TransaksiController::class, 'edit'])->name('orders.edit');
-Route::put('/orders/{id}', [TransaksiController::class, 'update'])->name('orders.update');
-// Route::delete('/orders/{id}', [TransaksiController::class, 'destroy'])->name('orders.destroy');
-
-
-
-// hari ini
-Route::post('/checkout', [TransaksiController::class, 'show'])->name('checkout');
 Route::post('/transaksi', [TransaksiController::class, 'prosesTransaksi'])->name('transaksi');
-// Route::post('/proses-transaksi', [TransaksiController::class, 'prosesTransaksi'])->middleware('auth');
+Route::post('/transaksi/simpan', [TransaksiController::class, 'simpanTransaksi'])->name('transaksi.simpan');
+Route::get('/pesanan', [TransaksiController::class, 'show'])->name('pesanan');
