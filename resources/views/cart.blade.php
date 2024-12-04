@@ -396,6 +396,11 @@
                     <!-- Elemen hidden input untuk mengirim data checkbox -->
                     <input type="hidden" name="selectedItems" id="selectedItems">
                     <button type="submit" class="checkout-btn" id="checkoutButton" disabled>Lanjutkan Ke Pembayaran</button>
+                    @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                    @endif
                 </form>
                 <script>
                     // Misalkan ada array 'selectedItems' yang berisi ID tanaman yang dipilih
@@ -509,6 +514,8 @@
             }
         }
     </script>
+
+
 </body>
 
 </html>

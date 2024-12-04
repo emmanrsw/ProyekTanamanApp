@@ -8,11 +8,65 @@ use Carbon\Carbon;
 use App\Models\cartModel;
 use App\Models\transaksiModel;
 use App\Models\detailTModel;
+use App\Models\tanamanModel;
+use Illuminate\Support\Facades\Log; // Tambahkan ini
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class TransaksiController extends Controller
 {
+    // public function prosesTransaksi(Request $request)
+    // {
+    //     // Validasi input
+    //     $request->validate([
+    //         'selectedItems' => 'required', // Pastikan ada data yang dikirim
+    //     ]);
+
+    //     // Ambil ID tanaman yang dipilih dari hidden input
+    //     $selectedItems = $request->input('selectedItems');
+
+    //     // Jika data berupa string dengan tanda kurung, ubah menjadi array
+    //     if (is_string($selectedItems)) {
+    //         // Menghapus tanda kurung dengan json_decode
+    //         $selectedItems = json_decode($selectedItems, true); // Mengubah string menjadi array
+    //     }
+
+    //     // Debugging: Tampilkan selectedItems yang diterima
+    //     // dd($selectedItems); // Akan menampilkan array ID tanaman yang benar
+
+    //     $idCust = Auth::id(); // Ambil ID pengguna yang sedang login
+
+    //     $tanamanDipilih = cartModel::where('idCust', $idCust)
+    //         ->whereIn('idTanaman', $selectedItems)
+    //         ->get();
+
+
+    //     // dd($tanamanDipilih->toArray());
+
+    //     // Periksa apakah ada tanaman yang dipilih
+    //     if ($tanamanDipilih->isEmpty()) {
+    //         return redirect()->back()->with('error', 'Tanaman yang dipilih tidak ditemukan.');
+    //     }
+
+    //     // Hitung subtotal dan total
+    //     $subtotal = $tanamanDipilih->sum(function ($item) {
+    //         return $item->harga_satuan * $item->jumlah;
+    //     });
+
+    //     // Hitung pajak 5%
+    //     $tax = $subtotal * 0.05;
+    //     $total = $subtotal + $tax;
+
+    //     // Kirim data ke view transaksi
+    //     return view('transaksi', [
+    //         'tanamanDipilih' => $tanamanDipilih,
+    //         'subtotal' => $subtotal,
+    //         'tax' => $tax,
+    //         'total' => $total,
+    //     ]);
+    // }
+
+
     public function prosesTransaksi(Request $request)
     {
         // Validasi input
@@ -25,25 +79,28 @@ class TransaksiController extends Controller
 
         // Jika data berupa string dengan tanda kurung, ubah menjadi array
         if (is_string($selectedItems)) {
-            // Menghapus tanda kurung dengan json_decode
             $selectedItems = json_decode($selectedItems, true); // Mengubah string menjadi array
         }
 
-        // Debugging: Tampilkan selectedItems yang diterima
-        // dd($selectedItems); // Akan menampilkan array ID tanaman yang benar
+        // Ambil ID pelanggan yang sedang login
+        $idCust = Auth::id();
 
-        $idCust = Auth::id(); // Ambil ID pengguna yang sedang login
-
+        // Ambil data tanaman yang dipilih dari keranjang
         $tanamanDipilih = cartModel::where('idCust', $idCust)
             ->whereIn('idTanaman', $selectedItems)
             ->get();
 
-
-        // dd($tanamanDipilih->toArray());
-
         // Periksa apakah ada tanaman yang dipilih
         if ($tanamanDipilih->isEmpty()) {
             return redirect()->back()->with('error', 'Tanaman yang dipilih tidak ditemukan.');
+        }
+
+        // Cek stok untuk setiap tanaman
+        foreach ($tanamanDipilih as $item) {
+            $tanaman = tanamanModel::find($item->idTanaman); // Ambil data tanaman dari tabel Tanaman
+            if (!$tanaman || $tanaman->jmlTanaman < $item->jumlah) {
+                return redirect()->back()->with('error', 'Mohon maaf, stok untuk ' . $tanaman->namaTanaman . ' saat ini terbatas. Stok : ' . $tanaman->jmlTanaman);
+            }
         }
 
         // Hitung subtotal dan total
@@ -55,6 +112,7 @@ class TransaksiController extends Controller
         $tax = $subtotal * 0.05;
         $total = $subtotal + $tax;
 
+
         // Kirim data ke view transaksi
         return view('transaksi', [
             'tanamanDipilih' => $tanamanDipilih,
@@ -63,7 +121,6 @@ class TransaksiController extends Controller
             'total' => $total,
         ]);
     }
-
 
 
     public function simpanTransaksi(Request $request)
@@ -91,6 +148,7 @@ class TransaksiController extends Controller
         $transaksi->metodeByr = $request->metode_bayar;
         $transaksi->statusTJual = 'sedang dikemas'; // Default status
         $transaksi->save();
+        // dd($transaksi);
 
         foreach ($request->tanaman as $item) {
 
@@ -102,7 +160,28 @@ class TransaksiController extends Controller
             $detail->total_harga = $item['subtotal'];
             $detail->nama_tanaman = $item['namaTanaman'];  // Periksa key ini
             $detail->save();
+            // dd($detail);
         }
+        
+            // Mengurangi stok tanaman
+            $tanaman = tanamanModel::find($item['idTanaman']); // Cari tanaman berdasarkan ID
+            if ($tanaman) {
+                $tanaman->jmlTanaman -= $item['jumlah']; // Kurangi stok tanaman
+                $tanaman->save();
+            } else {
+                // Jika tanaman tidak ditemukan
+                Log::error("Tanaman dengan ID {$item['idTanaman']} tidak ditemukan.");
+            }
+
+            // Hapus item dari keranjang
+            $tanamancart = cartModel::where('idTanaman', $item['idTanaman'])->where('idCust', Auth::id())->first();
+            if ($tanamancart) {
+                $tanamancart->delete(); // Hapus item dari keranjang
+            } else {
+                // Jika item keranjang tidak ditemukan
+                Log::error("Item keranjang dengan ID Tanaman {$item['idTanaman']} dan ID Cust " . Auth::id() . " tidak ditemukan.");
+            }
+
 
         // Redirect ke halaman sukses setelah transaksi berhasil
         return redirect()->route('pesanan')->with('success', 'Transaksi berhasil disimpan!');
@@ -121,7 +200,7 @@ class TransaksiController extends Controller
         return view('pesanan', compact('pesanan'));
     }
 
-// origin
+    // origin
     // public function show()
     // {
     //     // Ambil data pesanan yang relevan untuk pelanggan yang sedang login

@@ -242,8 +242,7 @@
                                     alt="{{ $tanaman->namaTanaman }}">
                                 <h5>{{ $tanaman->namaTanaman }}</h5>
                                 <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
-                                <button class="btn btn-primary btn-add-to-cart" data-product='@json($tanaman)'>View
-                                    Details</button>
+                                <button class="btn btn-primary btn-add-to-cart" data-product='@json($tanaman)'>View Details</button>
                                 <meta name="csrf-token" content="{{ csrf_token() }}">
                             </div>
                         @endforeach
@@ -275,21 +274,23 @@
                         </div>
                         <div class="modal-body">
                             <img src="${product.gambar ? '/images/' + product.gambar : '/default-image.png'}" class="img-fluid" alt="${product.namaTanaman}">
-                            <p>Harga: Rp${product.hargaTanaman.toLocaleString()}</p>
-                            <p>Deskripsi: ${product.deskripsi || "Deskripsi tidak tersedia"}</p>
+                            <p><strong>Harga:</strong> Rp${product.hargaTanaman.toLocaleString()}</p>
+                            <p><strong>Deskripsi:</strong> ${product.deskripsi || "Deskripsi tidak tersedia"}</p>
+                            <p><strong>Ketersediaan:</strong> ${product.jmlTanaman}
                             <!-- Input untuk jumlah -->
                             <div class="mt-3">
-                                <label for="jumlah">Jumlah:</label>
-                                <input type="number" id="jumlah" class="form-control" value="1" min="1" max="100">
+                                <label for="jumlah"><strong>Jumlah:</strong></label>
+                                <input type="number" id="jumlah" class="form-control" value="1" min="1" max="${product.jmlTanaman}">
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="addToCart(${product.idTanaman})">Tambah ke Keranjang</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="addToCart(${product.idTanaman}, document.getElementById('jumlah').value)">Tambah ke Keranjang</button>
                         </div>
                     </div>
                 </div>
             </div>`;
+
 
             document.body.insertAdjacentHTML('beforeend', modalContent);
             new bootstrap.Modal(document.getElementById('productModal')).show();

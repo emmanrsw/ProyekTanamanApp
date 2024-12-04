@@ -359,7 +359,7 @@
                     Silakan lakukan pembayaran langsung ke rekening bank kami. Harap gunakan ID Pesanan Anda sebagai
                     referensi pembayaran. Pesanan Anda tidak akan dikirimkan sampai dana kami terima di rekening.
                 </p>
-                
+
                 <form action="{{ route('transaksi.simpan') }}" method="POST">
                     @csrf
                     <!-- Data transaksi -->
@@ -380,16 +380,18 @@
 
                     <button type="submit" class="btn" onclick="showPopup()">BAYAR SEKARANG</button>
                 </form>
-            </div>
-        </div>
 
-        <!-- Popup -->
-        <div class="popup-overlay" id="popupOverlay"></div>
-        <div class="popup-content" id="popupContent">
-            <h2>Transaksi Berhasil!</h2>
-            <p>Terima kasih atas pembayaran Anda!</p>
-            <button class="btn-close" onclick="closePopup()">Tutup</button>
-            <a href="{{ route('pesanan') }}" class="btn btn-primary">Lihat Pesanan</a>
+
+                <!-- Popup -->
+                <div class="popup-overlay" id="popupOverlay"></div>
+                <div class="popup-content" id="popupContent">
+                    <h2>Transaksi Berhasil!</h2>
+                    <p>Terima kasih atas pembayaran Anda!</p>
+                    <a href="{{ route('home') }}" class="btn-close" onclick="closePopup()">Tutup</a>
+                    <a href="{{ route('pesanan') }}" class="btn btn-primary">Lihat Pesanan</a>
+                </div>
+
+            </div>
         </div>
         <div class="summary">
             <div class="shipping-info">
