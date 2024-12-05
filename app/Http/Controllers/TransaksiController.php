@@ -182,10 +182,10 @@ class TransaksiController extends Controller
             Log::error("Item keranjang dengan ID Tanaman {$item['idTanaman']} dan ID Cust " . Auth::id() . " tidak ditemukan.");
         }
 
-        // Hapus tanaman yang sudah dipilih dari keranjang setelah transaksi selesai
-        cartModel::where('idCust', Auth::id())
-            ->whereIn('idTanaman', collect($request->tanaman)->pluck('idTanaman'))
-            ->delete();
+        // // Hapus tanaman yang sudah dipilih dari keranjang setelah transaksi selesai
+        // cartModel::where('idCust', Auth::id())
+        //     ->whereIn('idTanaman', collect($request->tanaman)->pluck('idTanaman'))
+        //     ->delete();
 
         // Redirect ke halaman sukses setelah transaksi berhasil
         return redirect()->route('pesanan')->with('success', 'Transaksi berhasil disimpan!');
