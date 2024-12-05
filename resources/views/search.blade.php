@@ -51,6 +51,14 @@
         color: #333;
         font-size: 1.2rem;
     }
+    .carousel-inner img {
+        width: 100%;
+        /* Menyesuaikan lebar gambar dengan container */
+        height: auto;
+        /* Memastikan tinggi tetap proporsional */
+        object-fit: cover;
+        /* Menangani kasus jika gambar memiliki rasio aspek berbeda */
+    }
 </style>
 
 <body>
@@ -92,9 +100,21 @@
                     <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
                 </div>
             </div>
-
         </div>
     </nav>
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/Img/1bg.png" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="/Img/2bg.png" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="/Img/3bg.png" class="d-block w-100" alt="...">
+            </div>
+        </div>
+    </div>
 
     <!-- Search Modal -->
     <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
@@ -135,7 +155,7 @@
         </div>
     </div>
     <div class="container">
-        <h1>Hasil Pencarian: "{{ $query }}"</h1>
+        <h3>Hasil Pencarian: "{{ $query }}"</h3>
 
         @if(isset($message))
         <div class="alert alert-warning">

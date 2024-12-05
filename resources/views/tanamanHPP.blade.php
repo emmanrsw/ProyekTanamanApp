@@ -175,6 +175,44 @@
         background-color: #ddd;
         color: black;
     }
+
+    #recent-search-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .clock-icon {
+        margin-left: -18px;
+        margin-right: 8px;
+        vertical-align: baseline;
+        /* Menyelaraskan ikon dengan teks secara vertikal */
+    }
+
+    .search-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .search-header .recent-search-item {
+        flex-grow: 1;
+        text-decoration: none;
+        color: #333;
+        font-size: 15px;
+    }
+
+    .search-header .delete-recent {
+        margin-left: auto;
+        text-decoration: none;
+        color: red;
+        font-size: 15px;
+    }
+
+    .search-header .delete-recent:hover {
+        text-decoration: underline;
+    }
 </style>
 
 <body>
@@ -348,12 +386,33 @@
             recentSearches.forEach(query => {
                 const li = document.createElement('li');
                 li.innerHTML = `
-                <a href="#" class="recent-search-item" data-query="${query}">${query}</a>
-                <a href="#" class="delete-recent" data-query="${query}">Hapus</a>
-            `;
+                <li class="search-header">
+                    <a href="#" class="recent-search-item" data-query="${query}">
+                        <i class="fa-solid fa-clock-rotate-left clock-icon"></i> 
+                        ${query}
+                    </a>
+                    <a href="#" class="delete-recent" data-query="${query}">Hapus</a>
+                </li>
+                `;
                 recentSearchList.appendChild(li);
             });
         }
+
+        // function displayRecentSearches() {
+        //     let recentSearches = JSON.parse(localStorage.getItem('recent_searches')) || [];
+
+        //     const recentSearchList = document.getElementById('recent-search-list');
+        //     recentSearchList.innerHTML = ''; // Clear the list before adding
+
+        //     recentSearches.forEach(query => {
+        //         const li = document.createElement('li');
+        //         li.innerHTML = `
+        //         <a href="#" class="recent-search-item" data-query="${query}">${query}</a>
+        //         <a href="#" class="delete-recent" data-query="${query}">Hapus</a>
+        //     `;
+        //         recentSearchList.appendChild(li);
+        //     });
+        // }
 
         // Event listener untuk menangani klik pada pencarian
         document.addEventListener('click', function(e) {
