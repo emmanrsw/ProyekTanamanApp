@@ -162,26 +162,30 @@ class TransaksiController extends Controller
             $detail->save();
             // dd($detail);
         }
-        
-            // Mengurangi stok tanaman
-            $tanaman = tanamanModel::find($item['idTanaman']); // Cari tanaman berdasarkan ID
-            if ($tanaman) {
-                $tanaman->jmlTanaman -= $item['jumlah']; // Kurangi stok tanaman
-                $tanaman->save();
-            } else {
-                // Jika tanaman tidak ditemukan
-                Log::error("Tanaman dengan ID {$item['idTanaman']} tidak ditemukan.");
-            }
 
-            // Hapus item dari keranjang
-            $tanamancart = cartModel::where('idTanaman', $item['idTanaman'])->where('idCust', Auth::id())->first();
-            if ($tanamancart) {
-                $tanamancart->delete(); // Hapus item dari keranjang
-            } else {
-                // Jika item keranjang tidak ditemukan
-                Log::error("Item keranjang dengan ID Tanaman {$item['idTanaman']} dan ID Cust " . Auth::id() . " tidak ditemukan.");
-            }
+        // Mengurangi stok tanaman
+        $tanaman = tanamanModel::find($item['idTanaman']); // Cari tanaman berdasarkan ID
+        if ($tanaman) {
+            $tanaman->jmlTanaman -= $item['jumlah']; // Kurangi stok tanaman
+            $tanaman->save();
+        } else {
+            // Jika tanaman tidak ditemukan
+            Log::error("Tanaman dengan ID {$item['idTanaman']} tidak ditemukan.");
+        }
 
+        // Hapus item dari keranjang
+        $tanamancart = cartModel::where('idTanaman', $item['idTanaman'])->where('idCust', Auth::id())->first();
+        if ($tanamancart) {
+            $tanamancart->delete(); // Hapus item dari keranjang
+        } else {
+            // Jika item keranjang tidak ditemukan
+            Log::error("Item keranjang dengan ID Tanaman {$item['idTanaman']} dan ID Cust " . Auth::id() . " tidak ditemukan.");
+        }
+
+        // Hapus tanaman yang sudah dipilih dari keranjang setelah transaksi selesai
+        cartModel::where('idCust', Auth::id())
+            ->whereIn('idTanaman', collect($request->tanaman)->pluck('idTanaman'))
+            ->delete();
 
         // Redirect ke halaman sukses setelah transaksi berhasil
         return redirect()->route('pesanan')->with('success', 'Transaksi berhasil disimpan!');
