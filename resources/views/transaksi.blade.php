@@ -511,6 +511,7 @@
     </footer>
     <script>
         function showPopup() {
+
             document.getElementById('popupOverlay').style.display = 'block';
             document.getElementById('popupContent').style.display = 'block';
         }
