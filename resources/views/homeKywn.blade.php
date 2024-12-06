@@ -10,14 +10,18 @@
     <style>
         body {
             display: flex;
-            font-family: Arial, sans-serif;
+            font-family: Poppins;
         }
 
         .sidebar {
             width: 250px;
-            background-color: #f8f9fa;
-            height: 100vh;
+            height: 150vh;
+            background: #4B553D;
             padding-top: 20px;
+        }
+
+        .bg-custom {
+            background-color: #f5f7f0;
         }
 
         .main-content {
@@ -25,25 +29,90 @@
             padding: 20px;
         }
 
-        .nav-link.active {
-            background-color: #007bff;
-            color: white;
+        .nav-link:hover {
+            background-color: #f5f7f0;
         }
 
-        .nav-link:hover {
-            background-color: #e9ecef;
+        .nav-link {
+            color: white;
+            font-size: 20px;
+            font-weight: 5px;
+            text-align: center;
         }
+
+        .btn-custom {
+            background-color: #4B553D;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-align: center;
+            transform: translateY(10px);
+            /* Geser tombol ke bawah sebanyak 10px */
+        }
+
 
         .add-btn {
             margin-bottom: 20px;
+        }
+
+        .navbar {
+            text-align: center;
+            height: 50px;
+            font-weight: bold;
+        }
+
+        .navbar-brand {
+            text-align: center;
+            font-size: 25px;
+        }
+
+        .highlight {
+            color: #4B553D;
+            /* Contoh warna hijau, sesuaikan sesuai kebutuhan */
+            font-weight: bold;
+        }
+
+        .table {
+            text-align: center;
+            font-size: 20px;
+            /* Pusatkan teks dalam tabel */
+        }
+
+        .table thead tr {
+            background-color: #f8f9fa;
+            /* Warna abu-abu terang */
+        }
+
+        .table thead th,
+        .table tbody td {
+            text-align: center;
+            /* Teks di tengah */
+            vertical-align: middle;
+            /* Vertikal di tengah */
+        }
+
+        .text-left {
+            text-align: left !important;
+            /* Memastikan teks rata kiri */
+        }
+
+        .d-flex.align-items-center .ml-3 {
+            text-align: left;
+            /* Pastikan teks dalam margin juga rata kiri */
         }
     </style>
 </head>
 
 <body>
     <div class="sidebar">
-        <h4 class="text-center">Tanam.in</h4>
-        <ul class="nav flex-column">
+        <nav class="navbar navbar-expand-lg navbar-light bg-custom justify-content-center">
+            <a class="navbar-brand">
+                <span class="text-background">Tanam</span><span class="highlight">.in</span>
+            </a>
+        </nav>
+
+
+        <ul class="nav flex-column ">
             <li class="nav-item">
                 <a class="nav-link" href="homeKywn">All Products</a>
             </li>
@@ -54,11 +123,11 @@
     </div>
 
     <div class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="mb-0">Daftar Tanaman</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4 ">
+            <h1 class="mb-0" style="font-weight: bold; font-size: 35px; color: #243a56">Daftar Tanaman</h1>
 
             <!-- Tombol untuk menambah tanaman -->
-            <a href="{{ route('tambahTanaman') }}" class="btn btn-primary add-btn">
+            <a href="{{ route('tambahTanaman') }}" class="btn btn-custom add-btn">
                 <i class="fas fa-plus"></i> Add Tanaman
             </a>
         </div>
@@ -69,7 +138,8 @@
             <button class="btn btn-sm btn-outline-secondary action-btn" id="edit-button" disabled>
                 <i class="fas fa-pen"></i> Edit
             </button>
-            <button class="btn btn-sm btn-outline-danger action-btn" id="delete-button" disabled data-toggle="modal" data-target="#deleteModal">
+            <button class="btn btn-sm btn-outline-danger action-btn" id="delete-button" disabled data-toggle="modal"
+                data-target="#deleteModal">
                 <i class="fas fa-trash"></i> Hapus
             </button>
         </div>
@@ -87,34 +157,35 @@
             </thead>
             <tbody>
                 @if($plants->isEmpty())
-                <tr>
-                    <td colspan="6" class="text-center">Belum ada tanaman yang ditambahkan.</td>
-                </tr>
+                    <tr>
+                        <td colspan="6" class="text-center">Belum ada tanaman yang ditambahkan.</td>
+                    </tr>
                 @else
-                @foreach($plants as $item)
-                <tr>
-                    <td>{{ $item->idTanaman }}</td>
-                    <td><input type="checkbox" class="plant-checkbox" data-item-id="{{ $item->idTanaman }}"></td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img src="{{ asset('images/'.$item->gambar) }}" alt="{{ $item->namaTanaman }}" class="img-thumbnail" width="40">
-                            <div class="ml-3">
-                                <strong>{{ $item->namaTanaman }}</strong>
-                                <p class="text-muted">{{ $item->deskripsi }}</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>{{ number_format($item->penjualan, 0, ',', '.') }}</td>
-                    <td>{{ number_format($item->jmlTanaman, 0, ',', '.') }}</td>
-                    <td>
-                        @if($item->added_date)
-                        {{ $item->added_date->format('d M Y') }}
-                        @else
-                        -
-                        @endif
-                    </td>
-                </tr>
-                @endforeach
+                    @foreach($plants as $item)
+                        <tr>
+                            <td>{{ $item->idTanaman }}</td>
+                            <td><input type="checkbox" class="plant-checkbox" data-item-id="{{ $item->idTanaman }}"></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ asset('images/' . $item->gambar) }}" alt="{{ $item->namaTanaman }}"
+                                        class="img-thumbnail" width="40">
+                                    <div class="ml-3">
+                                        <strong>{{ $item->namaTanaman }}</strong>
+                                        <p class="text-muted">{{ $item->deskripsi }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ number_format($item->penjualan, 0, ',', '.') }}</td>
+                            <td>{{ number_format($item->jmlTanaman, 0, ',', '.') }}</td>
+                            <td>
+                                @if($item->added_date)
+                                    {{ $item->added_date->format('d M Y') }}
+                                @else
+                                    -
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
                 @endif
             </tbody>
         </table>
@@ -126,7 +197,8 @@
         </form>
 
         <!-- Modal Konfirmasi Hapus -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -153,7 +225,7 @@
             const deleteButton = document.getElementById('delete-button');
 
             checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
+                checkbox.addEventListener('change', function () {
                     const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
 
                     deleteButton.disabled = checkedCount === 0;
@@ -162,7 +234,7 @@
                 });
             });
 
-            editButton.addEventListener('click', function() {
+            editButton.addEventListener('click', function () {
                 const selectedCheckbox = Array.from(checkboxes).find(cb => cb.checked);
                 if (selectedCheckbox) {
                     const itemId = selectedCheckbox.getAttribute('data-item-id');
@@ -170,7 +242,7 @@
                 }
             });
 
-            deleteButton.addEventListener('click', function() {
+            deleteButton.addEventListener('click', function () {
                 const selectedIds = Array.from(checkboxes)
                     .filter(cb => cb.checked)
                     .map(cb => cb.getAttribute('data-item-id'));
@@ -181,7 +253,7 @@
                 }
             });
 
-            document.getElementById('confirm-delete').addEventListener('click', function() {
+            document.getElementById('confirm-delete').addEventListener('click', function () {
                 document.getElementById('delete-form').submit();
             });
         </script>

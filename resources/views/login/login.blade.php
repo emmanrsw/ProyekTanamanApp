@@ -222,7 +222,6 @@
     <div class="form-section">
         <div class="form-container">
             <h2>Login</h2>
-
             <!-- Flash Messages -->
             @if (session('msg'))
             <div class="alert alert-success">
