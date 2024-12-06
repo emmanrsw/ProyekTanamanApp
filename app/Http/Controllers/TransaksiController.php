@@ -211,8 +211,9 @@ class TransaksiController extends Controller
         $transaksi->pajak = $request->pajak;
         $transaksi->total_harga = $request->total_harga;
         $transaksi->alamat_kirim = $request->alamat_kirim;
-        $transaksi->tglTJual = Carbon::now()->toDateString(); // Tanggal transaksi
-        $transaksi->waktuTJual = Carbon::now()->toTimeString(); // Waktu transaksi
+        // Menggunakan timezone Asia/Jakarta
+        $transaksi->tglTJual = Carbon::now('Asia/Jakarta')->toDateString(); // Tanggal transaksi
+        $transaksi->waktuTJual = Carbon::now('Asia/Jakarta')->toTimeString(); // Waktu transaksi
         $transaksi->metodeByr = $request->metode_bayar;
         $transaksi->statusTJual = 'sedang dikemas'; // Default status
         $transaksi->save();
