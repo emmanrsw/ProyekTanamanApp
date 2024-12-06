@@ -411,7 +411,7 @@
                     <input type="hidden" name="subtotal" value="{{ $subtotal }}">
                     <input type="hidden" name="pajak" value="{{ $tax }}">
                     <input type="hidden" name="total_harga" value="{{ $total }}">
-                    <input type="hidden" name="alamat_kirim" value="Mirpur-10, Road 14A, Dhaka, Bangladesh">
+                    <input type="hidden" name="alamat_kirim" value="{{ Auth::user()->alamatCust }}">
                     <input type="hidden" name="metode_bayar" value="Direct Bank Transfer">
 
                     <!-- Data detail transaksi -->

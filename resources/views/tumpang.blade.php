@@ -77,3 +77,48 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           <!-- Elemen pesan yang akan ditampilkan di bawah banner -->
+    <div id="message1"
+        style="text-align: center; font-size: 1.2rem; color: #333; margin-top: 150px; position: relative;">
+        <!-- Ikon sebagai watermark -->
+        <i class="fa-brands fa-shopify"
+            style="font-size: 20rem; color: rgba(0, 0, 0, 0.1); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -1;"></i>
+
+        <p id="messageText" style="margin-bottom: 10px;"></p>
+
+        <a href="#" class="btn btn-custom mt-3" id="belanjaBtn" style="display: none;">Belanja Sekarang</a>
+    </div>
+
+    <!-- <script>
+        isBarangAda = true; // Ganti dengan kondisi nyata dari data Anda
+
+        if (isBarangAda) {
+            // Ubah teks dan tampilkan indikator barang sudah ada
+            document.getElementById("messageText").innerText = "Cek Status Pemesanan!";
+            document.getElementById("messageText").className = "barangAda"; // Menambahkan kelas untuk styling
+
+            // Sembunyikan tombol belanja
+            document.getElementById("belanjaBtn").classList.add("hidden");
+        } else {
+            // Ubah teks dan tampilkan indikator barang belum ada
+            document.getElementById("messageText").innerText = "Belum Ada! Silahkan klik dibawah ini.";
+            document.getElementById("messageText").className = "barangTidakAda"; // Menambahkan kelas untuk styling
+
+            // Tampilkan tombol belanja
+            document.getElementById("belanjaBtn").classList.remove("hidden");
+        }
+    </script> -->

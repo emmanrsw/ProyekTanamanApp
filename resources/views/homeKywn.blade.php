@@ -224,6 +224,14 @@
             const editButton = document.getElementById('edit-button');
             const deleteButton = document.getElementById('delete-button');
 
+            viewButton.addEventListener('click', function() {
+                const selectedCheckbox = Array.from(checkboxes).find(cb => cb.checked);
+                if (selectedCheckbox) {
+                    const itemId = selectedCheckbox.getAttribute('data-item-id');
+                    window.location.href = `/viewT/${itemId}`;
+                }
+            });
+
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function () {
                     const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;

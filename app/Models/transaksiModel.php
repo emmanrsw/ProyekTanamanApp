@@ -26,7 +26,7 @@ class transaksiModel extends Model
         'statusTJual'
     ];
 
-// ini awal code aslinya
+    // ini awal code aslinya
     // public function details()
     // {
     //     return $this->hasMany(detailTModel::class, 'idTransaksi', 'idTJual');
@@ -36,5 +36,10 @@ class transaksiModel extends Model
     {
         // Mengubah foreign key menjadi 'idTJual'
         return $this->hasMany(detailTModel::class, 'idTJual', 'idTJual');
+    }
+
+    public function pelanggan()
+    {
+        return $this->belongsTo(pelangganModel::class, 'idCust', 'idCust');
     }
 }

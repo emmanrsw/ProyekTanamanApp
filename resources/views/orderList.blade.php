@@ -10,14 +10,36 @@
     <style>
         body {
             display: flex;
-            font-family: Arial, sans-serif;
+            font-family: Poppins;
         }
+
 
         .sidebar {
             width: 250px;
-            background-color: #f8f9fa;
-            height: 100vh;
+            height: 150vh;
+            background: #4B553D;
             padding-top: 20px;
+        }
+
+        .bg-custom {
+            background-color: #f5f7f0;
+        }
+
+        .navbar {
+            text-align: center;
+            height: 50px;
+            font-weight: bold;
+        }
+
+        .navbar-brand {
+            text-align: center;
+            font-size: 25px;
+        }
+
+        .highlight {
+            color: #4B553D;
+            /* Contoh warna hijau, sesuaikan sesuai kebutuhan */
+            font-weight: bold;
         }
 
         .main-content {
@@ -26,12 +48,19 @@
         }
 
         .nav-link.active {
-            background-color: #007bff;
-            color: white;
+            background-color: #B1D690;
+            color: black;
         }
 
         .nav-link:hover {
-            background-color: #e9ecef;
+            background-color: #f5f7f0;
+        }
+
+        .nav-link {
+            color: white;
+            font-size: 20px;
+            font-weight: 5px;
+            text-align: center;
         }
 
         table {
@@ -83,7 +112,11 @@
 
 <body>
     <div class="sidebar">
-        <h4 class="text-center">Tanam.in</h4>
+        <nav class="navbar navbar-expand-lg navbar-light bg-custom justify-content-center">
+            <a class="navbar-brand">
+                <span class="text-background">Tanam</span><span class="highlight">.in</span>
+            </a>
+        </nav>
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('homeKywn') }}">All Products</a>
@@ -104,7 +137,7 @@
             <thead>
                 <tr>
                     <th>ID Transaksi</th>
-                    <th>ID Pelanggan</th>
+                    <th>Nama Pelanggan</th>
                     <th>Tanggal</th>
                     <th>Waktu</th>
                     <th>Metode Pembayaran</th>
@@ -117,43 +150,46 @@
             </thead>
             <tbody>
                 @foreach($orders as $order)
-                <tr>
-                    <td>{{ $order->idTJual }}</td>
-                    <td>{{ $order->idCust }}</td>
-                    <td>{{ $order->tglTJual }}</td>
-                    <td>{{ $order->waktuTJual }}</td>
-                    <td>{{ $order->metodeByr }}</td>
-                    <td>{{ $order->alamat_kirim }}</td>
-                    <td>
-                        <ul>
-                            @foreach($order->details as $detail)
-                            <li>
-                                {{ $detail->nama_tanaman }} - {{ $detail->jumlah }} x
-                                {{ number_format($detail->harga_satuan, 0, ',', '.') }} IDR
-                                (Total: {{ number_format($detail->total_harga, 0, ',', '.') }} IDR)
-                            </li>
-                            @endforeach
-                        </ul>
-                    </td>
-                    <td>{{ number_format($order->total_harga, 0, ',', '.') }} IDR</td>
-                    <td>
-                        <span class="order-status @if($order->statusTJual == 'Sedang Dikemas') pending @elseif($order->statusTJual == 'Dikirim') completed @else cancelled @endif">
-                            {{ $order->statusTJual }}
-                        </span>
-                    </td>
-                    <td>
-                        <!-- Form untuk mengubah status transaksi -->
-                        <form action="{{ route('updateStatus', $order->idTJual) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <select name="statusTJual" onchange="this.form.submit()">
-                                <option value="Sedang Dikemas" {{ $order->statusTJual == 'Sedang Dikemas' ? 'selected' : '' }}>Sedang Dikemas</option>
-                                <option value="Dikirim" {{ $order->statusTJual == 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
-                                <option value="Selesai" {{ $order->statusTJual == 'Selesai' ? 'selected' : '' }}>Selesai</option>
-                            </select>
-                        </form>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>{{ $order->idTJual }}</td>
+                        <td>{{ $order->pelanggan->namaCust }}</td>
+                        <td>{{ $order->tglTJual }}</td>
+                        <td>{{ $order->waktuTJual }}</td>
+                        <td>{{ $order->metodeByr }}</td>
+                        <td>{{ $order->pelanggan->alamatCust }}</td>
+                        <td>
+                            <ul>
+                                @foreach($order->details as $detail)
+                                    <li>
+                                        {{ $detail->nama_tanaman }} - {{ $detail->jumlah }} x
+                                        {{ number_format($detail->harga_satuan, 0, ',', '.') }} IDR
+                                        (Total: {{ number_format($detail->total_harga, 0, ',', '.') }} IDR)
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        <td>{{ number_format($order->total_harga, 0, ',', '.') }} IDR</td>
+                        <td>
+                            <span
+                                class="order-status @if($order->statusTJual == 'Sedang Dikemas') pending @elseif($order->statusTJual == 'Dikirim') completed @else cancelled @endif">
+                                {{ $order->statusTJual }}
+                            </span>
+                        </td>
+                        <td>
+                            <!-- Form untuk mengubah status transaksi -->
+                            <form action="{{ route('updateStatus', $order->idTJual) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <select name="statusTJual" onchange="this.form.submit()">
+                                    <option value="Sedang Dikemas" {{ $order->statusTJual == 'Sedang Dikemas' ? 'selected' : '' }}>Sedang Dikemas</option>
+                                    <option value="Dikirim" {{ $order->statusTJual == 'Dikirim' ? 'selected' : '' }}>Dikirim
+                                    </option>
+                                    <option value="Selesai" {{ $order->statusTJual == 'Selesai' ? 'selected' : '' }}>Selesai
+                                    </option>
+                                </select>
+                            </form>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>

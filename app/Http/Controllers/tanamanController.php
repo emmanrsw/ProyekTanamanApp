@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\tanamanModel;
+use App\Models\StokLogModel;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class tanamanController extends Controller
 {
@@ -122,6 +124,28 @@ class tanamanController extends Controller
         // Temukan tanaman berdasarkan ID
         $tanaman = tanamanModel::findOrFail($id);
 
+        // ------------
+
+        // Simpan stok sebelumnya untuk keperluan log
+        $stokSebelumnya = $tanaman->jmlTanaman;
+
+        // // Catat perubahan stok jika ada perubahan
+        // $stokLama = $tanaman->jmlTanaman;
+        // $stokBaru = $request->jmlTanaman;
+
+        // // Jika stok tanaman berubah, simpan log perubahan
+        // if ($stokLama !== $stokBaru) {
+        //     StokLog::create([
+        //         'tanaman_id' => $tanaman->idTanaman,
+        //         'jumlah_sebelumnya' => $stokLama,
+        //         'jumlah_baru' => $stokBaru,
+        //         'keterangan' => 'Perubahan stok tanaman', // Keterangan perubahan stok
+        //     ]);
+        // }
+
+
+        // ---------------
+
         // Update field tanaman
         $tanaman->namaTanaman = $request->namaTanaman;
         $tanaman->deskripsi = $request->deskripsi;
@@ -146,6 +170,16 @@ class tanamanController extends Controller
 
         // Simpan perubahan ke database
         $tanaman->save();
+
+        // -----------------
+        // Log perubahan stok
+        DB::table('stok_log')->insert([
+            'idTanaman' => $tanaman->idTanaman,
+            'tanggal' => now(),
+            'jumlah_sebelumnya' => $stokSebelumnya,
+            'jumlah_baru' => $tanaman->jmlTanaman,
+        ]);
+        // --------------
 
         return redirect()->route('homeKywn')->with('success', 'Tanaman berhasil diperbarui.');
     }
@@ -208,5 +242,18 @@ class tanamanController extends Controller
         }
 
         return view('search', compact('tanamans', 'query'));
+    }
+
+
+    public function viewT($id)
+    {
+        $tanaman = tanamanModel::findOrFail($id);
+        // Mengambil log stok tanaman (misalnya dari kolom stok_logs)
+        $stokLogs = DB::table('stok_log')
+            ->where('idTanaman', $id)
+            ->orderBy('tanggal', 'asc')
+            ->get();
+        // Menampilkan halaman dengan data tanaman dan stok logs
+        return view('viewT', compact('tanaman', 'stokLogs'));
     }
 }
