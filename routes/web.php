@@ -66,3 +66,5 @@ Route::get('/pesanan', [TransaksiController::class, 'showPesanan'])->name('pesan
 // ----------------------------- transaksi di karyawan
 Route::get('/orderlist', [TransaksiController::class, 'show_order'])->name('orderlist');
 Route::put('/update-status/{idTJual}', [TransaksiController::class, 'updateStatus'])->name('updateStatus');
+
+Route::get('/viewT/{id}', [TanamanController::class, 'viewT'])->name('viewT');
