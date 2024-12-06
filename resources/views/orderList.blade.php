@@ -104,7 +104,7 @@
             <thead>
                 <tr>
                     <th>ID Transaksi</th>
-                    <th>ID Pelanggan</th>
+                    <th>Nama Pelanggan</th>
                     <th>Tanggal</th>
                     <th>Waktu</th>
                     <th>Metode Pembayaran</th>
@@ -119,11 +119,11 @@
                 @foreach($orders as $order)
                 <tr>
                     <td>{{ $order->idTJual }}</td>
-                    <td>{{ $order->idCust }}</td>
+                    <td>{{ $order->pelanggan->namaCust }}</td>
                     <td>{{ $order->tglTJual }}</td>
                     <td>{{ $order->waktuTJual }}</td>
                     <td>{{ $order->metodeByr }}</td>
-                    <td>{{ $order->alamat_kirim }}</td>
+                    <td>{{ $order->pelanggan->alamatCust }}</td>
                     <td>
                         <ul>
                             @foreach($order->details as $detail)

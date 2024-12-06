@@ -195,12 +195,18 @@ class TransaksiController extends Controller
 
     public function show()
     {
-        // Ambil data pesanan dengan status 'sedang dikemas' untuk pelanggan yang sedang login
-        $pesanan = transaksiModel::where('idCust', Auth::id())
-            ->where('statusTjual', 'sedang dikemas')
-            ->get();
+        // // Ambil data pesanan dengan status 'sedang dikemas' untuk pelanggan yang sedang login
+        // $pesanan = transaksiModel::where('idCust', Auth::id())
+        //     ->where('statusTjual', 'sedang dikemas')
+        //     ->get();
 
-        // Kirim data pesanan ke view
+        // // Kirim data pesanan ke view
+        // return view('pesanan', compact('pesanan'));
+
+        // Ambil data pesanan berdasarkan pengguna yang sedang login
+        $pesanan = Auth::user()->idTJual; // Asumsi hubungan antara user dan pesanan sudah ada
+
+        // Kirim data pesanan dan pengguna ke view
         return view('pesanan', compact('pesanan'));
     }
 
@@ -217,12 +223,19 @@ class TransaksiController extends Controller
 
 
 
-    // == karyawan 
+    // // == karyawan 
+    // public function show_order()
+    // {
+    //     $orders = transaksiModel::with('details')->get();
+    //     return view('orderlist', compact('orders'));
+    // }
+
     public function show_order()
     {
-        $orders = transaksiModel::with('details')->get();
+        $orders = transaksiModel::with(['details', 'pelanggan'])->get();
         return view('orderlist', compact('orders'));
     }
+
 
     public function updateStatus(Request $request, $idTJual)
     {
