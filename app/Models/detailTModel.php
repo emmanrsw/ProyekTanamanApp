@@ -32,6 +32,7 @@ class detailTModel extends Model
     public function transaksi()
     {
         // Mengubah foreign key menjadi 'idTJual'
+        // Mendefinisikan relasi kebalikannya, satu DetailTransaksiJual milik satu TransaksiJual
         return $this->belongsTo(transaksiModel::class, 'idTJual', 'idTJual');
     }
 }

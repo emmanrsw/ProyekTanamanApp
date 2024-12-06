@@ -254,4 +254,26 @@ class TransaksiController extends Controller
         // Redirect kembali ke halaman daftar transaksi dengan pesan sukses
         return redirect()->back()->with('success', 'Status transaksi berhasil diperbarui.');
     }
+    public function showPesanan()
+    {
+        $userId = Auth::guard('pelanggan')->id(); // Dapatkan ID pengguna yang sedang login
+
+        // Cek transaksi berdasarkan status
+        $sedangDikemas = transaksiModel::where('idCust', $userId)->where('statusTJual', 'sedang dikemas')
+            ->with('details')  // Memuat relasi detail transaksi
+            ->get();
+        $dikirim = transaksiModel::where('idCust', $userId)->where('statusTJual', 'dikirim')
+            ->with('details')  // Memuat relasi detail transaksi
+            ->get();
+        $selesai = transaksiModel::where('idCust', $userId)->where('statusTJual', 'selesai')
+            ->with('details')  // Memuat relasi detail transaksi
+            ->get();
+        //  dd($sedangDikemas);
+
+        // Cek apakah ada transaksi sama sekali
+        $noTransaksi = $sedangDikemas->isEmpty() && $dikirim->isEmpty() && $selesai->isEmpty();
+
+        // Kirim data ke view
+        return view('pesanan', compact('sedangDikemas', 'dikirim', 'selesai', 'noTransaksi'));
+    }
 }

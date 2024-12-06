@@ -21,6 +21,7 @@ Route::middleware(['auth:pelanggan'])->group(function () {
 });
 
 use App\Http\Controllers\AuthController;
+
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'registerProcess']);
 Route::get('/login', [AuthController::class, 'login'])->name('login.login');
@@ -33,6 +34,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 use App\Http\Controllers\karyawanController;
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\tanamanController;
+
 Route::get('/home', [tanamanController::class, 'indexP'])->name('home');
 Route::get('/homeKywn', [karyawanController::class, 'indexKywn'])->name('homeKywn');
 Route::get('/tambahTanaman', [tanamanController::class, 'tambahTanaman'])->name('tambahTanaman');
@@ -46,6 +48,7 @@ Route::get('/tanaman/show', [TanamanController::class, 'showTanaman'])->name('ta
 Route::get('/search', [TanamanController::class, 'search'])->name('searchTanaman');
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\CartController;
+
 Route::post('/cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add'); // Rute untuk menambah ke keranjang
 Route::get('/cart', [CartController::class, 'viewCart'])->name('cart'); // Rute untuk melihat keranjang
 Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
@@ -54,9 +57,11 @@ Route::put('/cart/decrease/{rowId}', [CartController::class, 'decrease_cart_quan
 Route::put('/cart/increase/{rowId}', [CartController::class, 'increase_cart_quantity'])->name('cart.increaseqty');
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\TransaksiController;
+
 Route::post('/transaksi', [TransaksiController::class, 'prosesTransaksi'])->name('transaksi');
 Route::post('/transaksi/simpan', [TransaksiController::class, 'simpanTransaksi'])->name('transaksi.simpan');
-Route::get('/pesanan', [TransaksiController::class, 'show'])->name('pesanan');
+// Route::get('/pesanan', [TransaksiController::class, 'show'])->name('pesanan');
+Route::get('/pesanan', [TransaksiController::class, 'showPesanan'])->name('pesanan');
 
 // ----------------------------- transaksi di karyawan
 Route::get('/orderlist', [TransaksiController::class, 'show_order'])->name('orderlist');
