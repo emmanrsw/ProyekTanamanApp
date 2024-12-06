@@ -211,8 +211,9 @@ class TransaksiController extends Controller
         $transaksi->pajak = $request->pajak;
         $transaksi->total_harga = $request->total_harga;
         $transaksi->alamat_kirim = $request->alamat_kirim;
-        $transaksi->tglTJual = Carbon::now()->toDateString(); // Tanggal transaksi
-        $transaksi->waktuTJual = Carbon::now()->toTimeString(); // Waktu transaksi
+        // Menggunakan timezone Asia/Jakarta
+        $transaksi->tglTJual = Carbon::now('Asia/Jakarta')->toDateString(); // Tanggal transaksi
+        $transaksi->waktuTJual = Carbon::now('Asia/Jakarta')->toTimeString(); // Waktu transaksi
         $transaksi->metodeByr = $request->metode_bayar;
         $transaksi->statusTJual = 'sedang dikemas'; // Default status
         $transaksi->save();
@@ -334,5 +335,27 @@ class TransaksiController extends Controller
 
         // Redirect kembali ke halaman daftar transaksi dengan pesan sukses
         return redirect()->back()->with('success', 'Status transaksi berhasil diperbarui.');
+    }
+    public function showPesanan()
+    {
+        $userId = Auth::guard('pelanggan')->id(); // Dapatkan ID pengguna yang sedang login
+
+        // Cek transaksi berdasarkan status
+        $sedangDikemas = transaksiModel::where('idCust', $userId)->where('statusTJual', 'sedang dikemas')
+            ->with('details')  // Memuat relasi detail transaksi
+            ->get();
+        $dikirim = transaksiModel::where('idCust', $userId)->where('statusTJual', 'dikirim')
+            ->with('details')  // Memuat relasi detail transaksi
+            ->get();
+        $selesai = transaksiModel::where('idCust', $userId)->where('statusTJual', 'selesai')
+            ->with('details')  // Memuat relasi detail transaksi
+            ->get();
+        //  dd($sedangDikemas);
+
+        // Cek apakah ada transaksi sama sekali
+        $noTransaksi = $sedangDikemas->isEmpty() && $dikirim->isEmpty() && $selesai->isEmpty();
+
+        // Kirim data ke view
+        return view('pesanan', compact('sedangDikemas', 'dikirim', 'selesai', 'noTransaksi'));
     }
 }
