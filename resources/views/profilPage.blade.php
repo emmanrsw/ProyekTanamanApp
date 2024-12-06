@@ -277,7 +277,8 @@
                 @csrf <!-- Token CSRF untuk keamanan -->
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" id="usernameCust" name="usernameCust" value="{{$customer->usernameCust}}" readonly>
+                    <input type="text" id="usernameCust" name="usernameCust" value="{{$customer->usernameCust}}"
+                        readonly>
                 </div>
                 <div class="form-group">
                     <label>Nama</label>
@@ -289,7 +290,7 @@
                 </div>
                 <div class="form-group">
                     <label>Nomor Telepon</label>
-                    <input type="text" id="notelp" name="notelp" value="{{$customer->notelp}}" readonly>
+                    <input type="text" id="notelpCust" name="notelpCust" value="{{$customer->notelpCust}}" readonly>
                 </div>
                 <div class="form-group">
                     <label>Alamat</label>

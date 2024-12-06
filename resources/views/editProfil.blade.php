@@ -257,15 +257,17 @@
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
-        <div class="profile-info">
+            <div class="profile-info">
                 <!-- Displaying the profile image -->
                 <img src="{{ asset('storage/app/public/gambarCust/' . $customer->gambarCust) }}" alt="Profile Picture">
                 <h2>{{ Auth::guard('pelanggan')->user()->usernameCust }}</h2>
-                <i class="fas fa-edit edit-profile" title="Ubah Profil" data-bs-toggle="modal" data-bs-target="#editProfileModal"></i>
+                <i class="fas fa-edit edit-profile" title="Ubah Profil" data-bs-toggle="modal"
+                    data-bs-target="#editProfileModal"></i>
             </div>
 
             <!-- Modal untuk upload gambar -->
-            <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+            <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -273,11 +275,13 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('updateProfilePicture') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('updateProfilePicture') }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
                                     <label for="profileImageInput">Pilih Gambar</label>
-                                    <input type="file" id="profileImageInput" name="profileImage" class="form-control" accept="image/*">
+                                    <input type="file" id="profileImageInput" name="profileImage" class="form-control"
+                                        accept="image/*">
                                 </div>
                                 <button type="submit" class="btn btn-primary mt-3 w-100">Simpan</button>
                             </form>
@@ -300,7 +304,8 @@
                 @csrf <!-- Token CSRF untuk keamanan -->
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" id="usernameCust" name="usernameCust" value="{{$customer->usernameCust}}" required>
+                    <input type="text" id="usernameCust" name="usernameCust" value="{{$customer->usernameCust}}"
+                        required>
                 </div>
                 <div class="form-group">
                     <label>Nama</label>
@@ -312,7 +317,7 @@
                 </div>
                 <div class="form-group">
                     <label>Nomor Telepon</label>
-                    <input type="text" id="notelp" name="notelp" value="{{$customer->notelp}}" required>
+                    <input type="text" id="notelpCust" name="notelpCust" value="{{$customer->notelpCust}}" required>
                 </div>
                 <div class="form-group">
                     <label>Alamat</label>

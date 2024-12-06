@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-// use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\detailTModel;
 
 class transaksiModel extends Model
 {
@@ -15,10 +16,30 @@ class transaksiModel extends Model
 
     protected $fillable = [
         'idCust',
-        'idKywn',
+        'subtotal',
+        'pajak',
+        'total_harga',
+        'alamat_kirim',
         'tglTJual',
         'waktuTJual',
         'metodeByr',
-        'statusTjual',
+        'statusTJual'
     ];
+
+    // ini awal code aslinya
+    // public function details()
+    // {
+    //     return $this->hasMany(detailTModel::class, 'idTransaksi', 'idTJual');
+    // }
+
+    public function details()
+    {
+        // Mengubah foreign key menjadi 'idTJual'
+        return $this->hasMany(detailTModel::class, 'idTJual', 'idTJual');
+    }
+
+    public function pelanggan()
+    {
+        return $this->belongsTo(pelangganModel::class, 'idCust', 'idCust');
+    }
 }

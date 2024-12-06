@@ -248,17 +248,62 @@
     }
 
     .popup-content .btn-close {
+        position: absolute;
+        /* Agar tombol posisinya bisa diatur */
+        top: 10px;
+        /* Jarak dari atas */
+        right: 10px;
+        /* Jarak dari kanan */
         background-color: #dc3545;
         color: #fff;
-        padding: 10px 20px;
+        padding: 5px 10px;
         border: none;
-        border-radius: 5px;
+        border-radius: 50%;
+        font-size: 20px;
+        /* Ukuran font untuk tombol X */
+        font-weight: bold;
+        text-align: center;
         cursor: pointer;
-        margin-top: 15px;
+        text-decoration: none;
+        /* Menghilangkan garis bawah */
+
     }
 
     .popup-content .btn-close:hover {
         background-color: #c82333;
+    }
+
+
+    .action-buttons {
+        display: flex;
+        /* Menggunakan flexbox untuk menata tombol secara bersebelahan */
+        gap: 10px;
+        /* Memberikan jarak antara tombol-tombol */
+        margin-top: 20px;
+        /* Menambahkan margin di atas tombol */
+    }
+
+    .action-buttons .btn {
+        padding: 10px 20px;
+        /* Padding pada tombol */
+        border-radius: 5px;
+        /* Menambahkan border radius pada tombol */
+        text-decoration: none;
+        /* Menghilangkan garis bawah pada link */
+    }
+
+    .action-buttons .btn-primary {
+        background-color: #007bff;
+        /* Warna latar belakang tombol */
+        color: white;
+        /* Warna teks tombol */
+        border: none;
+        /* Menghapus border tombol */
+    }
+
+    .action-buttons .btn-primary:hover {
+        opacity: 0.8;
+        /* Efek hover: sedikit transparan saat di-hover */
     }
 </style>
 </head>
@@ -316,24 +361,40 @@
     <div class="main-content">
         <div class="product-details">
             <h2>Product</h2>
-            <table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nama Tanaman</th>
+                        <th>Harga Satuan</th>
+                        <th>Jumlah</th>
+                        <th>Total Harga</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($tanamanDipilih as $tanaman)
+                    <tr>
+                        <td>{{ $tanaman->namaTanaman }}</td>
+                        <td>{{ number_format($tanaman->harga_satuan, 0, ',', '.') }}</td> <!-- Format harga satuan -->
+                        <td>{{ $tanaman->jumlah }}</td>
+                        <td>{{ number_format($tanaman->harga_satuan * $tanaman->jumlah, 0, ',', '.') }}</td> <!-- Total harga -->
+                    </tr>
+                    @endforeach
+                </tbody>
+                <!-- Tampilkan subtotal, pajak, dan total -->
                 <tr>
-                    <th>Product</th>
-                    <th>Subtotal</th>
+                    <td colspan="3"><strong>Subtotal</strong></td>
+                    <td>{{ number_format($subtotal, 0, ',', '.') }}</td>
                 </tr>
                 <tr>
-                    <td>KUPING GAJAH x 1</td>
-                    <td>Rp. 250,000.00</td>
+                    <td colspan="3"><strong>Pajak (5%)</strong></td>
+                    <td>{{ number_format($tax, 0, ',', '.') }}</td>
                 </tr>
                 <tr>
-                    <td>Subtotal</td>
-                    <td>Rp. 250,000.00</td>
-                </tr>
-                <tr>
-                    <td>Total</td>
-                    <td class="total">Rp. 250,000.00</td>
+                    <td colspan="3"><strong>Total</strong></td>
+                    <td>{{ number_format($total, 0, ',', '.') }}</td>
                 </tr>
             </table>
+
             <div class="payment-methods">
                 <h3>Direct Bank Transfer</h3>
                 <label>
@@ -343,18 +404,41 @@
                     Silakan lakukan pembayaran langsung ke rekening bank kami. Harap gunakan ID Pesanan Anda sebagai
                     referensi pembayaran. Pesanan Anda tidak akan dikirimkan sampai dana kami terima di rekening.
                 </p>
-                <button class="btn" onclick="showPopup()">BAYAR SEKARANG</button>
+
+                <form action="{{ route('transaksi.simpan') }}" method="POST">
+                    @csrf
+                    <!-- Data transaksi -->
+                    <input type="hidden" name="subtotal" value="{{ $subtotal }}">
+                    <input type="hidden" name="pajak" value="{{ $tax }}">
+                    <input type="hidden" name="total_harga" value="{{ $total }}">
+                    <input type="hidden" name="alamat_kirim" value="{{ Auth::user()->alamatCust }}">
+                    <input type="hidden" name="metode_bayar" value="Direct Bank Transfer">
+
+                    <!-- Data detail transaksi -->
+                    @foreach ($tanamanDipilih as $tanaman)
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][idTanaman]" value="{{ $tanaman->idTanaman }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][namaTanaman]" value="{{ $tanaman->namaTanaman }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][jumlah]" value="{{ $tanaman->jumlah }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][harga_satuan]" value="{{ $tanaman->harga_satuan }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][subtotal]" value="{{ $tanaman->harga_satuan * $tanaman->jumlah }}">
+                    @endforeach
+
+                    <button type="submit" class="btn" onclick="showPopup()">BAYAR SEKARANG</button>
+                </form>
+
+
+                <!-- Popup -->
+                <div class="popup-overlay" id="popupOverlay"></div>
+                <div class="popup-content" id="popupContent">
+                    <h2>Transaksi Berhasil!</h2>
+                    <p>Terima kasih atas pembayaran Anda!</p>
+                    <div class="action-buttons">
+                        <a href="{{ route('home') }}" class="btn btn-primary">Tutup</a>
+                        <a href="{{ route('pesanan') }}" class="btn btn-primary">Lihat Pesanan</a>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- Popup -->
-        <div class="popup-overlay" id="popupOverlay"></div>
-        <div class="popup-content" id="popupContent">
-            <h2>Transaksi Berhasil!</h2>
-            <p>Terima kasih atas pembayaran Anda!</p>
-            <button class="btn-close" onclick="closePopup()">Tutup</button>
-            <a href="{{ route('pesanan') }}" class="btn btn-primary">Lihat Pesanan</a>
-            </div>
         <div class="summary">
             <div class="shipping-info">
                 <h3>Shipping Information</h3>
@@ -427,6 +511,7 @@
     </footer>
     <script>
         function showPopup() {
+
             document.getElementById('popupOverlay').style.display = 'block';
             document.getElementById('popupContent').style.display = 'block';
         }

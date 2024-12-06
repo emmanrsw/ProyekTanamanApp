@@ -274,21 +274,25 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Keranjang Anda kosong.</p>
+                    <!-- Contoh daftar item di keranjang -->
+                    <ul class="list-group">
+                        @forelse ($cartItems as $item)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ $item['name'] }} ({{ $item['quantity'] }})
+                            <span class="badge bg-primary rounded-pill">Rp{{ number_format($item['price'], 0, ',', '.') }}</span>
+                        </li>
+                        @empty
+                        <p>Keranjang Anda kosong.</p>
+                        @endforelse
+                    </ul>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-
-                    <form action="/transaksi" method="GET">
-                        @csrf
-                        <button class="btn">BAYAR SEKARANG</button>
-                    </form>
 
                 </div>
             </div>
         </div>
     </div>
-
     <div class="container">
 
         @if (session('success'))
@@ -392,8 +396,18 @@
                     <!-- Elemen hidden input untuk mengirim data checkbox -->
                     <input type="hidden" name="selectedItems" id="selectedItems">
                     <button type="submit" class="checkout-btn" id="checkoutButton" disabled>Lanjutkan Ke Pembayaran</button>
+                    @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                    @endif
                 </form>
-
+                <script>
+                    // Misalkan ada array 'selectedItems' yang berisi ID tanaman yang dipilih
+                    var selectedItems = [1, 2, 3]; // Contoh ID tanaman yang dipilih
+                    document.getElementById('selectedItems').value = JSON.stringify(selectedItems); // Mengisi hidden input
+                    document.getElementById('checkoutButton').disabled = false; // Aktifkan tombol submit
+                </script>
             </div>
 
         </div>
@@ -500,6 +514,8 @@
             }
         }
     </script>
+
+
 </body>
 
 </html>

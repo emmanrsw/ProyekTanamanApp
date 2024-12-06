@@ -49,7 +49,7 @@ class PelangganController extends Controller
         $customer = pelangganModel::find($customerId);
 
         if (!$customer) {
-            return redirect()->route('profile')->with('error', 'Pelanggan tidak ditemukan.');
+            return redirect()->route('pelanggan.profile')->with('error', 'Pelanggan tidak ditemukan.');
         }
 
         // Update data pelanggan

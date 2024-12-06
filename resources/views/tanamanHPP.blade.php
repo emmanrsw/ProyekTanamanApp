@@ -174,6 +174,44 @@
         background-color: #ddd;
         color: black;
     }
+
+    #recent-search-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .clock-icon {
+        margin-left: -18px;
+        margin-right: 8px;
+        vertical-align: baseline;
+        /* Menyelaraskan ikon dengan teks secara vertikal */
+    }
+
+    .search-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .search-header .recent-search-item {
+        flex-grow: 1;
+        text-decoration: none;
+        color: #333;
+        font-size: 15px;
+    }
+
+    .search-header .delete-recent {
+        margin-left: auto;
+        text-decoration: none;
+        color: red;
+        font-size: 15px;
+    }
+
+    .search-header .delete-recent:hover {
+        text-decoration: underline;
+    }
 </style>
 
 <body>
@@ -196,10 +234,36 @@
             </ul>
         </div>
         <div class="navbar-icons d-flex align-items-center">
-            <!-- Search Icon -->
+            <!-- Search Icon in Navbar -->
             <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#searchModal">
                 <i class="fa fa-search"></i>
             </a>
+
+            <!-- Search Modal -->
+            <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="searchModalLabel">Pencarian</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Input untuk pencarian -->
+                            <input type="text" id="searchQuery" class="form-control" placeholder="Cari tanaman...">
+                            <div class="recent-searches mt-3">
+                                <h6>Pencarian Terbaru</h6>
+                                <ul id="recent-search-list">
+                                    <!-- Recent search items will be dynamically added here by JavaScript -->
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-primary" id="searchBtn">Cari</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Shopping Cart Icon -->
             <a href="{{ route('cart') }}" class="nav-link">
@@ -226,7 +290,7 @@
         </div>
     </nav>
 
-    <!-- Search Modal -->
+    <!-- Search Modal TIDAK TERPAKAI-->
     <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -296,6 +360,104 @@
             }
         }
     </script>
+    <script>
+        // Menyimpan pencarian terbaru ke localStorage
+        function saveRecentSearch(query) {
+            let recentSearches = JSON.parse(localStorage.getItem('recent_searches')) || [];
+
+            // Menambahkan query ke array recent search, dan pastikan tidak ada duplikasi
+            if (!recentSearches.includes(query)) {
+                recentSearches.unshift(query); // Menambahkan di depan array
+            }
+
+            // Menyimpan kembali ke localStorage, dan bataskan hanya 5 pencarian terbaru
+            if (recentSearches.length > 5) {
+                recentSearches.pop(); // Hapus elemen terakhir jika lebih dari 5
+            }
+
+            localStorage.setItem('recent_searches', JSON.stringify(recentSearches));
+            displayRecentSearches(); // Refresh list of recent searches
+        }
+
+        // Menampilkan recent searches dari localStorage
+        function displayRecentSearches() {
+            let recentSearches = JSON.parse(localStorage.getItem('recent_searches')) || [];
+
+            const recentSearchList = document.getElementById('recent-search-list');
+            recentSearchList.innerHTML = ''; // Clear the list before adding
+
+            recentSearches.forEach(query => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                <li class="search-header">
+                    <a href="#" class="recent-search-item" data-query="${query}">
+                        <i class="fa-solid fa-clock-rotate-left clock-icon"></i> 
+                        ${query}
+                    </a>
+                    <a href="#" class="delete-recent" data-query="${query}">Hapus</a>
+                </li>
+                `;
+                recentSearchList.appendChild(li);
+            });
+        }
+
+        // function displayRecentSearches() {
+        //     let recentSearches = JSON.parse(localStorage.getItem('recent_searches')) || [];
+
+        //     const recentSearchList = document.getElementById('recent-search-list');
+        //     recentSearchList.innerHTML = ''; // Clear the list before adding
+
+        //     recentSearches.forEach(query => {
+        //         const li = document.createElement('li');
+        //         li.innerHTML = `
+        //         <a href="#" class="recent-search-item" data-query="${query}">${query}</a>
+        //         <a href="#" class="delete-recent" data-query="${query}">Hapus</a>
+        //     `;
+        //         recentSearchList.appendChild(li);
+        //     });
+        // }
+
+        // Event listener untuk menangani klik pada pencarian
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('recent-search-item')) {
+                e.preventDefault();
+                const query = e.target.getAttribute('data-query');
+                document.getElementById('searchQuery').value = query;
+            }
+
+            if (e.target && e.target.classList.contains('delete-recent')) {
+                e.preventDefault();
+                const query = e.target.getAttribute('data-query');
+                removeRecentSearch(query);
+            }
+        });
+
+        // Menghapus pencarian dari localStorage
+        function removeRecentSearch(query) {
+            let recentSearches = JSON.parse(localStorage.getItem('recent_searches')) || [];
+
+            // Menghapus query dari array recent search
+            recentSearches = recentSearches.filter(item => item !== query);
+            localStorage.setItem('recent_searches', JSON.stringify(recentSearches));
+            displayRecentSearches(); // Refresh list after deletion
+        }
+
+        // Menangani pencarian baru dan menyimpan pencarian ke localStorage
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const query = document.getElementById('searchQuery').value.trim();
+            if (query) {
+                saveRecentSearch(query); // Simpan pencarian ke localStorage
+                // Lakukan pencarian berdasarkan query (bisa dikirim ke server atau lakukan pencarian di frontend)
+                window.location.href = `{{ route('searchTanaman') }}?query=${encodeURIComponent(query)}`; // Redirect ke halaman pencarian
+            }
+        });
+
+        // Menampilkan recent searches saat modal dibuka
+        window.onload = function() {
+            displayRecentSearches(); // Menampilkan daftar pencarian terbaru saat halaman dimuat
+        };
+    </script>
+
 </body>
 
 </html>

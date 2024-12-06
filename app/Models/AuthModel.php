@@ -20,9 +20,10 @@ class AuthModel extends Authenticatable
         'namaCust',
         'usernameCust',
         'emailCust',
-        'notlpCust',
         'passwordCust',
-        'alamatCust'
+        'gambarCust',
+        'alamatCust',
+        'notlpCust'
     ];
 
     // Menyembunyikan kolom saat model dikembalikan dalam array atau JSON
@@ -41,5 +42,4 @@ class AuthModel extends Authenticatable
     {
         $this->attributes['password'] = Hash::make($password);
     }
-
 }

@@ -19,7 +19,7 @@
 
     .navbar {
         background-color: white;
-        padding: 10px 20px;
+        padding: 20px 80px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 0;
     }
@@ -154,8 +154,10 @@
         max-width: 55%;
         margin: 0 auto;
         /* Center secara horizontal */
-        display: block;
-        /* Diperlukan untuk margin bekerja pada elemen inline seperti gambar */
+    }
+
+    display: block;
+    /* Diperlukan untuk margin bekerja pada elemen inline seperti gambar */
     }
 
     .carousel-inner img {
@@ -240,56 +242,48 @@
     </div>
     {{-- </div> --}}
 
-    {{-- <div class="container"> --}}
-    <div class="row filter-section">
-        <div class="col-md-3">
-            <div class="filter-price">
-                <h5><strong>Price</strong></h5>
-                <form action="{{ route('tanaman.show') }}" method="GET">
-                    <div class="d-flex">
-                        <input type="number" name="min_price" class="form-control form-control-sm" placeholder="Min"
-                            value="{{ request('min_price') }}">
-                        <span class="mx-2">-</span>
-                        <input type="number" name="max_price" class="form-control form-control-sm" placeholder="Max"
-                            value="{{ request('max_price') }}">
+        <div class="container">
+            <div class="row filter-section">
+                <div class="col-md-3">
+                    <div class="filter-price">
+                        <p><strong>Price</strong></p>
+                        <form action="{{ route('tanaman.show') }}" method="GET">
+                            <div class="d-flex">
+                                <input type="number" name="min_price" class="form-control form-control-sm" placeholder="Min" value="{{ request('min_price') }}">
+                                <span class="mx-2">-</span>
+                                <input type="number" name="max_price" class="form-control form-control-sm" placeholder="Max" value="{{ request('max_price') }}">
+                            </div>
+                            <button type="submit" class="btn btn-custom mt-3">Apply Filter</button>
+                        </form>
                     </div>
-                    <button type="submit" class="btn btn-custom mt-3">Apply Filter</button>
-                </form>
+                </div>
+                <div class="col-md-9">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>Tanaman</h3>
+                        <form method="GET" action="{{ route('tanaman.show') }}">
+                            <select class="form-select" aria-label="Sort by" name="sort" onchange="this.form.submit()">
+                                <option value="default" {{ request('sort') == 'default' ? 'selected' : '' }}>Default</option>
+                                <option value="price_low_high" {{ request('sort') == 'price_low_high' ? 'selected' : '' }}>Price: Low to High</option>
+                                <option value="price_high_low" {{ request('sort') == 'price_high_low' ? 'selected' : '' }}>Price: High to Low</option>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="product-grid">
+                        @foreach ($tanaman as $tanaman)
+                        <div class="product-card">
+                            <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
+                                alt="{{ $tanaman->namaTanaman }}">
+                            <h5>{{ $tanaman->namaTanaman }}</h5>
+                            <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
+                            <button class="btn btn-primary btn-add-to-cart"
+                                data-product='@json($tanaman)'>View Details</button>
+                            <meta name="csrf-token" content="{{ csrf_token() }}">
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="col-md-9">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4><strong>Tanaman<strong></h4>
-                <form method="GET" action="{{ route('tanaman.show') }}">
-                    <select class="form-select" aria-label="Sort by" name="sort" onchange="this.form.submit()">
-                        <option value="default" {{ request('sort') == 'default' ? 'selected' : '' }}>Default
-                        </option>
-                        <option value="price_low_high" {{ request('sort') == 'price_low_high' ? 'selected' : '' }}>
-                            Price: Low to High
-                        </option>
-                        <option value="price_high_low" {{ request('sort') == 'price_high_low' ? 'selected' : '' }}>
-                            Price: High to Low
-                        </option>
-                    </select>
-                </form>
-            </div>
-            <div class="product-grid">
-                @foreach ($tanaman as $tanaman)
-                    <div class="product-card">
-                        <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
-                            alt="{{ $tanaman->namaTanaman }}">
-                        <h5>{{ $tanaman->namaTanaman }}</h5>
-                        <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
-                        <button class="btn btn-primary btn-add-to-cart"
-                            data-product='@json($tanaman)'>View Details</button>
-                        <meta name="csrf-token" content="{{ csrf_token() }}">
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-    </div>
     </div>
     <script>
         document.querySelectorAll('.btn-add-to-cart').forEach(button => {
@@ -305,39 +299,26 @@
 
             const modalContent = `
             <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Header -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="productModalLabel" style="font-weight: bold; color: #4B553D; padding: 10px 20px; border-radius: 5px;">
-                    ${product.namaTanaman}
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <!-- Body -->
-            <div class="modal-body">
-                <!-- Gambar -->
-                <div class="d-flex justify-content-center mb-3">
-                    <img src="${product.gambar ? '/images/' + product.gambar : '/default-image.png'}" class="img-fluid" alt="${product.namaTanaman}" style="max-width: 100%; height: auto; border-radius: 8px;">
-                </div>
-
-                <!-- Detail Produk -->
-                <div class="product-details">
-                    <!-- Harga -->
-                    <div class="product-info border-top border-bottom pb-2 pt-2 mb-3">
-                        <span>Harga : </span>
-                        <span>Rp${product.hargaTanaman.toLocaleString()}</span>
-                    </div>
-                    <!-- Deskripsi -->
-                    <div class="product-info border-bottom pb-2 mb-3">
-                        <span>Deskripsi : </span>
-                        <span>${product.deskripsi || "Deskripsi tidak tersedia"}</span>
-                    </div>
-                    <!-- Jumlah -->
-                    <div class="product-info d-flex align-items-center">
-                        <span class="me-2">Jumlah : </span>
-                        <input type="number" id="jumlah" class="form-control" value="1" min="1" max="100" style="width: 80px;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="productModalLabel">${product.namaTanaman}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <img src="${product.gambar ? '/images/' + product.gambar : '/default-image.png'}" class="img-fluid" alt="${product.namaTanaman}">
+                            <p>Harga: Rp${product.hargaTanaman.toLocaleString()}</p>
+                            <p>Deskripsi: ${product.deskripsi || "Deskripsi tidak tersedia"}</p>
+                            <!-- Input untuk jumlah -->
+                            <div class="mt-3">
+                                <label for="jumlah">Jumlah:</label>
+                                <input type="number" id="jumlah" class="form-control" value="1" min="1" max="100">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="addToCart(${product.idTanaman})">Tambah ke Keranjang</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -351,6 +332,7 @@
 </div>
 
             </div>`;
+
 
             document.body.insertAdjacentHTML('beforeend', modalContent);
             new bootstrap.Modal(document.getElementById('productModal')).show();
@@ -398,12 +380,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        text: data.message || "Produk berhasil ditambahkan ke keranjang!",
-                        icon: 'success',
-                        confirmButtonText: 'OK' 
-                    })
+                    alert(data.message || "Produk berhasil ditambahkan ke keranjang!");
                 })
                 .catch(error => {
                     console.error('Error:', error);
