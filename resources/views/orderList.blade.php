@@ -13,9 +13,8 @@
             font-family: Poppins;
         }
 
-
         .sidebar {
-            width: 250px;
+            width: 150px;
             height: 150vh;
             background: #4B553D;
             padding-top: 20px;
@@ -47,66 +46,80 @@
             padding: 20px;
         }
 
-        .nav-link.active {
-            background-color: #B1D690;
-            color: black;
+
+        .d-flex.justify-content-center {
+            justify-content: center;
+            /* Rata tengah horizontal */
         }
 
-        .nav-link:hover {
-            background-color: #f5f7f0;
-        }
+    .nav-link.active {
+    background-color: #B1D690;
+    color: black;
+    }
 
-        .nav-link {
-            color: white;
-            font-size: 20px;
-            font-weight: 5px;
-            text-align: center;
-        }
+    .nav-link:hover {
+    background-color: #f5f7f0;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    .nav-link {
+    color: white;
+    font-size: 20px;
+    font-weight: 5px;
+    text-align: center;
+    }
 
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    }
 
-        th {
-            background-color: #f2f2f2;
-        }
+    th,
+    td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    }
 
-        td form {
-            display: inline-block;
-        }
+    th {
+    background-color: #f2f2f2;
+    }
 
-        select {
-            padding: 5px;
-        }
+    td form {
+    display: inline-block;
+    }
 
-        .action-btn {
-            margin-bottom: 20px;
-        }
+    select {
+    padding: 5px;
+    }
 
-        .order-status {
-            font-weight: bold;
-            text-transform: capitalize;
-        }
+    .action-btn {
+    margin-bottom: 20px;
+    }
 
-        .order-status.completed {
-            color: green;
-        }
+    .order-status {
+    font-weight: bold;
+    text-transform: capitalize;
+    }
 
-        .order-status.pending {
-            color: orange;
-        }
+    .order-status.completed {
+    color: green;
+    }
 
-        .order-status.cancelled {
-            color: red;
-        }
+    .order-status.pending {
+    color: orange;
+    }
+
+    .order-status.cancelled {
+    color: red;
+    }
+
+    .table thead th,
+    .table tbody td {
+    text-align: center;
+    /* Teks di tengah */
+    vertical-align: middle;
+    /* Vertikal di tengah */
+    }
     </style>
 </head>
 
@@ -127,10 +140,11 @@
         </ul>
     </div>
 
-    <div class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="mb-0">Daftar Transaksi</h1>
+    <div class="main-content" style="font-family: Poppins;">
+        <div class="d-flex justify-content-center mb-4">
+            <h1 class="mb-0" style="font-weight: bold; font-size: 35px; color: #243a56;">Daftar Transaksi</h1>
         </div>
+
 
         <!-- Tabel Daftar Transaksi -->
         <table class="table table-bordered">
