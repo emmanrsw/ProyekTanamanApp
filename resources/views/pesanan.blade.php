@@ -201,9 +201,7 @@
             <span class="text">Selesai</span>
         </div>
     </section>
-
-
-    <!-- Tabel untuk Sedang Dikemas, Dikirim, dan Selesai berada di luar banner -->
+    
     <!-- Tabel untuk Sedang Dikemas -->
     <div id="tabelSedangDikemas" class="table-responsive mt-4" style="display: none;">
         <table class="table table-bordered">
