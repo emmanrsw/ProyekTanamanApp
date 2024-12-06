@@ -123,10 +123,78 @@ class TransaksiController extends Controller
     }
 
 
+    // public function simpanTransaksi(Request $request)
+    // {
+    //     // dd($request->all);  // Menampilkan data tanaman yang dikirimkan
+
+    //     // Validasi data transaksi
+    //     $request->validate([
+    //         'subtotal' => 'required|numeric',
+    //         'pajak' => 'required|numeric',
+    //         'total_harga' => 'required|numeric',
+    //         'alamat_kirim' => 'required|string',
+    //         'metode_bayar' => 'required|string',
+    //     ]);
+
+    //     // Simpan data transaksi ke tabel Transaksi
+    //     $transaksi = new transaksiModel();
+    //     $transaksi->idCust = Auth::id(); // ID pelanggan yang sedang login
+    //     $transaksi->subtotal = $request->subtotal;
+    //     $transaksi->pajak = $request->pajak;
+    //     $transaksi->total_harga = $request->total_harga;
+    //     $transaksi->alamat_kirim = $request->alamat_kirim;
+    //     $transaksi->tglTJual = Carbon::now()->toDateString(); // Tanggal transaksi
+    //     $transaksi->waktuTJual = Carbon::now()->toTimeString(); // Waktu transaksi
+    //     $transaksi->metodeByr = $request->metode_bayar;
+    //     $transaksi->statusTJual = 'sedang dikemas'; // Default status
+    //     $transaksi->save();
+    //     // dd($transaksi);
+
+    //     foreach ($request->tanaman as $item) {
+
+    //         $detail = new detailTModel();
+    //         $detail->idTJual = $transaksi->idTJual; // ID transaksi yang baru dibuat
+    //         $detail->idTanaman = $item['idTanaman'];
+    //         $detail->jumlah = $item['jumlah'];
+    //         $detail->harga_satuan = $item['harga_satuan'];
+    //         $detail->total_harga = $item['subtotal'];
+    //         $detail->nama_tanaman = $item['namaTanaman'];  // Periksa key ini
+    //         $detail->save();
+    //         // dd($detail);
+    //     }
+
+    //     // Mengurangi stok tanaman
+    //     $tanaman = tanamanModel::find($item['idTanaman']); // Cari tanaman berdasarkan ID
+    //     if ($tanaman) {
+    //         $tanaman->jmlTanaman -= $item['jumlah']; // Kurangi stok tanaman
+    //         $tanaman->save();
+    //     } else {
+    //         // Jika tanaman tidak ditemukan
+    //         Log::error("Tanaman dengan ID {$item['idTanaman']} tidak ditemukan.");
+    //     }
+
+    //     // Hapus item dari keranjang
+    //     $tanamancart = cartModel::where('idTanaman', $item['idTanaman'])->where('idCust', Auth::id())->first();
+    //     if ($tanamancart) {
+    //         $tanamancart->delete(); // Hapus item dari keranjang
+    //     } else {
+    //         // Jika item keranjang tidak ditemukan
+    //         Log::error("Item keranjang dengan ID Tanaman {$item['idTanaman']} dan ID Cust " . Auth::id() . " tidak ditemukan.");
+    //     }
+
+    //     // // Hapus tanaman yang sudah dipilih dari keranjang setelah transaksi selesai
+    //     // cartModel::where('idCust', Auth::id())
+    //     //     ->whereIn('idTanaman', collect($request->tanaman)->pluck('idTanaman'))
+    //     //     ->delete();
+
+    //     // Redirect ke halaman sukses setelah transaksi berhasil
+    //     return redirect()->route('pesanan')->with('success', 'Transaksi berhasil disimpan!');
+    // }
+
+
+
     public function simpanTransaksi(Request $request)
     {
-        // dd($request->all);  // Menampilkan data tanaman yang dikirimkan
-
         // Validasi data transaksi
         $request->validate([
             'subtotal' => 'required|numeric',
@@ -148,48 +216,61 @@ class TransaksiController extends Controller
         $transaksi->metodeByr = $request->metode_bayar;
         $transaksi->statusTJual = 'sedang dikemas'; // Default status
         $transaksi->save();
-        // dd($transaksi);
 
+        // Proses setiap tanaman yang dibeli
         foreach ($request->tanaman as $item) {
-
+            // Simpan detail transaksi
             $detail = new detailTModel();
             $detail->idTJual = $transaksi->idTJual; // ID transaksi yang baru dibuat
             $detail->idTanaman = $item['idTanaman'];
             $detail->jumlah = $item['jumlah'];
             $detail->harga_satuan = $item['harga_satuan'];
             $detail->total_harga = $item['subtotal'];
-            $detail->nama_tanaman = $item['namaTanaman'];  // Periksa key ini
+            $detail->nama_tanaman = $item['namaTanaman']; // Nama tanaman
             $detail->save();
-            // dd($detail);
-        }
 
-        // Mengurangi stok tanaman
-        $tanaman = tanamanModel::find($item['idTanaman']); // Cari tanaman berdasarkan ID
-        if ($tanaman) {
-            $tanaman->jmlTanaman -= $item['jumlah']; // Kurangi stok tanaman
-            $tanaman->save();
-        } else {
-            // Jika tanaman tidak ditemukan
-            Log::error("Tanaman dengan ID {$item['idTanaman']} tidak ditemukan.");
-        }
+            // Mengurangi stok tanaman
+            $tanaman = tanamanModel::find($item['idTanaman']); // Cari tanaman berdasarkan ID
+            if ($tanaman) {
+                // Cek apakah stok cukup
+                if ($tanaman->jmlTanaman >= $item['jumlah']) {
+                    // Kurangi stok tanaman
+                    $tanaman->jmlTanaman -= $item['jumlah'];
+                    $tanaman->save();
 
-        // Hapus item dari keranjang
-        $tanamancart = cartModel::where('idTanaman', $item['idTanaman'])->where('idCust', Auth::id())->first();
-        if ($tanamancart) {
-            $tanamancart->delete(); // Hapus item dari keranjang
-        } else {
-            // Jika item keranjang tidak ditemukan
-            Log::error("Item keranjang dengan ID Tanaman {$item['idTanaman']} dan ID Cust " . Auth::id() . " tidak ditemukan.");
-        }
+                    // Tambahkan log perubahan stok
+                    DB::table('stok_log')->insert([
+                        'idTanaman' => $tanaman->idTanaman,
+                        'tanggal' => Carbon::now(),
+                        'jumlah_sebelumnya' => $tanaman->jmlTanaman + $item['jumlah'], // Sebelum stok berkurang
+                        'jumlah_terjual' => $item['jumlah'], // Jumlah yang terjual
+                        'jumlah_baru' => $tanaman->jmlTanaman, // Jumlah stok setelah berkurang
+                    ]);
+                } else {
+                    // Jika stok tidak cukup
+                    Log::error("Stok tanaman dengan ID {$item['idTanaman']} tidak cukup.");
+                    return redirect()->back()->with('error', 'Stok tidak cukup.');
+                }
+            } else {
+                // Jika tanaman tidak ditemukan
+                Log::error("Tanaman dengan ID {$item['idTanaman']} tidak ditemukan.");
+                return redirect()->back()->with('error', 'Tanaman tidak ditemukan.');
+            }
 
-        // // Hapus tanaman yang sudah dipilih dari keranjang setelah transaksi selesai
-        // cartModel::where('idCust', Auth::id())
-        //     ->whereIn('idTanaman', collect($request->tanaman)->pluck('idTanaman'))
-        //     ->delete();
+            // Hapus item dari keranjang
+            $tanamancart = cartModel::where('idTanaman', $item['idTanaman'])->where('idCust', Auth::id())->first();
+            if ($tanamancart) {
+                $tanamancart->delete(); // Hapus item dari keranjang
+            } else {
+                // Jika item keranjang tidak ditemukan
+                Log::error("Item keranjang dengan ID Tanaman {$item['idTanaman']} dan ID Cust " . Auth::id() . " tidak ditemukan.");
+            }
+        }
 
         // Redirect ke halaman sukses setelah transaksi berhasil
         return redirect()->route('pesanan')->with('success', 'Transaksi berhasil disimpan!');
     }
+
 
 
 

@@ -130,7 +130,7 @@
 
             <div class="form-group d-flex justify-content-between">
                 <button type="submit" class="btn btn-black">Perbarui</button>
-                <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">Cancel</a>
+                <a href="{{ route('homeKywn') }}" class="btn btn-outline-secondary">Cancel</a>
             </div>
 
 
