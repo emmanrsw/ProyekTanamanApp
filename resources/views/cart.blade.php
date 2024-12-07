@@ -59,9 +59,11 @@
         }
 
         .cart-items {
-            width: 75%;
+            width: 86%;
             border-radius: 15px;
             flex-direction: column;
+            margin-left: -100px;
+            margin-top: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -90,12 +92,10 @@
 
         .cart-summary {
             position: fixed;
-            /* Tetap di tempatnya */
-            top: 150px;
-            /* Sesuaikan dengan jarak dari atas */
             right: 40px;
-            width: 22%;
+            width: 25%;
             height: auto;
+            margin-top: 10px;
             background-color: #f4f4f4;
             padding: 15px;
             border-radius: 10px;
