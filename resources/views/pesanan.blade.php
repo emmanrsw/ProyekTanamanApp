@@ -158,6 +158,61 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
+
+        .card {
+            display: flex;
+            flex-direction: row;
+            /* Gambar di kiri dan konten di kanan */
+            align-items: center;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .card img {
+            max-width: 150px;
+            /* Ukuran gambar kiri */
+            height: auto;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 15px;
+            flex: 1;
+        }
+
+        .card h5 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .card p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .card-container {
+            display: flex;
+            flex-direction: column;
+            /* Card akan menurun satu per satu */
+            gap: 15px;
+        }
+
+
+        .card-footer .btn {
+            background-color: #4B553D;
+            color: white;
+        }
+
+        .card-footer .btn:hover {
+            background-color: gray;
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
@@ -201,102 +256,68 @@
             <span class="text">Selesai</span>
         </div>
     </section>
-    
-    <!-- Tabel untuk Sedang Dikemas -->
-    <div id="tabelSedangDikemas" class="table-responsive mt-4" style="display: none;">
-        <table class="table table-bordered">
-            @if ($sedangDikemas->isNotEmpty())
-            <thead>
-                <tr>
-                    <th>Tanggal Pembelian</th>
-                    <th>Nama Tanaman</th>
-                    <th>Jumlah</th>
-                    <th>Total Harga</th>
-                </tr>
-            </thead>
-            <tbody>
 
-                @foreach ($sedangDikemas as $transaksi)
-                @foreach ($transaksi->details as $detail)
-                <tr>
-                    <td>{{ $transaksi->tglTJual }}</td>
-                    <td>{{ $detail->nama_tanaman }}</td>
-                    <td>{{ $detail->jumlah }}</td>
-                    <td>Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
-                </tr>
-                @endforeach
-                @endforeach
-            </tbody>
-            @else
-            <tr>
-                <td colspan="4">Tidak ada tanaman yang sedang dikemas.</td>
-            </tr>
-            @endif
-        </table>
+    <!-- Tampilkan Konten untuk Sedang Dikemas -->
+    <div id="tabelSedangDikemas" class="hidden card-container">
+        @if ($sedangDikemas->isNotEmpty())
+        @foreach ($sedangDikemas as $transaksi)
+        @foreach ($transaksi->details as $detail)
+        <div class="card">
+            <img src="https://via.placeholder.com/300x200.png?text=Sedang+Dikemas" alt="Sedang Dikemas">
+            <div class="card-body">
+                <h5>{{ $detail->nama_tanaman }}</h5>
+                <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
+                <p>Jumlah: {{ $detail->jumlah }}</p>
+                <p>Total Harga: Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</p>
+            </div>
+        </div>
+        @endforeach
+        @endforeach
+        @else
+        <div class="text-center w-100">Tidak ada tanaman yang sedang dikemas.</div>
+        @endif
     </div>
 
-    <!-- Tabel untuk Dikirim -->
-    <div id="tabelDikirim" class="table-responsive mt-4" style="display: none;">
-        <table class="table table-bordered">
-            @if ($dikirim->isNotEmpty())
-            <thead>
-                <tr>
-                    <th>Tanggal Pembelian</th>
-                    <th>Nama Tanaman</th>
-                    <th>Jumlah</th>
-                    <th>Total Harga</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($dikirim as $transaksi)
-                @foreach ($transaksi->details as $detail)
-                <tr>
-                    <td>{{ $transaksi->tglTJual }}</td>
-                    <td>{{ $detail->nama_tanaman }}</td>
-                    <td>{{ $detail->jumlah }}</td>
-                    <td>Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
-                </tr>
-                @endforeach
-                @endforeach
-            </tbody>
-            @else
-            <tr>
-                <td colspan="4">Tidak ada tanaman yang sedang dikirim.</td>
-            </tr>
-            @endif
-        </table>
+    <!-- Tampilkan Konten untuk Dikirim -->
+    <div id="tabelDikirim" class="hidden card-container">
+        @if ($dikirim->isNotEmpty())
+        @foreach ($dikirim as $transaksi)
+        @foreach ($transaksi->details as $detail)
+        <div class="card">
+            <img src="https://via.placeholder.com/300x200.png?text=Dikirim" alt="Dikirim">
+            <div class="card-body">
+                <h5>{{ $detail->nama_tanaman }}</h5>
+                <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
+                <p>Jumlah: {{ $detail->jumlah }}</p>
+                <p>Total Harga: Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</p>
+            </div>
+        </div>
+        @endforeach
+        @endforeach
+        @else
+        <div class="text-center w-100">Tidak ada tanaman yang sedang dikirim.</div>
+        @endif
     </div>
 
-    <!-- Tabel untuk Selesai -->
-    <div id="tabelSelesai" class="table-responsive mt-4" style="display: none;">
-        <table class="table table-bordered">
-            @if ($selesai->isNotEmpty())
-            <thead>
-                <tr>
-                    <th>Tanggal Pembelian</th>
-                    <th>Nama Tanaman</th>
-                    <th>Jumlah</th>
-                    <th>Total Harga</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($selesai as $transaksi)
-                @foreach ($transaksi->details as $detail)
-                <tr>
-                    <td>{{ $transaksi->tglTJual }}</td>
-                    <td>{{ $detail->nama_tanaman }}</td>
-                    <td>{{ $detail->jumlah }}</td>
-                    <td>Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
-                </tr>
-                @endforeach
-                @endforeach
-            </tbody>
-            @else
-            <tr>
-                <td colspan="4">Tidak ada tanaman yang selesai.</td>
-            </tr>
-            @endif
-        </table>
+    <!-- Tampilkan Konten untuk Selesai -->
+    <div id="tabelSelesai" class="hidden card-container">
+        @if ($selesai->isNotEmpty())
+        @foreach ($selesai as $transaksi)
+        @foreach ($transaksi->details as $detail)
+        <div class="card">
+            <img src="https://via.placeholder.com/300x200.png?text=Selesai" alt="Selesai">
+            <div class="card-body">
+                <h5>{{ $detail->nama_tanaman }}</h5>
+                <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
+                <p>Jumlah: {{ $detail->jumlah }}</p>
+                <p>Total Harga: Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</p>
+            </div>
+        </div>
+        @endforeach
+        @endforeach
+        @else
+        <div class="text-center w-100">Tidak ada tanaman yang selesai.</div>
+        @endif
     </div>
     <!-- Tombol Bayar Sekarang jika tidak ada transaksi -->
     @if ($sedangDikemas->isEmpty() && $dikirim->isEmpty() && $selesai->isEmpty())
@@ -326,8 +347,6 @@
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
-
-    
 </script>
 
 </html>
