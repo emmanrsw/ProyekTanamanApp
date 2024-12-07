@@ -9,6 +9,8 @@ use App\Models\karyawanModel;
 use App\Models\pelangganModel;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 // use Illuminate\Support\Facades\Mail;
 // use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -270,4 +272,56 @@ class AuthController extends Controller
         session()->flash('logout_message', 'Anda telah berhasil logout!');
         return redirect()->route('login.login');
     }
+    // Menampilkan halaman form lupa username atau password
+    public function showResetForm()
+    {
+        return view('lupaPassword');
+    }
+
+    // Memproses form reset username dan/atau password
+    public function reset(Request $request)
+{
+    // Validasi input
+    $request->validate([
+        'username' => 'nullable|string|min:5|max:255',
+        'password' => 'nullable|string|min:8|confirmed',
+    ]);
+
+    // Cek jika pengguna sudah login
+    $user = Auth::guard('pelanggan')->user();
+
+    // Jika sudah login, pastikan hanya bisa merubah username/password milik mereka sendiri
+    if ($user) {
+        // Jika ada perubahan username
+        if ($request->filled('username')) {
+            // Cek apakah username sudah ada di database (kecuali untuk user yang sama)
+            $existingUser = AuthModel::where('usernameCust', $request->username)
+                                     ->where('idCust', '<>', $user->idCust)
+                                     ->first();
+
+            if ($existingUser) {
+                return redirect()->back()->withErrors(['username' => 'Username sudah digunakan']);
+            }
+
+            // Update username
+            $user->usernameCust = $request->username;
+        }
+
+        // Jika ada perubahan password
+        if ($request->filled('password')) {
+            // Update password (pastikan password di-hash)
+            $user->passwordCust = Hash::make($request->password);
+        }
+
+        // Simpan perubahan
+        $user->save();
+
+        return redirect()->route('login.login')->with('success', 'Username atau Password berhasil diubah');
+    }
+
+    // Jika pengguna tidak login, biarkan mereka mengakses halaman reset password
+    // tanpa harus login
+    return view('login.login'); // Mengarahkan ke view reset jika pengguna belum login
+}
+
 }
