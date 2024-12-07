@@ -20,7 +20,7 @@
     /* Navbar */
     .navbar {
         background-color: white;
-        padding: 20px 80px;
+        padding: 10px 20px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 0;
     }
@@ -336,17 +336,29 @@
                 <i class="fa fa-shopping-cart"></i>
             </a>
             <!-- User Icon -->
-            <div class="topnav">
+                        <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                    <i class="fa fa-bars"></i>
+                    @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
+                        <!-- Jika pengguna memiliki gambar profil -->
+                        <img src="{{ asset('storage/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
+                            alt="User Profile" class="rounded-circle" width="30" height="30">
+                    @else
+                        <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
+                        <i class="fa fa-user"></i>
+                    @endif
                 </a>
                 <div id="myLinks" style="display: none;">
-                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
-                        <i class="fa fa-user"></i> {{ session('usernameCust') }}
-                    </a>
-                    <a href="#" style="font-size: 1rem;">Ubah Password</a>
-                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                    @if (Auth::guard('pelanggan')->check())
+                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                        </a>
+                        <a href="#" style="font-size: 1rem;">Ubah Password</a>
+                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                    @else
+                        <a href="{{ route('login.login') }}" class="nav-link">Login</a>
+                    @endif
                 </div>
+            </div>
             </div>
 
         </div>

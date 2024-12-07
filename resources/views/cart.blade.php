@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
             font-family: 'Poppins';
@@ -17,7 +19,7 @@
         /* Navbar */
         .navbar {
             background-color: white;
-            padding: 20px 80px;
+            padding: 10px 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 0;
         }
@@ -53,17 +55,28 @@
         /* Flex Layout */
         .cart-container {
             display: flex;
+            margin-top: 20px;
             justify-content: space-between;
+            align-items: flex-start;
+            /* Pastikan elemen sejajar dari atas */
+            gap: 20px;
             padding: 10px;
-            margin-bottom: 30px;
+            /* Tambahkan jarak antar elemen */
+            margin-bottom: 100px;
+            /* Tambahkan margin bawah untuk ruang ekstra */
         }
 
         .cart-items {
+<<<<<<< HEAD
+            flex: 3;
+            border-radius: 15px;
+=======
             width: 86%;
             border-radius: 15px;
             flex-direction: column;
             margin-left: -100px;
             margin-top: 10px;
+>>>>>>> 1aa6cb59587f84023a372d530dc6a0f753cf7a23
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -84,26 +97,30 @@
         }
 
         .table tbody td {
-            padding: 15px;
+            padding: 20px;
             vertical-align: middle;
             text-align: center;
             font-size: 0.95rem;
         }
 
         .cart-summary {
+<<<<<<< HEAD
+            flex: 1;
+            position: sticky;
+            top: 10px;
+            /* Tetap di atas saat scroll */
+            right: 0;
+=======
             position: fixed;
             right: 40px;
             width: 25%;
             height: auto;
             margin-top: 10px;
+>>>>>>> 1aa6cb59587f84023a372d530dc6a0f753cf7a23
             background-color: #f4f4f4;
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            font-size: 0.85rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
         }
 
         .cart-summary h5 {
@@ -123,31 +140,32 @@
         }
 
         .cart-summary td {
-            padding: 8px 10px;
-            text-align: left;
+            padding: 10px 10px;
+            text-align: center;
         }
 
         .cart-summary .total {
             font-weight: bold;
             font-size: 1rem;
-            text-align: right;
+            text-align: center;
             padding-right: 10px;
         }
 
         .checkout-btn {
             font-size: 0.9rem;
-            padding: 12px;
+            padding: 15px;
+            width: 300px;
+            /* Tambahkan satuan px */
+            margin-inline-start: 10px;
+            margin-block-start: 10px;
             background-color: #999;
             /* Default disabled state */
             color: #fff;
-            border-radius: 8px;
-            cursor: not-allowed;
-            text-decoration: none;
-            display: block;
-            margin-top: 15px;
+            border-radius: 10px;
             text-align: center;
             pointer-events: none;
             /* Prevent click */
+            cursor: not-allowed;
         }
 
         .checkout-btn.enabled {
@@ -215,19 +233,61 @@
             background-color: #ddd;
             color: black;
         }
+
+        .swal-wide {
+            width: 400px !important;
+            height: 200px;
+            /* Sesuaikan lebar */
+            font-size: 80%;
+            /* Ukuran teks */
+        }
+
+        footer {
+            margin-top: 30px;
+            padding: 20px 0;
+            background-color: #fff;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        footer .footer-links {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        footer .footer-links div {
+            width: 30%;
+        }
+
+        footer .footer-links h4 {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-links a {
+            display: block;
+            color: #666;
+            text-decoration: none;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span class="highlight">.in</span></a>
+        <a class="navbar-brand"
+            href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span
+                class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">Home</a></li>
+                <li class="nav-item"><a class="nav-link"
+                        href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="404">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
@@ -248,17 +308,24 @@
             <!-- User Icon -->
             <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                    <i class="fa fa-user"></i>
+                    @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
+                        <!-- Jika pengguna memiliki gambar profil -->
+                        <img src="{{ asset('storage/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
+                            alt="User Profile" class="rounded-circle" width="30" height="30">
+                    @else
+                        <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
+                        <i class="fa fa-user"></i>
+                    @endif
                 </a>
                 <div id="myLinks" style="display: none;">
-                    @if(Auth::guard('pelanggan')->check())
-                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
-                        {{ Auth::guard('pelanggan')->user()->usernameCust }}
-                    </a>
-                    <a href="#" style="font-size: 1rem;">Ubah Password</a>
-                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                    @if (Auth::guard('pelanggan')->check())
+                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                        </a>
+                        <a href="#" style="font-size: 1rem;">Ubah Password</a>
+                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
                     @else
-                    <a href="{{ route('login.login') }}" class="nav-link">Login</a>
+                        <a href="{{ route('login.login') }}" class="nav-link">Login</a>
                     @endif
                 </div>
             </div>
@@ -277,12 +344,13 @@
                     <!-- Contoh daftar item di keranjang -->
                     <ul class="list-group">
                         @forelse ($cartItems as $item)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            {{ $item['name'] }} ({{ $item['quantity'] }})
-                            <span class="badge bg-primary rounded-pill">Rp{{ number_format($item['price'], 0, ',', '.') }}</span>
-                        </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ $item['name'] }} ({{ $item['quantity'] }})
+                                <span
+                                    class="badge bg-primary rounded-pill">Rp{{ number_format($item['price'], 0, ',', '.') }}</span>
+                            </li>
                         @empty
-                        <p>Keranjang Anda kosong.</p>
+                            <p>Keranjang Anda kosong.</p>
                         @endforelse
                     </ul>
                 </div>
@@ -293,20 +361,28 @@
             </div>
         </div>
     </div>
-    <div class="container">
+    {{-- <div class="container"> --}}
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                position: "center", // Muncul di tengah
+                icon: "success", // Ikon sukses
+                title: "{{ session('success') }}", // Pesan sukses
+                showConfirmButton: false, // Tidak ada tombol konfirmasi
+                timer: 1000, // Waktu tampil 3 detik
+                customClass: {
+                    popup: 'swal-wide' // Tambahkan kelas kustom untuk lebar popup
+                }
+            });
+        </script>
+    @endif
 
-        @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-        @endif
-
-        <div class="cart-container">
-            <!-- Bagian Keranjang Belanja -->
-            <div class="cart-items">
-                @if ($cartItems->isEmpty())
+    <div class="cart-container">
+        <!-- Bagian Keranjang Belanja -->
+        <div class="cart-items">
+            @if ($cartItems->isEmpty())
                 <p>Keranjang Anda kosong.</p>
-                @else
+            @else
                 <table class="table">
                     <thead>
                         <tr>
@@ -320,98 +396,130 @@
                     </thead>
                     <tbody>
                         @foreach ($cartItems as $item)
-                        <tr>
-                            <td><input type="checkbox" class="plant-checkbox"
-                                    data-item-id="{{ $item->idTanaman }}" data-price="{{ $item->harga_satuan }}"
-                                    data-total="{{ $item->total_harga }}" onclick="updateSubtotal()"></td>
-                            <td>
-                                <!-- Menampilkan Gambar dan Nama Tanaman di Samping -->
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <img src="{{ asset('images/' . $item->gambar) }}"
-                                        alt="{{ $item->namaTanaman }}"
-                                        style="width: 50px; height: 50px; object-fit: cover;">
-                                    <span>{{ $item->namaTanaman }}</span>
-                                </div>
-                            </td>
-                            <td class="harga_satuan">{{ number_format($item->harga_satuan) }}</td>
-                            <td>
-                                <div class="quantity-wrapper">
-                                    <form method="POST"
-                                        action="{{ route('cart.decreaseqty', ['rowId' => $item->idKeranjang]) }}">
+                            <tr>
+                                <td><input type="checkbox" class="plant-checkbox" data-item-id="{{ $item->idTanaman }}"
+                                        data-price="{{ $item->harga_satuan }}" data-total="{{ $item->total_harga }}"
+                                        onclick="updateSubtotal()"></td>
+                                <td>
+                                    <!-- Menampilkan Gambar dan Nama Tanaman di Samping -->
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <img src="{{ asset('images/' . $item->gambar) }}"
+                                            alt="{{ $item->namaTanaman }}"
+                                            style="width: 50px; height: 50px; object-fit: cover;">
+                                        <span>{{ $item->namaTanaman }}</span>
+                                    </div>
+                                </td>
+                                <td class="harga_satuan">{{ number_format($item->harga_satuan) }}</td>
+                                <td>
+                                    <div class="quantity-wrapper">
+                                        <form method="POST"
+                                            action="{{ route('cart.decreaseqty', ['rowId' => $item->idKeranjang]) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="button" class="btn-minus"
+                                                onclick="this.closest('form').submit()">-</button>
+                                        </form>
+
+                                        <input type="text" class="jumlah-input" value="{{ $item->jumlah }}"
+                                            data-id="{{ $item->idKeranjang }}" readonly>
+
+                                        <form method="POST"
+                                            action="{{ route('cart.increaseqty', ['rowId' => $item->idKeranjang]) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="button" class="btn-plus"
+                                                onclick="this.closest('form').submit()">+</button>
+                                        </form>
+                                    </div>
+                                </td>
+
+                                <td id="total-{{ $item->idTanaman }}">{{ number_format($item->total_harga) }}
+                                </td>
+                                <td>
+                                    <form action="{{ route('cart.remove', $item->idTanaman) }}" method="POST">
                                         @csrf
-                                        @method('PUT')
-                                        <button type="button" class="btn-minus"
-                                            onclick="this.closest('form').submit()">-</button>
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Hapus</button>
                                     </form>
-
-                                    <input type="text" class="jumlah-input" value="{{ $item->jumlah }}"
-                                        data-id="{{ $item->idKeranjang }}" readonly>
-
-                                    <form method="POST"
-                                        action="{{ route('cart.increaseqty', ['rowId' => $item->idKeranjang]) }}">
-                                        @csrf
-                                        @method('PUT')
-                                        <button type="button" class="btn-plus"
-                                            onclick="this.closest('form').submit()">+</button>
-                                    </form>
-                                </div>
-                            </td>
-
-                            <td id="total-{{ $item->idTanaman }}">{{ number_format($item->total_harga) }}
-                            </td>
-                            <td>
-                                <form action="{{ route('cart.remove', $item->idTanaman) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Hapus</button>
-                                </form>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
-                @endif
-            </div>
+            @endif
+        </div>
 
-            <!-- Bagian Jumlah Keranjang -->
-            <div class="cart-summary">
-                <h5>Ringkasan Keranjang</h5>
-                <table>
-                    <tr>
-                        <td>SUBTOTAL</td>
-                        <td class="subtotal">Rp0</td>
-                    </tr>
-                    <tr>
-                        <td>PAJAK (5%)</td>
-                        <td id="tax">Rp0</td>
-                    </tr>
-                    <tr class="total">
-                        <td>TOTAL</td>
-                        <td>Rp0</td>
-                    </tr>
-                </table>
+        <!-- Bagian Jumlah Keranjang -->
+        <div class="cart-summary">
+            <h5>Ringkasan Keranjang</h5>
+            <table>
+                <tr>
+                    <td>SUBTOTAL</td>
+                    <td class="subtotal">Rp0</td>
+                </tr>
+                <tr>
+                    <td>PAJAK (5%)</td>
+                    <td id="tax">Rp0</td>
+                </tr>
+                <tr class="total">
+                    <td>TOTAL</td>
+                    <td>Rp0</td>
+                </tr>
+            </table>
 
-                <form action="{{ route('transaksi') }}" method="POST" id="checkoutForm">
-                    @csrf
-                    <!-- Elemen hidden input untuk mengirim data checkbox -->
-                    <input type="hidden" name="selectedItems" id="selectedItems">
-                    <button type="submit" class="checkout-btn" id="checkoutButton" disabled>Lanjutkan Ke Pembayaran</button>
-                    @if(session('error'))
+            <form action="{{ route('transaksi') }}" method="POST" id="checkoutForm">
+                @csrf
+                <!-- Elemen hidden input untuk mengirim data checkbox -->
+                <input type="hidden" name="selectedItems" id="selectedItems">
+                <button type="submit" class="checkout-btn" id="checkoutButton" disabled>Lanjutkan Ke
+                    Pembayaran</button>
+                @if (session('error'))
                     <div class="alert alert-danger">
                         {{ session('error') }}
                     </div>
-                    @endif
-                </form>
-                <script>
-                    // Misalkan ada array 'selectedItems' yang berisi ID tanaman yang dipilih
-                    var selectedItems = [1, 2, 3]; // Contoh ID tanaman yang dipilih
-                    document.getElementById('selectedItems').value = JSON.stringify(selectedItems); // Mengisi hidden input
-                    document.getElementById('checkoutButton').disabled = false; // Aktifkan tombol submit
-                </script>
-            </div>
-
+                @endif
+            </form>
+            <script>
+                // Misalkan ada array 'selectedItems' yang berisi ID tanaman yang dipilih
+                var selectedItems = [1, 2, 3]; // Contoh ID tanaman yang dipilih
+                document.getElementById('selectedItems').value = JSON.stringify(selectedItems); // Mengisi hidden input
+                document.getElementById('checkoutButton').disabled = false; // Aktifkan tombol submit
+            </script>
         </div>
+
     </div>
+    <footer>
+        <div class="footer-links">
+            <div>
+                <h4>COMPANY INFO</h4>
+                <a href="#">About Us</a>
+                <a href="#">Latest Posts</a>
+                <a href="#">Contact Us</a>
+            </div>
+            <div>
+                <h4>HELP LINKS</h4>
+                <a href="#">Tracking</a>
+                <a href="#">Order Status</a>
+                <a href="#">Delivery</a>
+                <a href="#">Shipping Info</a>
+                <a href="#">FAQ</a>
+            </div>
+            <div>
+                <h4>USEFUL LINKS</h4>
+                <a href="#">Special Offers</a>
+                <a href="#">Gift Cards</a>
+                <a href="#">Advertising</a>
+                <a href="#">Terms of Use</a>
+            </div>
+        </div>
+        <p>
+            © 2020 Tanam.in eCommerce<br />
+            Privacy Policy | Terms & Conditions
+        </p>
+    </footer>
+
+    </div>
+
     <script>
         $(function() {
             $(".btn-plus").on("click", function() {
@@ -514,7 +622,6 @@
             }
         }
     </script>
-
 
 </body>
 
