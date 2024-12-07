@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
@@ -20,7 +21,7 @@
     /* Navbar */
     .navbar {
         background-color: white;
-        padding: 10px 20px;
+        padding: 20px 80px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 0;
     }
@@ -51,6 +52,7 @@
         color: #333;
         font-size: 1.2rem;
     }
+
 
     .main-content {
         display: flex;
@@ -190,7 +192,6 @@
         padding: 20px 0;
         background-color: #fff;
         text-align: center;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
         font-size: 12px;
         color: #666;
     }
@@ -266,11 +267,13 @@
         cursor: pointer;
         text-decoration: none;
         /* Menghilangkan garis bawah */
+
     }
 
     .popup-content .btn-close:hover {
         background-color: #c82333;
     }
+
 
     .action-buttons {
         display: flex;
@@ -316,9 +319,9 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="home">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Tentang Kami</a></li>
+                <li class="nav-item"><a class="nav-link" href="tanaman">Tanaman</a></li>
+                <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
+                <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
                 <li class="nav-item"><a class="nav-link" href="pesanan">Pesanan Saya</a></li>
             </ul>
         </div>
@@ -328,6 +331,7 @@
                 <i class="fa fa-search"></i>
             </a>
 
+
             <!-- Shopping Cart Icon -->
             <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#cartModal">
                 <i class="fa fa-shopping-cart"></i>
@@ -335,28 +339,16 @@
             <!-- User Icon -->
             <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                    @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
-                        <!-- Jika pengguna memiliki gambar profil -->
-                        <img src="{{ asset('storage/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
-                            alt="User Profile" class="rounded-circle" width="30" height="30">
-                    @else
-                        <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
-                        <i class="fa fa-user"></i>
-                    @endif
+                    <i class="fa fa-bars"></i>
                 </a>
                 <div id="myLinks" style="display: none;">
-                    @if (Auth::guard('pelanggan')->check())
-                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
-                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
-                        </a>
-                        <a href="#" style="font-size: 1rem;">Ubah Password</a>
-                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
-                    @else
-                        <a href="{{ route('login.login') }}" class="nav-link">Login</a>
-                    @endif
+                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                        <i class="fa fa-user"></i> {{ session('usernameCust') }}
+                    </a>
+                    <a href="#" style="font-size: 1rem;">Ubah Password</a>
+                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
                 </div>
             </div>
-        </div>
 
         </div>
     </nav>
@@ -383,8 +375,7 @@
                     @foreach ($tanamanDipilih as $tanaman)
                         <tr>
                             <td>{{ $tanaman->namaTanaman }}</td>
-                            <td>{{ number_format($tanaman->harga_satuan, 0, ',', '.') }}</td>
-                            <!-- Format harga satuan -->
+                            <td>{{ number_format($tanaman->harga_satuan, 0, ',', '.') }}</td> <!-- Format harga satuan -->
                             <td>{{ $tanaman->jumlah }}</td>
                             <td>{{ number_format($tanaman->harga_satuan * $tanaman->jumlah, 0, ',', '.') }}</td>
                             <!-- Total harga -->
@@ -416,7 +407,7 @@
                     referensi pembayaran. Pesanan Anda tidak akan dikirimkan sampai dana kami terima di rekening.
                 </p>
 
-                <form action="{{ route('transaksi.simpan') }}" method="POST">
+                <form action="{{ route('transaksi.simpan') }}" method="POST" id="formTransaksi">
                     @csrf
                     <!-- Data transaksi -->
                     <input type="hidden" name="subtotal" value="{{ $subtotal }}">
@@ -431,27 +422,41 @@
                             value="{{ $tanaman->idTanaman }}">
                         <input type="hidden" name="tanaman[{{ $loop->index }}][namaTanaman]"
                             value="{{ $tanaman->namaTanaman }}">
-                        <input type="hidden" name="tanaman[{{ $loop->index }}][jumlah]"
-                            value="{{ $tanaman->jumlah }}">
+                        <input type="hidden" name="tanaman[{{ $loop->index }}][jumlah]" value="{{ $tanaman->jumlah }}">
                         <input type="hidden" name="tanaman[{{ $loop->index }}][harga_satuan]"
                             value="{{ $tanaman->harga_satuan }}">
                         <input type="hidden" name="tanaman[{{ $loop->index }}][subtotal]"
                             value="{{ $tanaman->harga_satuan * $tanaman->jumlah }}">
                     @endforeach
 
-                    <button type="submit" class="btn" onclick="showPopup()">BAYAR SEKARANG</button>
+                    <button type="button" class="btn" id="btnBayar">BAYAR SEKARANG</button>
                 </form>
 
-                <!-- Popup -->
-                <div class="popup-overlay" id="popupOverlay"></div>
-                <div class="popup-content" id="popupContent">
-                    <h2>Transaksi Berhasil!</h2>
-                    <p>Terima kasih atas pembayaran Anda!</p>
-                    <div class="action-buttons">
-                        <a href="{{ route('home') }}" class="btn btn-primary">Tutup</a>
-                        <a href="{{ route('pesanan') }}" class="btn btn-primary">Lihat Pesanan</a>
-                    </div>
-                </div>
+                <!-- Tambahkan SweetAlert -->
+                <script>
+                    document.getElementById('btnBayar').addEventListener('click', function () {
+                        Swal.fire({
+                            title: "Transaksi Berhasil!",
+                            text: "Terima kasih atas pembayaran Anda!",
+                            icon: "success",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Lihat Pesanan",
+                            cancelButtonText: "Tutup"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Jika pengguna memilih "Lihat Pesanan"
+                                window.location.href = "{{ route('pesanan') }}";
+                            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                // Jika pengguna memilih "Tutup"
+                                window.location.href = "{{ route('home') }}";
+                            }
+                        });
+                    });
+                </script>
+
+
             </div>
         </div>
         <div class="summary">
@@ -493,27 +498,30 @@
             </div>
         </div>
     </div>
+
+
     <footer>
         <div class="footer-links">
             <div>
-                <h4>INFORMASI PERUSAHAAN</h4>
-                <a href="tentangKami">Tentang Kami</a>
-                <a href="home">Dashboard</a>
-                <a href="kontak">Hubungi Kami</a>
+                <h4>COMPANY INFO</h4>
+                <a href="#">About Us</a>
+                <a href="#">Latest Posts</a>
+                <a href="#">Contact Us</a>
             </div>
             <div>
-                <h4>LINK BANTUAN</h4>
-                <a href="pesanan">Pelacakan</a>
-                <a href="pesanan">Status Pesanan</a>
-                <a href="pesanan">Pengiriman</a>
-                <a href="pesanan">Info Pengiriman</a>
+                <h4>HELP LINKS</h4>
+                <a href="#">Tracking</a>
+                <a href="#">Order Status</a>
+                <a href="#">Delivery</a>
+                <a href="#">Shipping Info</a>
+                <a href="#">FAQ</a>
             </div>
             <div>
-                <h4>MEDIA SOSIAL</h4>
-                <a href="https://www.facebook.com" target="_blank">Facebook</a>
-                <a href="https://www.instagram.com" target="_blank">Instagram</a>
-                <a href="https://www.twitter.com" target="_blank">Twitter</a>
-                <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
+                <h4>USEFUL LINKS</h4>
+                <a href="#">Special Offers</a>
+                <a href="#">Gift Cards</a>
+                <a href="#">Advertising</a>
+                <a href="#">Terms of Use</a>
             </div>
         </div>
         <p>

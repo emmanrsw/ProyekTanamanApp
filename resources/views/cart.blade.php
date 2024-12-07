@@ -273,7 +273,7 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link"
                         href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
+                <li class="nav-item"><a class="nav-link" href="tanaman">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
                 <li class="nav-item"><a class="nav-link" href="pesanan">Pesanan Saya</a></li>
