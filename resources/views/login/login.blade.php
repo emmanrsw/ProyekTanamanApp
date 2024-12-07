@@ -224,7 +224,7 @@
             <h2>Login</h2>
             <!-- Flash Messages -->
             @if (session('msg'))
-            <div class="alert alert-success">
+            <div class="alert alert-danger">
                 {{ session('msg') }}
             </div>
             @endif
@@ -232,6 +232,12 @@
             @if (session('logout_message'))
             <div class="alert alert-success">
                 {{ session('logout_message') }}
+            </div>
+            @endif
+
+            @if (session('error_message'))
+            <div class="alert alert-danger">
+                {{ session('error_message') }}
             </div>
             @endif
 
@@ -292,6 +298,7 @@
             this.classList.toggle('fa-eye');
             this.classList.toggle('fa-eye-slash');
         });
+
         function validateForm() {
             const checkbox = document.getElementById('stayLoggedIn');
             const error = document.getElementById('checkboxError');

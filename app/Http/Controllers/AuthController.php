@@ -155,7 +155,7 @@ class AuthController extends Controller
         $pelanggan = pelangganModel::where('usernameCust', $username)->first();
         if ($pelanggan && Hash::check($password, $pelanggan->passwordCust)) {
             Auth::guard('pelanggan')->login($pelanggan);
-            session()->flash('login_message', 'Selamat datang di Tanam.in!');
+            // session()->flash('login_message', 'Selamat datang di Tanam.in!');
             return redirect()->route('home');
         }
 
@@ -163,13 +163,12 @@ class AuthController extends Controller
         $karyawan = karyawanModel::where('usernameKywn', $username)->first();
         if ($karyawan && $karyawan->passwordKywn === $password) {
             Auth::guard('karyawan')->login($karyawan);
-            session()->flash('login_message', 'Selamat datang di Tanam.in!');
+            // session()->flash('login_message', 'Selamat datang di Tanam.in!');
             return redirect()->route('homeKywn');
         }
 
         // Jika tidak ditemukan
-        session()->flash('error_message', 'Username atau password salah.');
-        return redirect()->route('login.login');
+        return redirect()->route('login.login')->with('error_message', 'Username atau password salah.');
     }
 
     public function register()
