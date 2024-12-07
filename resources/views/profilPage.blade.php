@@ -213,24 +213,24 @@
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
-    <div class="profile-info">
-        <form action="{{ route('updateProfilePicture') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <label for="profileImage" class="d-block">
-                @if($customer->gambarCust) <!-- Jika sudah ada gambar profil -->
-                    <img src="{{ asset('storage/' . $customer->gambarCust) }}" 
-                         alt="Profile Picture" class="rounded-circle" width="150" id="profileImagePreview">
-                @else <!-- Jika belum ada gambar profil, tampilkan ikon profil default -->
-                    <i class="fas fa-user-circle" style="font-size: 100px; color: #ddd;"></i>
-                @endif
-                <input type="file" id="profileImage" name="profileImage" accept="image/*" style="display: none;" onchange="this.form.submit();">
-            </label>
-        </form>
-    </div>
-    <a class="active" href="#"><i class="fas fa-user"></i> Akun Saya</a>
-    <a href="#"><i class="fas fa-box"></i> Pesanan Saya</a>
-    <a href="{{ route('logout') }}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-</div>
+            <div class="profile-info">
+                <form action="{{ route('updateProfilePicture') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <label for="profileImage" class="d-block">
+                        @if($customer->gambarCust) <!-- Jika sudah ada gambar profil -->
+                        <img src="{{ asset('storage/' . $customer->gambarCust) }}"
+                            alt="Profile Picture" class="rounded-circle" width="150" id="profileImagePreview">
+                        @else <!-- Jika belum ada gambar profil, tampilkan ikon profil default -->
+                        <i class="fas fa-user-circle" style="font-size: 100px; color: #ddd;"></i>
+                        @endif
+                        <input type="file" id="profileImage" name="profileImage" accept="image/*" style="display: none;" onchange="this.form.submit();">
+                    </label>
+                </form>
+            </div>
+            <a class="active" href="#"><i class="fas fa-user"></i> Akun Saya</a>
+            <a href="#"><i class="fas fa-box"></i> Pesanan Saya</a>
+            <a href="{{ route('logout') }}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </div>
 
 
         <!-- Konten -->
@@ -239,51 +239,48 @@
             <p>Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun</p>
 
             <!-- Form Profil Page -->
-            <form action="{{ route('pelanggan.update') }}" method="POST">
+            <form action="{{ route('pelanggan.edit') }}" method="GET">
                 @csrf <!-- Token CSRF untuk keamanan -->
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" id="usernameCust" name="usernameCust" value="{{ $customer->usernameCust }}"
+                    <input type="text" id="usernameCust" name="usernameCust" value="{{$customer->usernameCust}}"
                         readonly>
                 </div>
                 <div class="form-group">
                     <label>Nama</label>
-                    <input type="text" id="namaCust" name="namaCust" value="{{ $customer->namaCust }}" readonly>
+                    <input type="text" id="namaCust" name="namaCust" value="{{$customer->namaCust}}" readonly>
                 </div>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" id="emailCust" name="emailCust" value="{{ $customer->emailCust }}" readonly>
+                    <input type="email" id="emailCust" name="emailCust" value="{{$customer->emailCust}}" readonly>
                 </div>
                 <div class="form-group">
                     <label>Nomor Telepon</label>
-                    <input type="text" id="notelpCust" name="notelpCust" value="{{ $customer->notelpCust }}"
-                        readonly>
+                    <input type="text" id="notlpCust" name="notlpCust" value="{{$customer->notlpCust}}" readonly>
                 </div>
                 <div class="form-group">
                     <label>Alamat</label>
-                    <input type="text" id="alamatCust" name="alamatCust" value="{{ $customer->alamatCust }}"
-                        readonly>
+                    <input type="text" id="alamatCust" name="alamatCust" value="{{$customer->alamatCust}}" readonly>
                 </div>
                 <button type="submit" class="btn btn-primary">Edit</button>
                 <a href="{{ route('home') }}" class="btn btn-primary">Kembali</a>
                 <!-- Tombol Hapus Gambar Profil (Hanya jika ada gambar yang diunggah) -->
-    @if ($customer->gambarCust)
-        <button type="submit" name="delete_image" value="1" class="btn btn-primary">Hapus Gambar</button>
-    @endif
+                @if ($customer->gambarCust)
+                <button type="submit" name="delete_image" value="1" class="btn btn-primary">Hapus Gambar</button>
+                @endif
             </form>
         </div>
-    </div>
 
-    <script>
-        // Update preview image after file selection
-        document.getElementById('profileImage').addEventListener('change', function(event) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                document.getElementById('profileImagePreview').src = reader.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        });
-    </script>
+        <script>
+            // Update preview image after file selection
+            document.getElementById('profileImage').addEventListener('change', function(event) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    document.getElementById('profileImagePreview').src = reader.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            });
+        </script>
 
 </body>
 

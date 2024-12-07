@@ -317,7 +317,7 @@
                 </div>
                 <div class="form-group">
                     <label>Nomor Telepon</label>
-                    <input type="text" id="notelpCust" name="notelpCust" value="{{$customer->notelpCust}}" required>
+                    <input type="text" id="notlpCust" name="notlpCust" value="{{$customer->notlpCust}}" required>
                 </div>
                 <div class="form-group">
                     <label>Alamat</label>

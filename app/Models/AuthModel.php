@@ -38,8 +38,14 @@ class AuthModel extends Authenticatable
     ];
 
     // Mutator untuk meng-hash password sebelum disimpan
-    public function setPasswordAttribute($password)
+    public function setPasswordCustAttribute($password)
     {
-        $this->attributes['password'] = Hash::make($password);
+        $this->attributes['passwordCust'] = Hash::make($password);
+    }
+    protected $appends = ['password'];
+
+    public function getPasswordAttribute()
+    {
+        return $this->attributes['passwordCust'];
     }
 }
