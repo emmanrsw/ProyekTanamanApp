@@ -14,7 +14,7 @@
 
 <style>
     body {
-        font-family: 'Poppins';
+        font-family: 'Poppins', sans-serif;
     }
 
     .navbar {

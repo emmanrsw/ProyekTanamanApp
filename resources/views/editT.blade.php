@@ -10,7 +10,7 @@
     <style>
         body {
             display: flex;
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         .sidebar {
