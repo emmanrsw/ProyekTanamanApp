@@ -46,7 +46,7 @@
             border-radius: 5px;
             padding: 10px 20px;
             text-align: center;
-            transform: translateY(70    px);
+            transform: translateY(70px);
             /* Geser tombol ke bawah sebanyak 10px */
         }
 
