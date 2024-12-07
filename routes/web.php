@@ -73,3 +73,5 @@ Route::get('/orderlist', [TransaksiController::class, 'show_order'])->name('orde
 Route::put('/update-status/{idTJual}', [TransaksiController::class, 'updateStatus'])->name('updateStatus');
 
 Route::get('/viewT/{id}', [TanamanController::class, 'viewT'])->name('viewT');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

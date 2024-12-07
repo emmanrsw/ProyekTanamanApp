@@ -15,7 +15,7 @@
 
         .sidebar {
             width: 150px;
-            height: 150vh;
+            height: 200vh;
             background: #4B553D;
             padding-top: 20px;
         }
@@ -185,7 +185,7 @@
                         <td>{{ number_format($order->total_harga, 0, ',', '.') }} IDR</td>
                         <td>
                             <span
-                                class="order-status @if($order->statusTJual == 'Dikirim') pending @elseif($order->statusTJual == 'Selesai') completed @else cancelled @endif">
+                                class="order-status @if($order->statusTJual == 'Dikirim') pending @elseif($order->statusTJual == '') completed @else cancelled @endif">
                                 {{ $order->statusTJual }}
                             </span>
                         </td>
