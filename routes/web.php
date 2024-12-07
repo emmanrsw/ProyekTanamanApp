@@ -8,6 +8,9 @@ Route::get('/', function () {
 Route::get('/tentangKami', function () {
     return view('tentangKami');
 });
+Route::get('/kontak', function () {
+    return view('kontak');
+});
 
 use App\Http\Controllers\PelangganController;
 
@@ -15,9 +18,11 @@ use App\Http\Controllers\PelangganController;
 // Route::post('/updatePelanggan', [PelangganController::class, 'updateProfile'])->name('updateProfile');
 Route::middleware(['auth:pelanggan'])->group(function () {
     Route::get('/profile', [PelangganController::class, 'showProfile'])->name('pelanggan.profile');
-    Route::post('/profile/edit', [PelangganController::class, 'edit'])->name('pelanggan.edit');
+    Route::get('/profile/edit', [PelangganController::class, 'edit'])->name('pelanggan.edit');
     Route::post('/profile/update', [PelangganController::class, 'updateProfile'])->name('pelanggan.update');
     Route::post('/update-profile-picture', [PelangganController::class, 'updateProfilePicture'])->name('updateProfilePicture');
+
+    Route::post('/profile/delete-image', [PelangganController::class, 'deleteProfilePicture'])->name('deleteProfilePicture');
 });
 
 use App\Http\Controllers\AuthController;

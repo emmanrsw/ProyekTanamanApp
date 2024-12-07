@@ -20,7 +20,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
+            padding: 10px 20px;
             background-color: white;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
@@ -297,7 +297,7 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="tanaman">Tanaman</a></li>
-                <li class="nav-item"><a class="nav-link" href="404">Kontak</a></li>
+                <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
                 <li class="nav-item"><a class="nav-link" href="pesanan">Pesanan Saya</a></li>
 
@@ -310,14 +310,27 @@
             <a href="{{ route('cart') }}" class="nav-link">
                 <i class="fa fa-shopping-cart"></i>
             </a>
-            <div class="topnav">
-                <a href="javascript:void(0);" class="icon" onclick="toggleUserMenu()">
-                    <i class="fa fa-user"></i>
+                        <div class="topnav">
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
+                        <!-- Jika pengguna memiliki gambar profil -->
+                        <img src="{{ asset('storage/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
+                            alt="User Profile" class="rounded-circle" width="30" height="30">
+                    @else
+                        <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
+                        <i class="fa fa-user"></i>
+                    @endif
                 </a>
-                <div id="myLinks">
-                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">{{ session('usernameCust') }}</a>
-                    <a href="#" style="font-size: 1rem;">Ubah Password</a>
-                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                <div id="myLinks" style="display: none;">
+                    @if (Auth::guard('pelanggan')->check())
+                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                        </a>
+                        <a href="#" style="font-size: 1rem;">Ubah Password</a>
+                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                    @else
+                        <a href="{{ route('login.login') }}" class="nav-link">Login</a>
+                    @endif
                 </div>
             </div>
         </div>

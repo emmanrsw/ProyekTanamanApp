@@ -3,12 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable; 
 
-class pelangganModel extends Authenticatable
+
+ class pelangganModel extends Authenticatable
 {
     use HasFactory;
 
@@ -21,9 +19,10 @@ class pelangganModel extends Authenticatable
         'namaCust',
         'usernameCust',
         'emailCust',
+        'passwordCust',
         'alamatCust',
-        'notelp', // buat nampilin di profile
-        'passwordCust'
+        'gambarCust',
+        'notlpCust' // buat nampilin di profile
     ];
     // Menyembunyikan kolom saat model dikembalikan dalam array atau JSON
     // protected $hidden = [
