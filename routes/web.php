@@ -21,6 +21,8 @@ Route::middleware(['auth:pelanggan'])->group(function () {
     Route::get('/profile/edit', [PelangganController::class, 'edit'])->name('pelanggan.edit');
     Route::post('/profile/update', [PelangganController::class, 'updateProfile'])->name('pelanggan.update');
     Route::post('/update-profile-picture', [PelangganController::class, 'updateProfilePicture'])->name('updateProfilePicture');
+
+    Route::post('/profile/delete-image', [PelangganController::class, 'deleteProfilePicture'])->name('deleteProfilePicture');
 });
 
 use App\Http\Controllers\AuthController;

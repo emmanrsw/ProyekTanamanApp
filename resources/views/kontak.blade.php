@@ -199,10 +199,9 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .hubungi-kami h3 
-            font-size: 24px;
-            margin-bottom: 10px;
-            font-weight: bold;
+        .hubungi-kami h3 font-size: 24px;
+        margin-bottom: 10px;
+        font-weight: bold;
         }
 
         .hubungi-kami p {
@@ -243,7 +242,14 @@
             <!-- User Icon -->
             <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                    <i class="fa fa-user"></i>
+                    @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
+                        <!-- Jika pengguna memiliki gambar profil -->
+                        <img src="{{ asset('storage/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
+                            alt="User Profile" class="rounded-circle" width="30" height="30">
+                    @else
+                        <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
+                        <i class="fa fa-user"></i>
+                    @endif
                 </a>
                 <div id="myLinks" style="display: none;">
                     @if (Auth::guard('pelanggan')->check())
@@ -335,7 +341,7 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 20px 40px;
+                padding: 10px 20px;
                 background-color: white;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }

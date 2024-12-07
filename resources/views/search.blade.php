@@ -18,7 +18,7 @@
     /* Navbar */
     .navbar {
         background-color: white;
-        padding: 20px 80px;
+        padding: 10px 20px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 0;
         /* Ensure there is no margin at the bottom */
