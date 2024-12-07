@@ -34,6 +34,11 @@
             background-color: #f5f7f0;
         }
 
+        .nav-link.active {
+            background-color: #B1D690;
+            color: black;
+        }
+
         .nav-link {
             color: white;
             font-size: 20px;
@@ -111,7 +116,7 @@
 
         <ul class="nav flex-column ">
             <li class="nav-item">
-                <a class="nav-link" href="homeKywn">All Products</a>
+                <a class="nav-link active" href="homeKywn">All Products</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="orderlist">Order List</a>
@@ -231,7 +236,7 @@
             const editButton = document.getElementById('edit-button');
             const deleteButton = document.getElementById('delete-button');
 
-            viewButton.addEventListener('click', function() {
+            viewButton.addEventListener('click', function () {
                 const selectedCheckbox = Array.from(checkboxes).find(cb => cb.checked);
                 if (selectedCheckbox) {
                     const itemId = selectedCheckbox.getAttribute('data-item-id');
