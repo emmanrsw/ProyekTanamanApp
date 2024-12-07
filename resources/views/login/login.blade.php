@@ -6,6 +6,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         body {
             display: flex;
@@ -22,29 +23,20 @@
 
         .tanam {
             color: black;
-            /* Warna untuk "Tanam." */
         }
 
         .in {
             color: #4B553D;
-            /* Warna untuk "in" */
         }
 
         .logo {
             position: absolute;
-            /* Memungkinkan untuk menempatkan di atas gambar */
             top: 20px;
-            /* Jarak dari atas */
             left: 50%;
-            /* Memposisikan ke tengah horizontal */
             transform: translateX(-50%);
-            /* Memindahkan logo setengah lebar teks */
             color: white;
-            /* Warna teks */
             font-size: 36px;
-            /* Ukuran font */
             z-index: 10;
-            /* Memastikan teks berada di atas gambar */
             font-family: 'Poppins';
             font-weight: 700;
         }
@@ -63,53 +55,33 @@
             max-width: 400px;
         }
 
-        /* Gaya untuk input field */
         .form-control {
             border: none;
-            /* Menghapus border */
             border-bottom: 2px solid #444;
-            /* Garis bawah */
-            border-radius: 3;
-            /* Menghapus sudut */
             padding: 10px 0;
-            /* Padding atas dan bawah */
             transition: border-color 0.3s;
-            /* Transisi saat fokus */
         }
 
         .form-control:focus {
             outline: none;
-            /* Menghapus outline default */
             border-bottom: 2px solid #4B553D;
-            /* Garis bawah saat fokus */
         }
 
         .form-group label {
             font-size: 0.9rem;
             color: #696969;
-            /* Label color */
         }
 
         .btn-primary {
             background-color: black;
-            /* Button color */
             border: none;
-            /* Remove border */
             border-radius: 5px;
-            /* Rounded button */
             transition: background-color 0.3s;
-            /* Transition effect */
-            text-align: left;
-            font-size: 16x;
+            font-size: 16px;
         }
 
         .btn-primary:hover {
             background-color: #4B553D;
-            /* Button hover color */
-        }
-
-        h2 {
-            font-weight: 550;
         }
 
         a {
@@ -123,14 +95,6 @@
             color: #4B553D;
         }
 
-        /* Style untuk pesan kesalahan */
-        .error {
-            color: red;
-            font-size: 0.9rem;
-            display: none;
-            /* Awalnya tidak ditampilkan */
-        }
-
         .btn-social {
             display: flex;
             align-items: center;
@@ -141,30 +105,17 @@
             transition: background-color 0.3s;
             padding: 10px;
             width: 120px;
-            /* Ukuran lebar setiap tombol */
             margin: 5px;
-            /* Spasi antara tombol */
         }
 
-        /* Tombol Google */
-        .btn-google {
-            background-color: transparent;
-            border: 2px solid black;
-            color: black;
-        }
-
-        .btn-google:hover {
-            background-color: transparent;
-            color: #4B553D;
-        }
-
-        /* Tombol Apple */
+        .btn-google,
         .btn-apple {
             background-color: transparent;
             border: 2px solid black;
             color: black;
         }
 
+        .btn-google:hover,
         .btn-apple:hover {
             background-color: transparent;
             color: #4B553D;
@@ -188,10 +139,6 @@
             color: red;
             font-size: 0.9rem;
             display: none;
-        }
-
-        .custom-left {
-            text-align: center;
         }
 
         .or-text {
@@ -222,6 +169,7 @@
     <div class="form-section">
         <div class="form-container">
             <h2>Login</h2>
+
             <!-- Flash Messages -->
             @if (session('msg'))
             <div class="alert alert-danger">
