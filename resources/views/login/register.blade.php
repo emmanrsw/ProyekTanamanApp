@@ -79,7 +79,7 @@
             border: none;
             border-radius: 5px;
             transition: background-color 0.3s;
-            text-align: center;
+            text-align: left;
             font-size: 16px;
         }
 
@@ -184,6 +184,10 @@
             background: #444;
             margin: 0 10px;
         }
+
+        .custom-left {
+            text-align: left;
+        }
     </style>
 </head>
 
@@ -261,7 +265,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-block mt-4">Register</button>
-                <a href="/login" class="d-block custom-left mt-3">Login</a>
+                <p><a href="/login" class="d-block custom-left mt-3">Login</a></p>
             </form>
         </div>
     </div>

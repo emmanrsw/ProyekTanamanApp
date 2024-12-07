@@ -67,8 +67,16 @@
         }
 
         .cart-items {
+<<<<<<< HEAD
             flex: 3;
             border-radius: 15px;
+=======
+            width: 86%;
+            border-radius: 15px;
+            flex-direction: column;
+            margin-left: -100px;
+            margin-top: 10px;
+>>>>>>> 1aa6cb59587f84023a372d530dc6a0f753cf7a23
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -96,11 +104,19 @@
         }
 
         .cart-summary {
+<<<<<<< HEAD
             flex: 1;
             position: sticky;
             top: 10px;
             /* Tetap di atas saat scroll */
             right: 0;
+=======
+            position: fixed;
+            right: 40px;
+            width: 25%;
+            height: auto;
+            margin-top: 10px;
+>>>>>>> 1aa6cb59587f84023a372d530dc6a0f753cf7a23
             background-color: #f4f4f4;
             padding: 15px;
             border-radius: 10px;

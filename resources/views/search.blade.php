@@ -63,18 +63,18 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#"><span>Tanam</span><span class="highlight">.in</span></a>
+    <a class="navbar-brand" href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="homePage">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="tanaman">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="404">Kontak</a></li>
-                <li class="nav-item"><a class="nav-link" href="404">Tentang Kami</a></li>
-                <li class="nav-item"><a class="nav-link" href="404">Tanaman Saya</a></li>
+                <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
+                <li class="nav-item"><a class="nav-link" href="pesanan">Tanaman Saya</a></li>
             </ul>
         </div>
         <div class="navbar-icons d-flex align-items-center">

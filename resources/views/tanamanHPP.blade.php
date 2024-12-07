@@ -462,6 +462,8 @@
 
         // Menampilkan recent searches saat modal dibuka
         window.onload = function() {
+            // Mengosongkan input pencarian saat halaman dimuat
+            document.getElementById('searchQuery').value = "";
             displayRecentSearches(); // Menampilkan daftar pencarian terbaru saat halaman dimuat
         };
     </script>

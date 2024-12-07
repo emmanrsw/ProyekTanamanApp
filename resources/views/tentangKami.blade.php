@@ -129,7 +129,7 @@
         .jumbotron img {
             width: 100%;
             /* Memastikan gambar mengambil seluruh lebar elemen */
-            height: 200;
+            height: 300;
             /* Menjaga rasio gambar */
             display: block;
             /* Menghilangkan spasi kecil di bawah gambar */

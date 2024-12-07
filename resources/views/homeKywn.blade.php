@@ -10,7 +10,7 @@
     <style>
         body {
             display: flex;
-            font-family: Poppins;
+            font-family: 'Poppins', sans-serif;
         }
 
         .sidebar {
@@ -46,7 +46,7 @@
             border-radius: 5px;
             padding: 10px 20px;
             text-align: center;
-            transform: translateY(10px);
+            transform: translateY(70    px);
             /* Geser tombol ke bawah sebanyak 10px */
         }
 
@@ -128,7 +128,7 @@
 
             <!-- Tombol untuk menambah tanaman -->
             <a href="{{ route('tambahTanaman') }}" class="btn btn-custom add-btn">
-                <i class="fas fa-plus"></i> Add Tanaman
+                <i class="fas fa-plus"></i> Add Tanaman 
             </a>
         </div>
         <div class="action-buttons mb-3">
