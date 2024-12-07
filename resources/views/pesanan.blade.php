@@ -170,10 +170,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#{{route('home')}}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('home')}}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="tanaman">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Tentang Kami</a></li>
+                <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
                 <li class="nav-item"><a class="nav-link" href="#pesanan">Pesanan Saya</a></li>
             </ul>
         </div>
