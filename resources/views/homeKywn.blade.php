@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +16,7 @@
 
         .sidebar {
             width: 150px;
-            height: 150vh;
+            height: 200vh;
             background: #4B553D;
             padding-top: 20px;
         }
@@ -50,20 +51,19 @@
             color: white;
             border-radius: 5px;
             padding: 10px 20px;
-            text-align: center;
-            transform: translateY(70px);
-            /* Geser tombol ke bawah sebanyak 10px */
+            margin-left: 10px;
         }
 
-
-        .add-btn {
-            margin-bottom: 20px;
+        .action-buttons .btn {
+            margin-left: 10px;
         }
 
         .navbar {
             text-align: center;
             height: 50px;
             font-weight: bold;
+            justify-content: space-between;
+            padding: 0 20px;
         }
 
         .navbar-brand {
@@ -73,37 +73,35 @@
 
         .highlight {
             color: #4B553D;
-            /* Contoh warna hijau, sesuaikan sesuai kebutuhan */
             font-weight: bold;
         }
 
         .table {
             text-align: center;
             font-size: 20px;
-            /* Pusatkan teks dalam tabel */
         }
 
         .table thead tr {
             background-color: #f8f9fa;
-            /* Warna abu-abu terang */
         }
 
         .table thead th,
         .table tbody td {
             text-align: center;
-            /* Teks di tengah */
             vertical-align: middle;
-            /* Vertikal di tengah */
         }
 
-        .text-left {
-            text-align: left !important;
-            /* Memastikan teks rata kiri */
+        .logout-btn {
+            background-color: #f44336;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
         }
 
-        .d-flex.align-items-center .ml-3 {
-            text-align: left;
-            /* Pastikan teks dalam margin juga rata kiri */
+        .logout-btn:hover {
+            background-color: #d32f2f;
         }
     </style>
 </head>
@@ -116,7 +114,6 @@
             </a>
         </nav>
 
-
         <ul class="nav flex-column ">
             <li class="nav-item">
                 <a class="nav-link active" href="homeKywn">All Products</a>
@@ -128,25 +125,35 @@
     </div>
 
     <div class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-4 ">
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="mb-0" style="font-weight: bold; font-size: 35px; color: #243a56">Daftar Tanaman</h1>
-
-            <!-- Tombol untuk menambah tanaman -->
-            <a href="{{ route('tambahTanaman') }}" class="btn btn-custom add-btn">
-                <i class="fas fa-plus"></i> Add Tanaman 
-            </a>
+            <!-- Tombol untuk Logout -->
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </form>
         </div>
-        <div class="action-buttons mb-3">
-            <button class="btn btn-sm btn-outline-secondary action-btn" id="view-button" disabled>
-                <i class="fas fa-eye"></i> Lihat
-            </button>
-            <button class="btn btn-sm btn-outline-secondary action-btn" id="edit-button" disabled>
-                <i class="fas fa-pen"></i> Edit
-            </button>
-            <button class="btn btn-sm btn-outline-danger action-btn" id="delete-button" disabled data-toggle="modal"
-                data-target="#deleteModal">
-                <i class="fas fa-trash"></i> Hapus
-            </button>
+
+        <!-- Baris untuk tombol aksi dan Add Tanaman -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="action-buttons">
+                <button class="btn btn-outline-secondary action-btn" id="view-button" disabled>
+                    <i class="fas fa-eye"></i> Lihat
+                </button>
+                <button class="btn btn-outline-secondary action-btn" id="edit-button" disabled>
+                    <i class="fas fa-pen"></i> Edit
+                </button>
+                <button class="btn btn-outline-danger action-btn" id="delete-button" disabled data-toggle="modal"
+                    data-target="#deleteModal">
+                    <i class="fas fa-trash"></i> Hapus
+                </button>
+            </div>
+
+            <a href="{{ route('tambahTanaman') }}" class="btn btn-custom">
+                <i class="fas fa-plus"></i> Add Tanaman
+            </a>
         </div>
 
         <table class="table table-bordered">
