@@ -84,6 +84,10 @@ class TransaksiController extends Controller
 
         // Ambil ID pelanggan yang sedang login
         $idCust = Auth::id();
+        $user = Auth::user(); // Ambil data pengguna yang sedang login
+
+        // Ambil alamat pengguna dari profil
+        $alamatPelanggan = $user->alamatCust;
 
         // Ambil data tanaman yang dipilih dari keranjang
         $tanamanDipilih = cartModel::where('idCust', $idCust)
@@ -119,6 +123,7 @@ class TransaksiController extends Controller
             'subtotal' => $subtotal,
             'tax' => $tax,
             'total' => $total,
+            'alamatPelanggan' => $alamatPelanggan,
         ]);
     }
 

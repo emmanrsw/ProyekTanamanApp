@@ -354,14 +354,13 @@
     </nav>
     <!-- Session Message -->
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     @endif
     <div class="main-content">
         <div class="product-details">
-            <h2>Product</h2>
             <table class="table">
                 <thead>
                     <tr>
@@ -373,13 +372,13 @@
                 </thead>
                 <tbody>
                     @foreach ($tanamanDipilih as $tanaman)
-                        <tr>
-                            <td>{{ $tanaman->namaTanaman }}</td>
-                            <td>{{ number_format($tanaman->harga_satuan, 0, ',', '.') }}</td> <!-- Format harga satuan -->
-                            <td>{{ $tanaman->jumlah }}</td>
-                            <td>{{ number_format($tanaman->harga_satuan * $tanaman->jumlah, 0, ',', '.') }}</td>
-                            <!-- Total harga -->
-                        </tr>
+                    <tr>
+                        <td>{{ $tanaman->namaTanaman }}</td>
+                        <td>{{ number_format($tanaman->harga_satuan, 0, ',', '.') }}</td> <!-- Format harga satuan -->
+                        <td>{{ $tanaman->jumlah }}</td>
+                        <td>{{ number_format($tanaman->harga_satuan * $tanaman->jumlah, 0, ',', '.') }}</td>
+                        <!-- Total harga -->
+                    </tr>
                     @endforeach
                 </tbody>
                 <!-- Tampilkan subtotal, pajak, dan total -->
@@ -418,15 +417,15 @@
 
                     <!-- Data detail transaksi -->
                     @foreach ($tanamanDipilih as $tanaman)
-                        <input type="hidden" name="tanaman[{{ $loop->index }}][idTanaman]"
-                            value="{{ $tanaman->idTanaman }}">
-                        <input type="hidden" name="tanaman[{{ $loop->index }}][namaTanaman]"
-                            value="{{ $tanaman->namaTanaman }}">
-                        <input type="hidden" name="tanaman[{{ $loop->index }}][jumlah]" value="{{ $tanaman->jumlah }}">
-                        <input type="hidden" name="tanaman[{{ $loop->index }}][harga_satuan]"
-                            value="{{ $tanaman->harga_satuan }}">
-                        <input type="hidden" name="tanaman[{{ $loop->index }}][subtotal]"
-                            value="{{ $tanaman->harga_satuan * $tanaman->jumlah }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][idTanaman]"
+                        value="{{ $tanaman->idTanaman }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][namaTanaman]"
+                        value="{{ $tanaman->namaTanaman }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][jumlah]" value="{{ $tanaman->jumlah }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][harga_satuan]"
+                        value="{{ $tanaman->harga_satuan }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][subtotal]"
+                        value="{{ $tanaman->harga_satuan * $tanaman->jumlah }}">
                     @endforeach
 
                     <button type="button" class="btn" id="btnBayar">BAYAR SEKARANG</button>
@@ -434,7 +433,7 @@
 
                 <!-- Tambahkan SweetAlert -->
                 <script>
-                    document.getElementById('btnBayar').addEventListener('click', function () {
+                    document.getElementById('btnBayar').addEventListener('click', function() {
                         Swal.fire({
                             title: "Transaksi Berhasil!",
                             text: "Terima kasih atas pembayaran Anda!",
@@ -463,12 +462,11 @@
             <div class="shipping-info">
                 <h3>Shipping Information</h3>
                 <p>
-                    Mirpur-10, Road 14A<br />
-                    Dhaka, Bangladesh<br />
-                    01758187028
+                    {{ $alamatPelanggan }} <!-- Menampilkan alamat pengiriman -->
                 </p>
-                <a href="#">Change Address <i class="fas fa-pencil-alt"></i></a>
+                <a href="{{ route('pelanggan.profile') }}">Change Address <i class="fas fa-pencil-alt"></i></a>
             </div>
+
             <div class="payment-card">
                 <h3>Select Your Payment Card</h3>
                 <label>
