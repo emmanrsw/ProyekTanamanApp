@@ -67,16 +67,8 @@
         }
 
         .cart-items {
-<<<<<<< HEAD
             flex: 3;
             border-radius: 15px;
-=======
-            width: 86%;
-            border-radius: 15px;
-            flex-direction: column;
-            margin-left: -100px;
-            margin-top: 10px;
->>>>>>> 1aa6cb59587f84023a372d530dc6a0f753cf7a23
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -104,19 +96,11 @@
         }
 
         .cart-summary {
-<<<<<<< HEAD
             flex: 1;
             position: sticky;
             top: 10px;
             /* Tetap di atas saat scroll */
             right: 0;
-=======
-            position: fixed;
-            right: 40px;
-            width: 25%;
-            height: auto;
-            margin-top: 10px;
->>>>>>> 1aa6cb59587f84023a372d530dc6a0f753cf7a23
             background-color: #f4f4f4;
             padding: 15px;
             border-radius: 10px;
@@ -246,6 +230,7 @@
             margin-top: 30px;
             padding: 20px 0;
             background-color: #fff;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
             text-align: center;
             font-size: 12px;
             color: #666;
@@ -289,7 +274,7 @@
                 <li class="nav-item"><a class="nav-link"
                         href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
-                <li class="nav-item"><a class="nav-link" href="404">Kontak</a></li>
+                <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
                 <li class="nav-item"><a class="nav-link" href="pesanan">Pesanan Saya</a></li>
             </ul>
@@ -491,25 +476,24 @@
     <footer>
         <div class="footer-links">
             <div>
-                <h4>COMPANY INFO</h4>
-                <a href="#">About Us</a>
-                <a href="#">Latest Posts</a>
-                <a href="#">Contact Us</a>
+                <h4>INFORMASI PERUSAHAAN</h4>
+                <a href="tentangKami">Tentang Kami</a>
+                <a href="home">Dashboard</a>
+                <a href="kontak">Hubungi Kami</a>
             </div>
             <div>
-                <h4>HELP LINKS</h4>
-                <a href="#">Tracking</a>
-                <a href="#">Order Status</a>
-                <a href="#">Delivery</a>
-                <a href="#">Shipping Info</a>
-                <a href="#">FAQ</a>
+                <h4>LINK BANTUAN</h4>
+                <a href="pesanan">Pelacakan</a>
+                <a href="pesanan">Status Pesanan</a>
+                <a href="pesanan">Pengiriman</a>
+                <a href="pesanan">Info Pengiriman</a>
             </div>
             <div>
-                <h4>USEFUL LINKS</h4>
-                <a href="#">Special Offers</a>
-                <a href="#">Gift Cards</a>
-                <a href="#">Advertising</a>
-                <a href="#">Terms of Use</a>
+                <h4>MEDIA SOSIAL</h4>
+                <a href="https://www.facebook.com" target="_blank">Facebook</a>
+                <a href="https://www.instagram.com" target="_blank">Instagram</a>
+                <a href="https://www.twitter.com" target="_blank">Twitter</a>
+                <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
             </div>
         </div>
         <p>
