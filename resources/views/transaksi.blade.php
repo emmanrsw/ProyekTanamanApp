@@ -52,7 +52,6 @@
         font-size: 1.2rem;
     }
 
-
     .main-content {
         display: flex;
         justify-content: space-between;
@@ -191,6 +190,7 @@
         padding: 20px 0;
         background-color: #fff;
         text-align: center;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
         font-size: 12px;
         color: #666;
     }
@@ -266,13 +266,11 @@
         cursor: pointer;
         text-decoration: none;
         /* Menghilangkan garis bawah */
-
     }
 
     .popup-content .btn-close:hover {
         background-color: #c82333;
     }
-
 
     .action-buttons {
         display: flex;
@@ -330,13 +328,12 @@
                 <i class="fa fa-search"></i>
             </a>
 
-
             <!-- Shopping Cart Icon -->
             <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#cartModal">
                 <i class="fa fa-shopping-cart"></i>
             </a>
             <!-- User Icon -->
-                        <div class="topnav">
+            <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
                         <!-- Jika pengguna memiliki gambar profil -->
@@ -359,16 +356,16 @@
                     @endif
                 </div>
             </div>
-            </div>
+        </div>
 
         </div>
     </nav>
     <!-- Session Message -->
     @if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     @endif
     <div class="main-content">
         <div class="product-details">
@@ -384,12 +381,14 @@
                 </thead>
                 <tbody>
                     @foreach ($tanamanDipilih as $tanaman)
-                    <tr>
-                        <td>{{ $tanaman->namaTanaman }}</td>
-                        <td>{{ number_format($tanaman->harga_satuan, 0, ',', '.') }}</td> <!-- Format harga satuan -->
-                        <td>{{ $tanaman->jumlah }}</td>
-                        <td>{{ number_format($tanaman->harga_satuan * $tanaman->jumlah, 0, ',', '.') }}</td> <!-- Total harga -->
-                    </tr>
+                        <tr>
+                            <td>{{ $tanaman->namaTanaman }}</td>
+                            <td>{{ number_format($tanaman->harga_satuan, 0, ',', '.') }}</td>
+                            <!-- Format harga satuan -->
+                            <td>{{ $tanaman->jumlah }}</td>
+                            <td>{{ number_format($tanaman->harga_satuan * $tanaman->jumlah, 0, ',', '.') }}</td>
+                            <!-- Total harga -->
+                        </tr>
                     @endforeach
                 </tbody>
                 <!-- Tampilkan subtotal, pajak, dan total -->
@@ -428,16 +427,20 @@
 
                     <!-- Data detail transaksi -->
                     @foreach ($tanamanDipilih as $tanaman)
-                    <input type="hidden" name="tanaman[{{ $loop->index }}][idTanaman]" value="{{ $tanaman->idTanaman }}">
-                    <input type="hidden" name="tanaman[{{ $loop->index }}][namaTanaman]" value="{{ $tanaman->namaTanaman }}">
-                    <input type="hidden" name="tanaman[{{ $loop->index }}][jumlah]" value="{{ $tanaman->jumlah }}">
-                    <input type="hidden" name="tanaman[{{ $loop->index }}][harga_satuan]" value="{{ $tanaman->harga_satuan }}">
-                    <input type="hidden" name="tanaman[{{ $loop->index }}][subtotal]" value="{{ $tanaman->harga_satuan * $tanaman->jumlah }}">
+                        <input type="hidden" name="tanaman[{{ $loop->index }}][idTanaman]"
+                            value="{{ $tanaman->idTanaman }}">
+                        <input type="hidden" name="tanaman[{{ $loop->index }}][namaTanaman]"
+                            value="{{ $tanaman->namaTanaman }}">
+                        <input type="hidden" name="tanaman[{{ $loop->index }}][jumlah]"
+                            value="{{ $tanaman->jumlah }}">
+                        <input type="hidden" name="tanaman[{{ $loop->index }}][harga_satuan]"
+                            value="{{ $tanaman->harga_satuan }}">
+                        <input type="hidden" name="tanaman[{{ $loop->index }}][subtotal]"
+                            value="{{ $tanaman->harga_satuan * $tanaman->jumlah }}">
                     @endforeach
 
                     <button type="submit" class="btn" onclick="showPopup()">BAYAR SEKARANG</button>
                 </form>
-
 
                 <!-- Popup -->
                 <div class="popup-overlay" id="popupOverlay"></div>
@@ -490,30 +493,27 @@
             </div>
         </div>
     </div>
-
-
     <footer>
         <div class="footer-links">
             <div>
-                <h4>COMPANY INFO</h4>
-                <a href="#">About Us</a>
-                <a href="#">Latest Posts</a>
-                <a href="#">Contact Us</a>
+                <h4>INFORMASI PERUSAHAAN</h4>
+                <a href="tentangKami">Tentang Kami</a>
+                <a href="home">Dashboard</a>
+                <a href="kontak">Hubungi Kami</a>
             </div>
             <div>
-                <h4>HELP LINKS</h4>
-                <a href="#">Tracking</a>
-                <a href="#">Order Status</a>
-                <a href="#">Delivery</a>
-                <a href="#">Shipping Info</a>
-                <a href="#">FAQ</a>
+                <h4>LINK BANTUAN</h4>
+                <a href="pesanan">Pelacakan</a>
+                <a href="pesanan">Status Pesanan</a>
+                <a href="pesanan">Pengiriman</a>
+                <a href="pesanan">Info Pengiriman</a>
             </div>
             <div>
-                <h4>USEFUL LINKS</h4>
-                <a href="#">Special Offers</a>
-                <a href="#">Gift Cards</a>
-                <a href="#">Advertising</a>
-                <a href="#">Terms of Use</a>
+                <h4>MEDIA SOSIAL</h4>
+                <a href="https://www.facebook.com" target="_blank">Facebook</a>
+                <a href="https://www.instagram.com" target="_blank">Instagram</a>
+                <a href="https://www.twitter.com" target="_blank">Twitter</a>
+                <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
             </div>
         </div>
         <p>
