@@ -9,6 +9,8 @@ use App\Models\karyawanModel;
 use App\Models\pelangganModel;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Password;
+
 // use Illuminate\Support\Facades\Mail;
 // use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +31,104 @@ class AuthController extends Controller
     {
         return view('login.login');
     }
+
+    public function loginProcess(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required|min:6',
+        ]);
+
+        $username = $request->input('username');
+        $password = $request->input('password');
+
+        // Login Pelanggan
+        $pelanggan = pelangganModel::where('usernameCust', $username)->first();
+        if ($pelanggan && Hash::check($password, $pelanggan->passwordCust)) {
+            Auth::guard('pelanggan')->login($pelanggan);
+            session()->flash('login_message', 'Selamat datang di Tanam.in!');
+            return redirect()->route('home');
+        }
+
+        // Login Karyawan
+        $karyawan = karyawanModel::where('usernameKywn', $username)->first();
+        if ($karyawan && $karyawan->passwordKywn === $password) {
+            Auth::guard('karyawan')->login($karyawan);
+            session()->flash('login_message', 'Selamat datang di Tanam.in!');
+            return redirect()->route('homeKywn');
+        }
+
+        // Jika tidak ditemukan
+        session()->flash('error_message', 'Username atau password salah.');
+        return redirect()->route('login.login');
+    }
+
+    public function register()
+    {
+        return view('login.register');
+    }
+
+    public function registerProcess(Request $request)
+    {
+        // Validasi input
+        $cradential = $request->validate([
+            'namaCust' => 'required',
+            'usernameCust' => 'required|unique:pelanggan,usernameCust',
+            'emailCust' => 'required|email|unique:pelanggan,emailCust',
+            'alamatCust' => 'required',
+            'passwordCust' => 'required|min:6|regex:/[A-Z]/|regex:/[a-z]/|regex:/[0-9]/|regex:/[!@#$%^&*._]/',
+            'passwordCust_confirmation' => 'required|min:6|regex:/[A-Z]/|regex:/[a-z]/|regex:/[0-9]/|regex:/[!@#$%^&*._]/',
+        ], [
+            'passwordCust.required' => 'Password wajib diisi.',
+            'passwordCust.min' => 'Password harus memiliki minimal 6 karakter.',
+            'passwordCust.regex' => 'Password harus mengandung setidaknya 1 huruf besar, 1 huruf kecil, 1 angka, dan 1 simbol khusus.',
+        ]);
+
+        if (pelangganModel::where('emailCust', $request->emailCust)->exists() || pelangganModel::where('usernameCust', $request->usernameCust)->exists()) {
+            // return response()->json(["error" => "Email or telepon already exists"], 400);
+            return redirect()->route('register')->with('error', 'Email atau Usernam sudah terpakai!');
+        } else if ($request->passwordCust == $request->passwordCust_confirmation) {
+            // Proses pendaftaran
+            $pelanggan = new pelangganModel();
+            $pelanggan->namaCust = $request->input('namaCust');
+            $pelanggan->usernameCust = $request->input('usernameCust');
+            $pelanggan->emailCust = $request->input('emailCust');
+            $pelanggan->passwordCust = Hash::make($request->input('passwordCust'));
+            $pelanggan->alamatCust = $request->input('alamatCust');
+
+            $pelanggan->save();
+
+            Auth::guard('pelanggan')->login($pelanggan);
+            // session()->flash('msg', 'Registrasi berhasil. Silakan login.');
+            // return redirect()->route('login.login');
+            return redirect()->route('login.login')->with('msg', 'Registrasi berhasil! Anda dapat login.');
+        } else {
+            return redirect()->back()->withErrors($cradential)->withInput();
+        }
+    }
+
+    public function logout()
+    {
+        if (Auth::guard('pelanggan')->check()) {
+            Auth::guard('pelanggan')->logout();
+        } elseif (Auth::guard('karyawan')->check()) {
+            Auth::guard('karyawan')->logout();
+        }
+
+        session()->flush();
+        session()->flash('logout_message', 'Anda telah berhasil logout!');
+        return redirect()->route('login.login');
+    }
+}
+
+
+
+
+
+
+
+
+
 
     // ini sessionnnn
     // public function showProfile()
@@ -141,81 +241,6 @@ class AuthController extends Controller
 
 
 
-    public function loginProcess(Request $request)
-    {
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required|min:6',
-        ]);
-
-        $username = $request->input('username');
-        $password = $request->input('password');
-
-        // Login Pelanggan
-        $pelanggan = pelangganModel::where('usernameCust', $username)->first();
-        if ($pelanggan && Hash::check($password, $pelanggan->passwordCust)) {
-            Auth::guard('pelanggan')->login($pelanggan);
-            session()->flash('login_message', 'Selamat datang di Tanam.in!');
-            return redirect()->route('home');
-        }
-
-        // Login Karyawan
-        $karyawan = karyawanModel::where('usernameKywn', $username)->first();
-        if ($karyawan && $karyawan->passwordKywn === $password) {
-            Auth::guard('karyawan')->login($karyawan);
-            session()->flash('login_message', 'Selamat datang di Tanam.in!');
-            return redirect()->route('homeKywn');
-        }
-
-        // Jika tidak ditemukan
-        session()->flash('error_message', 'Username atau password salah.');
-        return redirect()->route('login.login');
-    }
-
-    public function register()
-    {
-        return view('login.register');
-    }
-
-    public function registerProcess(Request $request)
-    {
-        // Validasi input
-        $cradential = $request->validate([
-            'namaCust' => 'required',
-            'usernameCust' => 'required|unique:pelanggan,usernameCust',
-            'emailCust' => 'required|email|unique:pelanggan,emailCust',
-            'alamatCust' => 'required',
-            'passwordCust' => 'required|min:6|regex:/[A-Z]/|regex:/[a-z]/|regex:/[0-9]/|regex:/[!@#$%^&*._]/',
-            'passwordCust_confirmation' => 'required|min:6|regex:/[A-Z]/|regex:/[a-z]/|regex:/[0-9]/|regex:/[!@#$%^&*._]/',
-        ], [
-            'passwordCust.required' => 'Password wajib diisi.',
-            'passwordCust.min' => 'Password harus memiliki minimal 6 karakter.',
-            'passwordCust.regex' => 'Password harus mengandung setidaknya 1 huruf besar, 1 huruf kecil, 1 angka, dan 1 simbol khusus.',
-        ]);
-
-        if (pelangganModel::where('emailCust', $request->emailCust)->exists() || pelangganModel::where('usernameCust', $request->usernameCust)->exists()) {
-            // return response()->json(["error" => "Email or telepon already exists"], 400);
-            return redirect()->route('register')->with('error', 'Email atau Usernam sudah terpakai!');
-        } else if ($request->passwordCust == $request->passwordCust_confirmation) {
-            // Proses pendaftaran
-            $pelanggan = new pelangganModel();
-            $pelanggan->namaCust = $request->input('namaCust');
-            $pelanggan->usernameCust = $request->input('usernameCust');
-            $pelanggan->emailCust = $request->input('emailCust');
-            $pelanggan->passwordCust = Hash::make($request->input('passwordCust'));
-            $pelanggan->alamatCust = $request->input('alamatCust');
-
-            $pelanggan->save();
-
-            Auth::guard('pelanggan')->login($pelanggan);
-            // session()->flash('msg', 'Registrasi berhasil. Silakan login.');
-            // return redirect()->route('login.login');
-            return redirect()->route('login.login')->with('msg', 'Registrasi berhasil! Anda dapat login.');
-        } else {
-            return redirect()->back()->withErrors($cradential)->withInput();
-        }
-    }
-
     // public function registerProcess(Request $request)
     // {
     //     // Validasi input
@@ -243,10 +268,6 @@ class AuthController extends Controller
     //     return redirect()->route('home')->with('msg', 'Registrasi berhasil! Anda telah login.');
 
     // }
-    public function forgotPassword()
-    {
-        return view('lupa_password'); // Nama view menjadi 'lupa_password'
-    }
 
 
     // ini session
@@ -257,18 +278,4 @@ class AuthController extends Controller
     //     session()->flash('logout_message', 'Anda telah berhasil logout.');
     //     return redirect()->route('login');
     // }
-
-
-    public function logout()
-    {
-        if (Auth::guard('pelanggan')->check()) {
-            Auth::guard('pelanggan')->logout();
-        } elseif (Auth::guard('karyawan')->check()) {
-            Auth::guard('karyawan')->logout();
-        }
-
-        session()->flush();
-        session()->flash('logout_message', 'Anda telah berhasil logout!');
-        return redirect()->route('login.login');
-    }
 }

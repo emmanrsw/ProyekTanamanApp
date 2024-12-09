@@ -26,10 +26,22 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'registerProcess']);
 Route::get('/login', [AuthController::class, 'login'])->name('login.login');
 Route::post('/login', [AuthController::class, 'loginProcess'])->name('loginProcess');
-Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('forgot-password');
-Route::post('/forgot-password', [AuthController::class, 'submitForgotPasswordForm'])->name('forgot-password.submit');
+// Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('forgot-password');
+// Route::post('/forgot-password', [AuthController::class, 'submitForgotPasswordForm'])->name('forgot-password.submit');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 // Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
+
+
+
+Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('forgot.password.send');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
+
+
+
+
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\karyawanController;
 // -----------------------------------------------------------------------------------------------------------
