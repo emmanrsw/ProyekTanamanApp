@@ -21,4 +21,9 @@ class tanamanModel extends Model
         'hargaTanaman',
         'gambar',
     ];
+
+    public function cartItems()
+    {
+        return $this->hasMany(cartModel::class, 'idTanaman');
+    }
 }

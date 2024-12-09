@@ -373,7 +373,7 @@
                 <tbody>
                     @foreach ($tanamanDipilih as $tanaman)
                     <tr>
-                        <td>{{ $tanaman->namaTanaman }}</td>
+                        <td>{{ $tanaman->tanaman->namaTanaman }}</td> <!-- Mengambil nama tanaman dari relasi -->
                         <td>{{ number_format($tanaman->harga_satuan, 0, ',', '.') }}</td> <!-- Format harga satuan -->
                         <td>{{ $tanaman->jumlah }}</td>
                         <td>{{ number_format($tanaman->harga_satuan * $tanaman->jumlah, 0, ',', '.') }}</td>
@@ -411,7 +411,7 @@
                     <!-- Data transaksi -->
                     <input type="hidden" name="subtotal" value="{{ $subtotal }}">
                     <input type="hidden" name="pajak" value="{{ $tax }}">
-                    <input type="hidden" name="total_harga" value="{{ $total }}">
+                    <input type="hidden" name="harga_total" value="{{ $total }}">
                     <input type="hidden" name="alamat_kirim" value="{{ Auth::user()->alamatCust }}">
                     <input type="hidden" name="metode_bayar" value="Direct Bank Transfer">
 
@@ -428,7 +428,7 @@
                         value="{{ $tanaman->harga_satuan * $tanaman->jumlah }}">
                     @endforeach
 
-                    <button type="button" class="btn" id="btnBayar">BAYAR SEKARANG</button>
+                    <button type="submit" class="btn" id="btnBayar">BAYAR SEKARANG</button>
                 </form>
 
                 <!-- Tambahkan SweetAlert -->

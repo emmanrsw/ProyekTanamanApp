@@ -18,11 +18,8 @@ class cartModel extends Authenticatable
     protected $fillable = [
         'idCust',
         'idTanaman',
-        'gambar',
-        'namaTanaman',
         'jumlah',
         'harga_satuan',
-        'total_harga',
     ];
 
     // Relasi ke model Pelanggan

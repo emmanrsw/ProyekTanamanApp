@@ -10,6 +10,7 @@ use App\Models\transaksiModel;
 use App\Models\detailTModel;
 use App\Models\tanamanModel;
 use Illuminate\Support\Facades\Log; // Tambahkan ini
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -84,11 +85,13 @@ class TransaksiController extends Controller
 
         // Ambil ID pelanggan yang sedang login
         $idCust = Auth::id();
+
+        // ----------------------
         $user = Auth::user(); // Ambil data pengguna yang sedang login
 
         // Ambil alamat pengguna dari profil
         $alamatPelanggan = $user->alamatCust;
-
+        // ----------------------
         // Ambil data tanaman yang dipilih dari keranjang
         $tanamanDipilih = cartModel::where('idCust', $idCust)
             ->whereIn('idTanaman', $selectedItems)
@@ -108,19 +111,19 @@ class TransaksiController extends Controller
         }
 
         // Hitung subtotal dan total
-        $subtotal = $tanamanDipilih->sum(function ($item) {
+        $sub_total = $tanamanDipilih->sum(function ($item) {
             return $item->harga_satuan * $item->jumlah;
         });
 
         // Hitung pajak 5%
-        $tax = $subtotal * 0.05;
-        $total = $subtotal + $tax;
+        $tax = $sub_total * 0.05;
+        $total = $sub_total + $tax;
 
 
         // Kirim data ke view transaksi
         return view('transaksi', [
             'tanamanDipilih' => $tanamanDipilih,
-            'subtotal' => $subtotal,
+            'subtotal' => $sub_total,
             'tax' => $tax,
             'total' => $total,
             'alamatPelanggan' => $alamatPelanggan,
@@ -200,21 +203,34 @@ class TransaksiController extends Controller
 
     public function simpanTransaksi(Request $request)
     {
+        Log::info('Metode: ' . $request->method());
+
+
         // Validasi data transaksi
+        // $request->validate([
+        //     'harga_total' => 'required|numeric',
+        //     'pajak' => 'required|numeric',
+        //     'alamat_kirim' => 'required|string',
+        //     'metode_bayar' => 'required|string',
+        // ]);
+
         $request->validate([
-            'subtotal' => 'required|numeric',
+            'harga_total' => 'required|numeric',
             'pajak' => 'required|numeric',
-            'total_harga' => 'required|numeric',
             'alamat_kirim' => 'required|string',
             'metode_bayar' => 'required|string',
+            'tanaman' => 'required|array',
+            'tanaman.*.idTanaman' => 'required|integer',
+            'tanaman.*.harga_satuan' => 'required|numeric',
+            'tanaman.*.jumlah' => 'required|integer|min:1',
         ]);
+
 
         // Simpan data transaksi ke tabel Transaksi
         $transaksi = new transaksiModel();
         $transaksi->idCust = Auth::id(); // ID pelanggan yang sedang login
-        $transaksi->subtotal = $request->subtotal;
+        $transaksi->harga_total = $request->harga_total;
         $transaksi->pajak = $request->pajak;
-        $transaksi->total_harga = $request->total_harga;
         $transaksi->alamat_kirim = $request->alamat_kirim;
         // Menggunakan timezone Asia/Jakarta
         $transaksi->tglTJual = Carbon::now('Asia/Jakarta')->toDateString(); // Tanggal transaksi
@@ -229,10 +245,8 @@ class TransaksiController extends Controller
             $detail = new detailTModel();
             $detail->idTJual = $transaksi->idTJual; // ID transaksi yang baru dibuat
             $detail->idTanaman = $item['idTanaman'];
-            $detail->jumlah = $item['jumlah'];
             $detail->harga_satuan = $item['harga_satuan'];
-            $detail->total_harga = $item['subtotal'];
-            $detail->nama_tanaman = $item['namaTanaman']; // Nama tanaman
+            $detail->jumlah = $item['jumlah'];
             $detail->save();
 
             // Mengurangi stok tanaman
@@ -272,6 +286,11 @@ class TransaksiController extends Controller
                 Log::error("Item keranjang dengan ID Tanaman {$item['idTanaman']} dan ID Cust " . Auth::id() . " tidak ditemukan.");
             }
         }
+
+        // Hapus tanaman yang sudah dipilih dari keranjang setelah transaksi selesai
+        cartModel::where('idCust', Auth::id())
+            ->whereIn('idTanaman', collect($request->tanaman)->pluck('idTanaman'))
+            ->delete();
 
         // Redirect ke halaman sukses setelah transaksi berhasil
         return redirect()->route('pesanan')->with('success', 'Transaksi berhasil disimpan!');
@@ -341,6 +360,10 @@ class TransaksiController extends Controller
         // Redirect kembali ke halaman daftar transaksi dengan pesan sukses
         return redirect()->back()->with('success', 'Status transaksi berhasil diperbarui.');
     }
+
+
+
+    // --------------------------------------------------------
     public function showPesanan()
     {
         $userId = Auth::guard('pelanggan')->id(); // Dapatkan ID pengguna yang sedang login

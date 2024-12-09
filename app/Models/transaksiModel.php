@@ -16,9 +16,8 @@ class transaksiModel extends Model
 
     protected $fillable = [
         'idCust',
-        'subtotal',
+        'harga_total',
         'pajak',
-        'total_harga',
         'alamat_kirim',
         'tglTJual',
         'waktuTJual',

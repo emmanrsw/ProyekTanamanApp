@@ -10,16 +10,13 @@ class detailTModel extends Model
     use HasFactory;
 
     protected $table = 'detailtransaksijual';
-    protected $primaryKey = 'idDetailTransaksi';
     public $timestamps = false;
 
     protected $fillable = [
         'idTJual',
         'idTanaman',
-        'nama_tanaman',
         'harga_satuan',
         'jumlah',
-        'total_harga'
     ];
 
     // ini awal aslinya 
@@ -34,5 +31,11 @@ class detailTModel extends Model
         // Mengubah foreign key menjadi 'idTJual'
         // Mendefinisikan relasi kebalikannya, satu DetailTransaksiJual milik satu TransaksiJual
         return $this->belongsTo(transaksiModel::class, 'idTJual', 'idTJual');
+    }
+
+    // Pada model DetailTransaksi
+    public function tanaman()
+    {
+        return $this->belongsTo(tanamanModel::class, 'idTanaman');
     }
 }

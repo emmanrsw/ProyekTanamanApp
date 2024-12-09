@@ -52,74 +52,74 @@
             /* Rata tengah horizontal */
         }
 
-    .nav-link.active {
-    background-color: #B1D690;
-    color: black;
-    }
+        .nav-link.active {
+            background-color: #B1D690;
+            color: black;
+        }
 
-    .nav-link:hover {
-    background-color: #f5f7f0;
-    }
+        .nav-link:hover {
+            background-color: #f5f7f0;
+        }
 
-    .nav-link {
-    color: white;
-    font-size: 20px;
-    font-weight: 5px;
-    text-align: center;
-    }
+        .nav-link {
+            color: white;
+            font-size: 20px;
+            font-weight: 5px;
+            text-align: center;
+        }
 
-    table {
-    width: 100%;
-    border-collapse: collapse;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    th,
-    td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-    }
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
 
-    th {
-    background-color: #f2f2f2;
-    }
+        th {
+            background-color: #f2f2f2;
+        }
 
-    td form {
-    display: inline-block;
-    }
+        td form {
+            display: inline-block;
+        }
 
-    select {
-    padding: 5px;
-    }
+        select {
+            padding: 5px;
+        }
 
-    .action-btn {
-    margin-bottom: 20px;
-    }
+        .action-btn {
+            margin-bottom: 20px;
+        }
 
-    .order-status {
-    font-weight: bold;
-    text-transform: capitalize;
-    }
+        .order-status {
+            font-weight: bold;
+            text-transform: capitalize;
+        }
 
-    .order-status.completed {
-    color: green;
-    }
+        .order-status.completed {
+            color: green;
+        }
 
-    .order-status.pending {
-    color: orange;
-    }
+        .order-status.pending {
+            color: orange;
+        }
 
-    .order-status.cancelled {
-    color: red;
-    }
+        .order-status.cancelled {
+            color: red;
+        }
 
-    .table thead th,
-    .table tbody td {
-    text-align: center;
-    /* Teks di tengah */
-    vertical-align: middle;
-    /* Vertikal di tengah */
-    }
+        .table thead th,
+        .table tbody td {
+            text-align: center;
+            /* Teks di tengah */
+            vertical-align: middle;
+            /* Vertikal di tengah */
+        }
     </style>
 </head>
 
@@ -164,46 +164,47 @@
             </thead>
             <tbody>
                 @foreach($orders as $order)
-                    <tr>
-                        <td>{{ $order->idTJual }}</td>
-                        <td>{{ $order->pelanggan->namaCust }}</td>
-                        <td>{{ $order->tglTJual }}</td>
-                        <td>{{ $order->waktuTJual }}</td>
-                        <td>{{ $order->metodeByr }}</td>
-                        <td>{{ $order->pelanggan->alamatCust }}</td>
-                        <td>
-                            <ul>
-                                @foreach($order->details as $detail)
-                                    <li>
-                                        {{ $detail->nama_tanaman }} - {{ $detail->jumlah }} x
-                                        {{ number_format($detail->harga_satuan, 0, ',', '.') }} IDR
-                                        (Total: {{ number_format($detail->total_harga, 0, ',', '.') }} IDR)
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </td>
-                        <td>{{ number_format($order->total_harga, 0, ',', '.') }} IDR</td>
-                        <td>
-                            <span
-                                class="order-status @if($order->statusTJual == 'Dikirim') pending @elseif($order->statusTJual == '') completed @else cancelled @endif">
-                                {{ $order->statusTJual }}
-                            </span>
-                        </td>
-                        <td>
-                            <!-- Form untuk mengubah status transaksi -->
-                            <form action="{{ route('updateStatus', $order->idTJual) }}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                <select name="statusTJual" onchange="this.form.submit()">
-                                    <option value="Sedang Dikemas" {{ $order->statusTJual == 'Sedang Dikemas' ? 'selected' : '' }}>Sedang Dikemas</option>
-                                    <option value="Dikirim" {{ $order->statusTJual == 'Dikirim' ? 'selected' : '' }}>Dikirim
-                                    </option>
-                                    <option value="Selesai" {{ $order->statusTJual == 'Selesai' ? 'selected' : '' }}>Selesai
-                                    </option>
-                                </select>
-                            </form>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>{{ $order->idTJual }}</td>
+                    <td>{{ $order->pelanggan->namaCust }}</td>
+                    <td>{{ $order->tglTJual }}</td>
+                    <td>{{ $order->waktuTJual }}</td>
+                    <td>{{ $order->metodeByr }}</td>
+                    <td>{{ $order->pelanggan->alamatCust }}</td>
+                    <td>
+                        <ul>
+                            @foreach($order->details as $detail)
+                            <li>
+                                {{ $detail->tanaman->namaTanaman }} - {{ $detail->jumlah }} x
+                                {{ number_format($detail->harga_satuan, 0, ',', '.') }} IDR
+                                (Total: {{ number_format($detail->harga_satuan * $detail->jumlah, 0, ',', '.') }} IDR)
+                                z
+                            </li>
+                            @endforeach
+                        </ul>
+                    </td>
+                    <td>{{ number_format($order->harga_total, 0, ',', '.') }} IDR</td>
+                    <td>
+                        <span
+                            class="order-status @if($order->statusTJual == 'Dikirim') pending @elseif($order->statusTJual == '') completed @else cancelled @endif">
+                            {{ $order->statusTJual }}
+                        </span>
+                    </td>
+                    <td>
+                        <!-- Form untuk mengubah status transaksi -->
+                        <form action="{{ route('updateStatus', $order->idTJual) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <select name="statusTJual" onchange="this.form.submit()">
+                                <option value="Sedang Dikemas" {{ $order->statusTJual == 'Sedang Dikemas' ? 'selected' : '' }}>Sedang Dikemas</option>
+                                <option value="Dikirim" {{ $order->statusTJual == 'Dikirim' ? 'selected' : '' }}>Dikirim
+                                </option>
+                                <option value="Selesai" {{ $order->statusTJual == 'Selesai' ? 'selected' : '' }}>Selesai
+                                </option>
+                            </select>
+                        </form>
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
@@ -214,4 +215,5 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

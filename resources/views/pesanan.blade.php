@@ -268,7 +268,7 @@
                 <h5>{{ $detail->nama_tanaman }}</h5>
                 <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
                 <p>Jumlah: {{ $detail->jumlah }}</p>
-                <p>Total Harga: Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</p>
+                <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
             </div>
         </div>
         @endforeach
