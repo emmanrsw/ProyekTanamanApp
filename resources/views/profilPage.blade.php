@@ -13,10 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
+            font-family: 'Poppins';
+            /* background-color: #f5f5f5; */
         }
 
         .container {
@@ -25,7 +23,6 @@
             /* margin: 20px auto; */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            font-family: 'Rubik';
         }
 
         .sidebar {
@@ -43,8 +40,8 @@
         }
 
         .sidebar img {
-            width: 70px;
-            height: 70px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
         }
 
@@ -131,7 +128,7 @@
             /* Smooth background color transition */
             text-align: center;
             /* Centered text */
-            width: 15%;
+            width: 170px;
             /* Full width */
             margin-top: 5px;
         }
@@ -144,7 +141,7 @@
         /* Navbar */
         .navbar {
             background-color: white;
-            padding: 20px 80px;
+            padding: 10px 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 0;
             /* Ensure there is no margin at the bottom */
@@ -160,47 +157,6 @@
         .navbar-brand .highlight {
             color: #4B553D;
         }
-
-        .navbar-nav .nav-link {
-            color: #333;
-            margin-right: 20px;
-        }
-
-        /* Navbar Icons */
-        .navbar-icons {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-        }
-
-        .navbar-icons a {
-            margin-left: 20px;
-            color: #333;
-            font-size: 1.2rem;
-        }
-
-        /* Navbar */
-        .navbar {
-            background-color: white;
-            padding: 20px 80px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 0;
-            /* Ensure there is no margin at the bottom */
-        }
-
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #000;
-        }
-
-        /* untuk tulisan .in */
-        .navbar-brand .highlight {
-            color: #4B553D;
-            /* margin-left: 0.1rem; */
-            /* Atur jarak sesuai kebutuhan */
-        }
-
 
         .navbar-nav .nav-link {
             color: #333;
@@ -258,14 +214,24 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="profile-info">
-                <img src="{{ asset('storage/app/public/gambarCust/' . $customer->gambarCust) }}" alt="Profile Picture">
-                <h2>{{ Auth::guard('pelanggan')->user()->usernameCust }}</h2>
-                <i class="fas fa-edit edit-profile" title="Ubah Profil"></i>
+                <form action="{{ route('updateProfilePicture') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <label for="profileImage" class="d-block">
+                        @if($customer->gambarCust) <!-- Jika sudah ada gambar profil -->
+                        <img src="{{ asset('storage/' . $customer->gambarCust) }}"
+                            alt="Profile Picture" class="rounded-circle" width="150" id="profileImagePreview">
+                        @else <!-- Jika belum ada gambar profil, tampilkan ikon profil default -->
+                        <i class="fas fa-user-circle" style="font-size: 100px; color: #ddd;"></i>
+                        @endif
+                        <input type="file" id="profileImage" name="profileImage" accept="image/*" style="display: none;" onchange="this.form.submit();">
+                    </label>
+                </form>
             </div>
             <a class="active" href="#"><i class="fas fa-user"></i> Akun Saya</a>
             <a href="#"><i class="fas fa-box"></i> Pesanan Saya</a>
-            <a href="{{ route('logout') }}"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            <a href="{{ route('logout') }}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
         </div>
+
 
         <!-- Konten -->
         <div class="content">
@@ -273,7 +239,7 @@
             <p>Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun</p>
 
             <!-- Form Profil Page -->
-            <form action="{{ route('pelanggan.edit') }}" method="POST">
+            <form action="{{ route('pelanggan.edit') }}" method="GET">
                 @csrf <!-- Token CSRF untuk keamanan -->
                 <div class="form-group">
                     <label>Username</label>
@@ -290,7 +256,7 @@
                 </div>
                 <div class="form-group">
                     <label>Nomor Telepon</label>
-                    <input type="text" id="notelpCust" name="notelpCust" value="{{$customer->notelpCust}}" readonly>
+                    <input type="text" id="notlpCust" name="notlpCust" value="{{$customer->notlpCust}}" readonly>
                 </div>
                 <div class="form-group">
                     <label>Alamat</label>
@@ -298,8 +264,24 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Edit</button>
                 <a href="{{ route('home') }}" class="btn btn-primary">Kembali</a>
+                <!-- Tombol Hapus Gambar Profil (Hanya jika ada gambar yang diunggah) -->
+                @if ($customer->gambarCust)
+                <button type="submit" name="delete_image" value="1" class="btn btn-primary">Hapus Gambar</button>
+                @endif
             </form>
         </div>
+
+        <script>
+            // Update preview image after file selection
+            document.getElementById('profileImage').addEventListener('change', function(event) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    document.getElementById('profileImagePreview').src = reader.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            });
+        </script>
+
 </body>
 
 </html>

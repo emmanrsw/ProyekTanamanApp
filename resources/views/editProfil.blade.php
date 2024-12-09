@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #f5f5f5;
             margin: 0;
             padding: 0;
@@ -317,7 +317,7 @@
                 </div>
                 <div class="form-group">
                     <label>Nomor Telepon</label>
-                    <input type="text" id="notelpCust" name="notelpCust" value="{{$customer->notelpCust}}" required>
+                    <input type="text" id="notlpCust" name="notlpCust" value="{{$customer->notlpCust}}" required>
                 </div>
                 <div class="form-group">
                     <label>Alamat</label>

@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
@@ -318,9 +319,9 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="home">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Tanaman</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Tentang Kami</a></li>
+                <li class="nav-item"><a class="nav-link" href="tanaman">Tanaman</a></li>
+                <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
+                <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
                 <li class="nav-item"><a class="nav-link" href="pesanan">Pesanan Saya</a></li>
             </ul>
         </div>
@@ -360,7 +361,6 @@
     @endif
     <div class="main-content">
         <div class="product-details">
-            <h2>Product</h2>
             <table class="table">
                 <thead>
                     <tr>
@@ -376,7 +376,8 @@
                         <td>{{ $tanaman->namaTanaman }}</td>
                         <td>{{ number_format($tanaman->harga_satuan, 0, ',', '.') }}</td> <!-- Format harga satuan -->
                         <td>{{ $tanaman->jumlah }}</td>
-                        <td>{{ number_format($tanaman->harga_satuan * $tanaman->jumlah, 0, ',', '.') }}</td> <!-- Total harga -->
+                        <td>{{ number_format($tanaman->harga_satuan * $tanaman->jumlah, 0, ',', '.') }}</td>
+                        <!-- Total harga -->
                     </tr>
                     @endforeach
                 </tbody>
@@ -405,7 +406,7 @@
                     referensi pembayaran. Pesanan Anda tidak akan dikirimkan sampai dana kami terima di rekening.
                 </p>
 
-                <form action="{{ route('transaksi.simpan') }}" method="POST">
+                <form action="{{ route('transaksi.simpan') }}" method="POST" id="formTransaksi">
                     @csrf
                     <!-- Data transaksi -->
                     <input type="hidden" name="subtotal" value="{{ $subtotal }}">
@@ -416,39 +417,56 @@
 
                     <!-- Data detail transaksi -->
                     @foreach ($tanamanDipilih as $tanaman)
-                    <input type="hidden" name="tanaman[{{ $loop->index }}][idTanaman]" value="{{ $tanaman->idTanaman }}">
-                    <input type="hidden" name="tanaman[{{ $loop->index }}][namaTanaman]" value="{{ $tanaman->namaTanaman }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][idTanaman]"
+                        value="{{ $tanaman->idTanaman }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][namaTanaman]"
+                        value="{{ $tanaman->namaTanaman }}">
                     <input type="hidden" name="tanaman[{{ $loop->index }}][jumlah]" value="{{ $tanaman->jumlah }}">
-                    <input type="hidden" name="tanaman[{{ $loop->index }}][harga_satuan]" value="{{ $tanaman->harga_satuan }}">
-                    <input type="hidden" name="tanaman[{{ $loop->index }}][subtotal]" value="{{ $tanaman->harga_satuan * $tanaman->jumlah }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][harga_satuan]"
+                        value="{{ $tanaman->harga_satuan }}">
+                    <input type="hidden" name="tanaman[{{ $loop->index }}][subtotal]"
+                        value="{{ $tanaman->harga_satuan * $tanaman->jumlah }}">
                     @endforeach
 
-                    <button type="submit" class="btn" onclick="showPopup()">BAYAR SEKARANG</button>
+                    <button type="button" class="btn" id="btnBayar">BAYAR SEKARANG</button>
                 </form>
 
+                <!-- Tambahkan SweetAlert -->
+                <script>
+                    document.getElementById('btnBayar').addEventListener('click', function() {
+                        Swal.fire({
+                            title: "Transaksi Berhasil!",
+                            text: "Terima kasih atas pembayaran Anda!",
+                            icon: "success",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Lihat Pesanan",
+                            cancelButtonText: "Tutup"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Jika pengguna memilih "Lihat Pesanan"
+                                window.location.href = "{{ route('pesanan') }}";
+                            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                // Jika pengguna memilih "Tutup"
+                                window.location.href = "{{ route('home') }}";
+                            }
+                        });
+                    });
+                </script>
 
-                <!-- Popup -->
-                <div class="popup-overlay" id="popupOverlay"></div>
-                <div class="popup-content" id="popupContent">
-                    <h2>Transaksi Berhasil!</h2>
-                    <p>Terima kasih atas pembayaran Anda!</p>
-                    <div class="action-buttons">
-                        <a href="{{ route('home') }}" class="btn btn-primary">Tutup</a>
-                        <a href="{{ route('pesanan') }}" class="btn btn-primary">Lihat Pesanan</a>
-                    </div>
-                </div>
+
             </div>
         </div>
         <div class="summary">
             <div class="shipping-info">
                 <h3>Shipping Information</h3>
                 <p>
-                    Mirpur-10, Road 14A<br />
-                    Dhaka, Bangladesh<br />
-                    01758187028
+                    {{ $alamatPelanggan }} <!-- Menampilkan alamat pengiriman -->
                 </p>
-                <a href="#">Change Address <i class="fas fa-pencil-alt"></i></a>
+                <a href="{{ route('pelanggan.profile') }}">Change Address <i class="fas fa-pencil-alt"></i></a>
             </div>
+
             <div class="payment-card">
                 <h3>Select Your Payment Card</h3>
                 <label>

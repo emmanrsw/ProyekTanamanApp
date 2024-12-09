@@ -10,12 +10,12 @@
     <style>
         body {
             display: flex;
-            font-family: Poppins;
+            font-family: 'Poppins', sans-serif;
         }
 
         .sidebar {
             width: 150px;
-            height: 150vh;
+            height: 200vh;
             background: #4B553D;
             padding-top: 20px;
         }
@@ -140,7 +140,7 @@
         </ul>
     </div>
 
-    <div class="main-content" style="font-family: Poppins;">
+    <div class="main-content" style="font-family: 'Poppins', sans-serif;">
         <div class="d-flex justify-content-center mb-4">
             <h1 class="mb-0" style="font-weight: bold; font-size: 35px; color: #243a56;">Daftar Transaksi</h1>
         </div>
@@ -185,7 +185,7 @@
                         <td>{{ number_format($order->total_harga, 0, ',', '.') }} IDR</td>
                         <td>
                             <span
-                                class="order-status @if($order->statusTJual == 'Sedang Dikemas') pending @elseif($order->statusTJual == 'Dikirim') completed @else cancelled @endif">
+                                class="order-status @if($order->statusTJual == 'Dikirim') pending @elseif($order->statusTJual == '') completed @else cancelled @endif">
                                 {{ $order->statusTJual }}
                             </span>
                         </td>
@@ -214,5 +214,4 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-
 </html>
