@@ -428,11 +428,19 @@
                         <td id="total-{{ $item->idTanaman }}">{{ number_format($item->harga_total) }}
                         </td>
                         <td>
-                            <form action="{{ route('cart.remove', $item->idTanaman) }}" method="POST">
+                            <form action="{{ route('cart.remove', $item->idTanaman) }}" method="POST" onsubmit="return confirmDelete()">
+                                <!-- bagian cahyoooo benerin sini yaaa buat notif sebelum di hapus -->
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Hapus</button>
                             </form>
+
+                            <script>
+                                function confirmDelete() {
+                                    return confirm("Apakah Anda yakin ingin menghapus item ini dari keranjang?");
+                                }
+                            </script>
+                            <!-- bagian cahyoooo benerin sini yaaa buat notif sebelum di hapus -->
                         </td>
                     </tr>
                     @endforeach
