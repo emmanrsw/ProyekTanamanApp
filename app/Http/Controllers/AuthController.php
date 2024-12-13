@@ -9,8 +9,6 @@ use App\Models\karyawanModel;
 use App\Models\pelangganModel;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-// use Illuminate\Support\Facades\Mail;
-// use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -83,7 +81,6 @@ class AuthController extends Controller
         ]);
 
         if (pelangganModel::where('emailCust', $request->emailCust)->exists() || pelangganModel::where('usernameCust', $request->usernameCust)->exists()) {
-            // return response()->json(["error" => "Email or telepon already exists"], 400);
             return redirect()->route('register')->with('error', 'Email atau Usernam sudah terpakai!');
         } else if ($request->passwordCust == $request->passwordCust_confirmation) {
             // Proses pendaftaran
@@ -97,8 +94,7 @@ class AuthController extends Controller
             $pelanggan->save();
 
             Auth::guard('pelanggan')->login($pelanggan);
-            // session()->flash('msg', 'Registrasi berhasil. Silakan login.');
-            // return redirect()->route('login.login');
+
             return redirect()->route('login.login')->with('msg', 'Registrasi berhasil! Anda dapat login.');
         } else {
             return redirect()->back()->withErrors($cradential)->withInput();

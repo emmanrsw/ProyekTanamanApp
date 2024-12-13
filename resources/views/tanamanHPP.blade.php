@@ -409,22 +409,6 @@
             });
         }
 
-        // function displayRecentSearches() {
-        //     let recentSearches = JSON.parse(localStorage.getItem('recent_searches')) || [];
-
-        //     const recentSearchList = document.getElementById('recent-search-list');
-        //     recentSearchList.innerHTML = ''; // Clear the list before adding
-
-        //     recentSearches.forEach(query => {
-        //         const li = document.createElement('li');
-        //         li.innerHTML = `
-        //         <a href="#" class="recent-search-item" data-query="${query}">${query}</a>
-        //         <a href="#" class="delete-recent" data-query="${query}">Hapus</a>
-        //     `;
-        //         recentSearchList.appendChild(li);
-        //     });
-        // }
-
         // Event listener untuk menangani klik pada pencarian
         document.addEventListener('click', function(e) {
             if (e.target && e.target.classList.contains('recent-search-item')) {

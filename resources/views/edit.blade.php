@@ -54,18 +54,11 @@
     </div>
 
 
-
-    <!-- <form action="{{ route('updateTanaman', $tanaman->id) }}" method="POST"> -->
-
     <div class="main-content">
         <h1 class="mb-4">Edit Tanaman</h1>
-        <!-- <form method="POST" action="{{ route('updateTanaman', $tanaman->id) }}" enctype="multipart/form-data"> -->
         <form action="{{ route('update', ['id' => $tanaman->id]) }}" method="POST" enctype="multipart/form-data">
 
             @csrf
-            <!-- Gunakan POST untuk pembaruan -->
-            <!-- @method('POST')  -->
-            
             <div class="form-group">
                 <label for="namaTanaman">Nama Tanaman</label>
                 <input type="text" class="form-control" id="namaTanaman" name="namaTanaman" value="{{ old('namaTanaman', $tanaman->namaTanaman) }}" required>

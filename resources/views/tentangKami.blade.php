@@ -88,12 +88,6 @@
             background-color: #f0f0f0;
         }
 
-        /* .header {
-            background-image: url('/assets/Img/backgroundT.jpg');
-            background-size: cover;
-            background-position: center;
-            height: 300px;
-        } */
         .content {
             display: flex;
             justify-content: space-between;
@@ -135,13 +129,6 @@
             /* Menghilangkan spasi kecil di bawah gambar */
         }
 
-        /* .container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            padding: 0 20px;
-        } */
         .text {
             flex: 1;
             padding-left: 50px;
@@ -281,6 +268,7 @@
             background-color:#888;
             color
         }
+    
     </style>
 </head>
 

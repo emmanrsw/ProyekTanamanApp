@@ -22,7 +22,6 @@
         .container {
             display: flex;
             max-width: 1300px;
-            /* margin: 20px auto; */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             font-family: 'Rubik';
