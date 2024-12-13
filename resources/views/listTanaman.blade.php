@@ -131,12 +131,13 @@
     #myLinks {
         position: absolute;
         top: 60px;
-        right: 0;
-        background-color: #333;
+        right: 10px;
+        background-color:  #4B553D;
         border-radius: 5px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         z-index: 1000;
         font-size: 14px;
+        padding: 10px 10px;
     }
 
     #myLinks a {
@@ -144,11 +145,14 @@
         padding: 12px 16px;
         text-decoration: none;
         display: block;
+        margin-left: 0;
+        line-height: 1.5;
     }
 
     #myLinks a:hover {
         background-color: #ddd;
         color: black;
+        border-radius: 5px;
     }
 
     .img-fluid {
@@ -161,7 +165,6 @@
     /* display: block;
     /* Diperlukan untuk margin bekerja pada elemen inline seperti gambar */
     /* } */
-
     */ .carousel-inner img {
         width: 100%;
         /* Menyesuaikan lebar gambar dengan container */
@@ -190,7 +193,6 @@
         width: 75%;
     }
 
-
     .modal-header {
         color: #4B553D;
         padding: 10px 25px;
@@ -202,7 +204,8 @@
     <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand"
             href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span
-                class="highlight">.in</span></a>
+                class="highlight">.in</span>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -226,23 +229,29 @@
             <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
-                    <!-- Jika pengguna memiliki gambar profil -->
-                    <img src="{{ asset('storage/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
-                        alt="User Profile" class="rounded-circle" width="30" height="30">
+                        <!-- Jika pengguna memiliki gambar profil -->
+                        <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
+                            alt="User Profile" class="rounded-circle" width="30" height="30">
                     @else
-                    <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
-                    <i class="fa fa-user"></i>
+                        <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
+                        <i class="fa fa-user"></i>
                     @endif
                 </a>
                 <div id="myLinks" style="display: none;">
                     @if (Auth::guard('pelanggan')->check())
-                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
-                        {{ Auth::guard('pelanggan')->user()->usernameCust }}
-                    </a>
-                    <a href="#" style="font-size: 1rem;">Ubah Password</a>
-                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                        </a>
+                        <a href="#" style="font-size: 1rem;">Ubah Password
+
+                        </a>
+                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout
+
+                        </a>
                     @else
-                    <a href="{{ route('login.login') }}" class="nav-link">Login</a>
+                        <a href="{{ route('login.login') }}" class="nav-link">Login
+
+                        </a>
                     @endif
                 </div>
             </div>
@@ -298,15 +307,15 @@
             </div>
             <div class="product-grid">
                 @foreach ($tanaman as $tanaman)
-                <div class="product-card">
-                    <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
-                        alt="{{ $tanaman->namaTanaman }}">
-                    <h5>{{ $tanaman->namaTanaman }}</h5>
-                    <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
-                    <button class="btn btn-primary btn-add-to-cart"
-                        data-product='@json($tanaman)'>View Details</button>
-                    <meta name="csrf-token" content="{{ csrf_token() }}">
-                </div>
+                    <div class="product-card">
+                        <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
+                            alt="{{ $tanaman->namaTanaman }}">
+                        <h5>{{ $tanaman->namaTanaman }}</h5>
+                        <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
+                        <button class="btn btn-primary btn-add-to-cart"
+                            data-product='@json($tanaman)'>View Details</button>
+                        <meta name="csrf-token" content="{{ csrf_token() }}">
+                    </div>
                 @endforeach
             </div>
         </div>
@@ -357,17 +366,15 @@
                         <span>${product.deskripsi || "Deskripsi tidak tersedia"}</span>
                     </div>
                     <!-- Jumlah -->
-                    <div class="product-info d-flex align-items-center">
+                    <div class="product-info border-bottom pb-2 mb-3 d-flex align-items-center">
                         <span class="me-2">Jumlah : </span>
                         <input type="number" id="jumlah" class="form-control" value="1" min="1" max="100" style="width: 80px;">
                     </div>
                     <!-- Stok Tersedia -->
-                    <div class="product-info border-bottom pb-2 mb-3">
+                    <div class="product-info border-botton pb-2 mb-3">
                         <span>Stok Tersedia : </span>
                         <span>${product.jmlTanaman} item</span>
-                    </div>
-
-                    
+                    </div> 
                 </div>
             </div>
             <!-- Footer -->
