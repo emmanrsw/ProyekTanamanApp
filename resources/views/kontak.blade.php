@@ -66,27 +66,6 @@
             color: #333;
         }
 
-        .topnav #myLinks {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: white;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            padding: 10px;
-        }
-
-        .topnav #myLinks a {
-            display: block;
-            color: #333;
-            text-decoration: none;
-            padding: 5px 10px;
-            font-size: 1rem;
-        }
-
-        .topnav #myLinks a:hover {
-            background-color: #f0f0f0;
-        }
 
         .jumbotron img {
             width: 100%;
@@ -195,19 +174,46 @@
         .hubungi-kami {
             padding: 20px;
             background-color: #f9f9f9;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .hubungi-kami h3 font-size: 24px;
-        margin-bottom: 10px;
-        font-weight: bold;
+        .hubungi-kami h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
 
         .hubungi-kami p {
-            font-size: 16px;
+            font-size: 14px;
             padding: 0px 270px;
             color: #555;
         }
+        #myLinks {
+        position: absolute;
+        top: 60px;
+        right: 10px;
+        background-color:  #4B553D;
+        border-radius: 5px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        font-size: 14px;
+        padding: 10px 10px;
+    }
+
+    #myLinks a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        margin-left: 0;
+        line-height: 1.5;
+    }
+
+    #myLinks a:hover {
+        background-color: #ddd;
+        color: black;
+        border-radius: 5px;
+    }
+        
     </style>
 </head>
 
@@ -243,7 +249,7 @@
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
                         <!-- Jika pengguna memiliki gambar profil -->
-                        <img src="{{ asset('storage/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
+                        <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
                             alt="User Profile" class="rounded-circle" width="30" height="30">
                     @else
                         <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
@@ -268,11 +274,6 @@
         <div class="jumbotron">
             <img src="/Img/backgroundTK.jpg" alt="jumbotron" class="img-fluid">
         </div>
-    </div>
-    <div class="hubungi-kami text-center my-4">
-        <h3>Hubungi Kami</h3>
-        <p>Untuk Informasi Lebih Lanjut Tentang Produk &amp; Layanan Kami. Silakan Kirim Email kepada Kami. Staf Kami
-            Selalu Ada Untuk Membantu Anda. Jangan Ragu!</p>
     </div>
     <div class="contact-section">
         <div class="contact-info">
@@ -442,6 +443,12 @@
                     <h3>Solo</h3>
                     <p>Jalan Solo, 1049 Solo</p>
                 </div>
+            </div>
+            <div class="hubungi-kami text-center my-2">
+                <h3>Hubungi Kami</h3>
+                <p>Untuk Informasi Lebih Lanjut Tentang Produk &amp; Layanan Kami. Silakan Kirim Email kepada Kami. Staf
+                    Kami
+                    Selalu Ada Untuk Membantu Anda. Jangan Ragu!</p>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

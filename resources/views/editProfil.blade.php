@@ -200,7 +200,6 @@
             /* Atur jarak sesuai kebutuhan */
         }
 
-
         .navbar-nav .nav-link {
             color: #333;
             margin-right: 20px;
@@ -257,11 +256,18 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="profile-info">
-                <!-- Displaying the profile image -->
-                <img src="{{ asset('storage/app/public/gambarCust/' . $customer->gambarCust) }}" alt="Profile Picture">
-                <h2>{{ Auth::guard('pelanggan')->user()->usernameCust }}</h2>
-                <i class="fas fa-edit edit-profile" title="Ubah Profil" data-bs-toggle="modal"
-                    data-bs-target="#editProfileModal"></i>
+                <form action="{{ route('updateProfilePicture') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <label for="profileImage" class="d-block">
+                        @if($customer->gambarCust) <!-- Jika sudah ada gambar profil -->
+                        <img src="{{ asset('uploads/' . $customer->gambarCust) }}"
+                            alt="Profile Picture" class="rounded-circle" width="150" id="profileImagePreview">
+                        @else <!-- Jika belum ada gambar profil, tampilkan ikon profil default -->
+                        <i class="fas fa-user-circle" style="font-size: 100px; color: #ddd;"></i>
+                        @endif
+                        <input type="file" id="profileImage" name="profileImage" accept="image/*" style="display: none;" onchange="this.form.submit();">
+                    </label>
+                </form>
             </div>
 
             <!-- Modal untuk upload gambar -->
@@ -271,7 +277,8 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="editProfileModalLabel">Ubah Gambar Profil</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form action="{{ route('updateProfilePicture') }}" method="POST"
@@ -279,8 +286,8 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="profileImageInput">Pilih Gambar</label>
-                                    <input type="file" id="profileImageInput" name="profileImage" class="form-control"
-                                        accept="image/*">
+                                    <input type="file" id="profileImageInput" name="profileImage"
+                                        class="form-control" accept="image/*">
                                 </div>
                                 <button type="submit" class="btn btn-primary mt-3 w-100">Simpan</button>
                             </form>
@@ -299,33 +306,47 @@
             <p>Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun</p>
 
             <!-- Form Profil Page -->
-            <form action="{{ route('pelanggan.update')}}" method="POST">
+            <form action="{{ route('pelanggan.update') }}" method="POST">
                 @csrf <!-- Token CSRF untuk keamanan -->
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" id="usernameCust" name="usernameCust" value="{{$customer->usernameCust}}"
-                        required>
+                    <input type="text" id="usernameCust" name="usernameCust"
+                        value="{{ $customer->usernameCust }}" required>
                 </div>
                 <div class="form-group">
                     <label>Nama</label>
-                    <input type="text" id="namaCust" name="namaCust" value="{{$customer->namaCust}}" required>
+                    <input type="text" id="namaCust" name="namaCust" value="{{ $customer->namaCust }}" required>
                 </div>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" id="emailCust" name="emailCust" value="{{$customer->emailCust}}" required>
+                    <input type="email" id="emailCust" name="emailCust" value="{{ $customer->emailCust }}"
+                        required>
                 </div>
                 <div class="form-group">
                     <label>Nomor Telepon</label>
-                    <input type="text" id="notlpCust" name="notlpCust" value="{{$customer->notlpCust}}" required>
+                    <input type="text" id="notlpCust" name="notlpCust" value="{{ $customer->notlpCust }}"
+                        required>
                 </div>
                 <div class="form-group">
                     <label>Alamat</label>
-                    <input type="text" id="alamatCust" name="alamatCust" value="{{$customer->alamatCust}}" required>
+                    <input type="text" id="alamatCust" name="alamatCust" value="{{ $customer->alamatCust }}"
+                        required>
                 </div>
                 <button type="submit" class="btn btn-primary">Simpan</button>
                 <a href="{{ route('pelanggan.profile') }}" class="btn btn-primary">Kembali</a>
             </form>
         </div>
+
+        <script>
+            // Update preview image after file selection
+            document.getElementById('profileImage').addEventListener('change', function(event) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    document.getElementById('profileImagePreview').src = reader.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            });
+        </script>>
 </body>
 
 </html>

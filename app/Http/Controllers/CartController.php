@@ -46,6 +46,7 @@ class CartController extends Controller
             'jumlah' => 'required|integer|min:1',
         ]);
 
+
         $product = tanamanModel::find($productId);
 
         if (!$product) {
@@ -57,7 +58,6 @@ class CartController extends Controller
         $keranjang = cartModel::where('idCust', auth('pelanggan')->id())
             ->where('idTanaman', $productId)
             ->first();
-
 
         if ($keranjang) {
             // Jika produk sudah ada di keranjang, update jumlahnya
