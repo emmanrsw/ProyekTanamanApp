@@ -223,6 +223,7 @@
             <a href="{{ route('cart') }}" class="nav-link">
                 <i class="fa fa-shopping-cart"></i>
             </a>
+            <!-- User Icon -->
             <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
@@ -239,16 +240,10 @@
                         <a href="{{ route('pelanggan.profile') }}" class="nav-link">
                             {{ Auth::guard('pelanggan')->user()->usernameCust }}
                         </a>
-                        <a href="#" style="font-size: 1rem;">Ubah Password
-
-                        </a>
-                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout
-
-                        </a>
+                        <a href="#" style="font-size: 1rem;">Ubah Password</a>
+                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
                     @else
-                        <a href="{{ route('login.login') }}" class="nav-link">Login
-
-                        </a>
+                        <a href="{{ route('login.login') }}" class="nav-link">Login</a>
                     @endif
                 </div>
             </div>
@@ -464,14 +459,14 @@
                 window.location.href = `?sortBy=${sortBy}`;
             }
 
-            function myFunction() {
-                var x = document.getElementById("myLinks");
-                if (x.style.display === "block") {
-                    x.style.display = "none";
-                } else {
-                    x.style.display = "block";
-                }
-            }
+            // function myFunction() {
+            //     var x = document.getElementById("myLinks");
+            //     if (x.style.display === "block") {
+            //         x.style.display = "none";
+            //     } else {
+            //         x.style.display = "block";
+            //     }
+            // }
         }
         // function myFunction() {
         //     var x = document.getElementById("myLinks");
@@ -481,6 +476,16 @@
         //         x.style.display = "block";
         //     }
         // }
+    </script>
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myLinks");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
+        }
     </script>
 
 </body>
