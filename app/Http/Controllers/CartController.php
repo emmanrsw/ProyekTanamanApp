@@ -38,43 +38,73 @@ class CartController extends Controller
         // Kirimkan data ke view 'cart'
         return view('cart', ['cartItems' => $cartItems]);
     }
-
-    // Menambahkan produk ke keranjang
     public function addToCart(Request $request, $productId)
     {
-        $request->validate([
-            'jumlah' => 'required|integer|min:1',
-        ]);
+        // Validasi jumlah
+        $jumlah = $request->input('jumlah');
+        if ($jumlah < 1) {
+            return response()->json(['message' => 'Jumlah tidak valid'], 400);
+        }
 
+        // Ambil produk dari tabel tanaman
         $product = tanamanModel::find($productId);
-
         if (!$product) {
-            return response()->json(['message' => 'Produk tidak ditemukan!'], 404);
+            return response()->json(['message' => 'Produk tidak ditemukan'], 404);
         }
 
-        // Ambil data keranjang atau buat keranjang baru
-        // Mengakses data pengguna dari guard 'pelanggans'
-        $keranjang = cartModel::where('idCust', auth('pelanggan')->id())
-            ->where('idTanaman', $productId)
-            ->first();
+        // Tambahkan ke keranjang
+        $keranjang = new cartModel();
+        $keranjang->idCust = auth()->id();  // Pastikan pelanggan sudah login
+        $keranjang->idTanaman = $productId;
+        $keranjang->jumlah = $jumlah;
+        $keranjang->harga_satuan = $product->hargaTanaman;
+        $keranjang->save();
 
-
-        if ($keranjang) {
-            // Jika produk sudah ada di keranjang, update jumlahnya
-            $keranjang->jumlah += $request->jumlah;
-            $keranjang->harga_total = $keranjang->jumlah * $product->hargaTanaman;
-            $keranjang->save();
-        } else {
-            // Jika produk belum ada di keranjang, buat entri baru
-            cartModel::create([
-                'idCust' => auth('pelanggan')->id(),
-                'idTanaman' => $productId,
-                'jumlah' => $request->jumlah,
-                'harga_satuan' => $product->hargaTanaman,
-            ]);
-        }
-        return response()->json(['message' => 'Produk berhasil ditambahkan ke keranjang!']);
+        return response()->json(['message' => 'Produk berhasil ditambahkan ke keranjang']);
     }
+
+
+    // Menambahkan produk ke keranjang
+    // public function addToCart(Request $request, $productId)
+    // {
+    //     $request->validate([
+    //         'jumlah' => 'required|integer|min:1',
+    //     ]);
+
+    //     $product = tanamanModel::find($productId);
+
+    //     if (!$product) {
+    //         return response()->json(['message' => 'Produk tidak ditemukan!'], 404);
+    //     }
+    //     dd([
+    //         'productId' => $productId,
+    //         'jumlah' => $request->input('jumlah'),
+    //         'hargaTanaman' => $product->hargaTanaman,
+    //     ]);
+
+    //     // Ambil data keranjang atau buat keranjang baru
+    //     // Mengakses data pengguna dari guard 'pelanggans'
+    //     $keranjang = cartModel::where('idCust', auth('pelanggan')->id())
+    //         ->where('idTanaman', $productId)
+    //         ->first();
+
+
+    //     if ($keranjang) {
+    //         // Jika produk sudah ada di keranjang, update jumlahnya
+    //         $keranjang->jumlah += $request->jumlah;
+    //         $keranjang->harga_total = $keranjang->jumlah * $product->hargaTanaman;
+    //         $keranjang->save();
+    //     } else {
+    //         // Jika produk belum ada di keranjang, buat entri baru
+    //         cartModel::create([
+    //             'idCust' => auth('pelanggan')->id(),
+    //             'idTanaman' => $productId,
+    //             'jumlah' => $request->jumlah,
+    //             'harga_satuan' => $product->hargaTanaman,
+    //         ]);
+    //     }
+    //     return response()->json(['message' => 'Produk berhasil ditambahkan ke keranjang!']);
+    // }
 
 
     // Menghapus produk dari keranjang
@@ -146,6 +176,7 @@ class CartController extends Controller
         // Update total harga
         $cartItem->harga_total = $cartItem->jumlah * $cartItem->harga_satuan;
 
-        return redirect()->back()->with('success', 'Jumlah tanaman berhasil dikurangi.');;
+        return redirect()->back()->with('success', 'Jumlah tanaman berhasil dikurangi.');
+        ;
     }
 }
