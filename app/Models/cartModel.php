@@ -7,8 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-// class karyawan extends Model implements Authenticatable
-class cartModel extends Model
+class cartModel extends Authenticatable
+
 {
     use HasFactory;
     use AuthenticatableTrait;

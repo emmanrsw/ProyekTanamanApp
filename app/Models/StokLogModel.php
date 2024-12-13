@@ -10,7 +10,6 @@ class StokLogModel extends Model
     use HasFactory;
 
     protected $table = 'stok_log'; // Nama tabel jika berbeda
-    // Jika tabel ini tidak menggunakan timestamps (created_at, updated_at), matikan fitur tersebut
     protected $primaryKey = 'idStok';
     public $timestamps = false;
     protected $fillable = [
@@ -19,6 +18,6 @@ class StokLogModel extends Model
         'jumlah_sebelumnya',
         'jumlah_terjual',
         'jumlah_masuk',
-        'jumlah_baru',    
+        'jumlah_baru'   
     ];
 }

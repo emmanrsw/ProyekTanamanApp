@@ -6,13 +6,11 @@ use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-// class karyawan extends Model implements Authenticatable
 class karyawanModel extends Authenticatable
 {
     use AuthenticatableTrait;
     protected $table = 'karyawan';
     protected $primaryKey = 'idKywn';
-    // public $timestamps = false;
 
     protected $fillable = [
         'namaKywn',

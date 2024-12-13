@@ -8,7 +8,6 @@ use App\Models\detailTModel;
 
 class transaksiModel extends Model
 {
-    // use HasFactory;
     public $timestamps = false; // Nonaktifkan timestamps
 
     protected $table = 'transaksijual';
@@ -24,12 +23,6 @@ class transaksiModel extends Model
         'metodeByr',
         'statusTJual'
     ];
-
-    // ini awal code aslinya
-    // public function details()
-    // {
-    //     return $this->hasMany(detailTModel::class, 'idTransaksi', 'idTJual');
-    // }
 
     public function details()
     {

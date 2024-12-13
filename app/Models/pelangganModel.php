@@ -24,20 +24,4 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
         'gambarCust',
         'notlpCust' // buat nampilin di profile
     ];
-    // Menyembunyikan kolom saat model dikembalikan dalam array atau JSON
-    // protected $hidden = [
-    //     'passwordCust',
-    //     'remember_token',
-    // ];
-
-    // // Casting kolom tipe data tertentu
-    // protected $casts = [
-    //     'email_verified_at' => 'datetime',
-    // ];
-
-    // Jika kamu menggunakan hashing password, jangan lupa untuk menambahkan mutator
-    // public function setPasswordCustAttribute($password)
-    // {
-    //     $this->attributes['passwordCust'] = bcrypt($password);
-    // }
 }

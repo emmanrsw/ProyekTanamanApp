@@ -38,25 +38,26 @@ class CartController extends Controller
         // Kirimkan data ke view 'cart'
         return view('cart', ['cartItems' => $cartItems]);
     }
+
+    // Menambahkan produk ke keranjang
     public function addToCart(Request $request, $productId)
     {
-        // Validasi jumlah
-        $jumlah = $request->input('jumlah');
-        if ($jumlah < 1) {
-            return response()->json(['message' => 'Jumlah tidak valid'], 400);
-        }
+        $request->validate([
+            'jumlah' => 'required|integer|min:1',
+        ]);
 
-        // Ambil produk dari tabel tanaman
+
         $product = tanamanModel::find($productId);
+
         if (!$product) {
-            return response()->json(['message' => 'Produk tidak ditemukan'], 404);
+            return response()->json(['message' => 'Produk tidak ditemukan!'], 404);
         }
 
         // Tambahkan ke keranjang
         $keranjang = new cartModel();
         $keranjang->idCust = auth('pelanggan')->id();  // Pastikan pelanggan sudah login
         $keranjang->idTanaman = $productId;
-        $keranjang->jumlah = $jumlah;
+        $keranjang->jumlah = $$product->jumlah;
         $keranjang->harga_satuan = $product->hargaTanaman;
         $keranjang->save();
 
@@ -124,6 +125,8 @@ class CartController extends Controller
         // Redirect kembali dengan pesan sukses
         return redirect()->route('cart')->with('success', 'Produk berhasil dihapus dari keranjang!');
     }
+
+
     public function increase_cart_quantity($rowId)
     {
         // Pastikan pengguna sudah login
@@ -151,7 +154,6 @@ class CartController extends Controller
     }
 
 
-
     public function decrease_cart_quantity($rowId)
     {
         // Pastikan pengguna sudah login
@@ -176,7 +178,6 @@ class CartController extends Controller
         // Update total harga
         $cartItem->harga_total = $cartItem->jumlah * $cartItem->harga_satuan;
 
-        return redirect()->back()->with('success', 'Jumlah tanaman berhasil dikurangi.');
-        ;
+        return redirect()->back()->with('success', 'Jumlah tanaman berhasil dikurangi.');;
     }
 }
