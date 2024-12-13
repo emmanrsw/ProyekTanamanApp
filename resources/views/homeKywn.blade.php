@@ -162,9 +162,7 @@
                     <th>ID</th>
                     <th>#</th>
                     <th>Tanaman</th>
-                    <th>Penjualan</th>
                     <th>Stok</th>
-                    <th>Ditambahkan</th>
                 </tr>
             </thead>
             <tbody>
@@ -187,15 +185,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>{{ number_format($item->penjualan, 0, ',', '.') }}</td>
                             <td>{{ number_format($item->jmlTanaman, 0, ',', '.') }}</td>
-                            <td>
-                                @if($item->added_date)
-                                    {{ $item->added_date->format('d M Y') }}
-                                @else
-                                    -
-                                @endif
-                            </td>
                         </tr>
                     @endforeach
                 @endif

@@ -120,6 +120,7 @@
             vertical-align: middle;
             /* Vertikal di tengah */
         }
+        
     </style>
 </head>
 

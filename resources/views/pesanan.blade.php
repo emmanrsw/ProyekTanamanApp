@@ -263,9 +263,11 @@
         @foreach ($sedangDikemas as $transaksi)
         @foreach ($transaksi->details as $detail)
         <div class="card">
-            <img src="https://via.placeholder.com/300x200.png?text=Sedang+Dikemas" alt="Sedang Dikemas">
+            <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
+                alt="Gambar Tanaman {{ $detail->gambar }}"
+                onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
             <div class="card-body">
-                <h5>{{ $detail->nama_tanaman }}</h5>
+                <h5>{{ $detail->tanaman->namaTanaman }}</h5>
                 <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
                 <p>Jumlah: {{ $detail->jumlah }}</p>
                 <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
@@ -278,18 +280,22 @@
         @endif
     </div>
 
+
+
     <!-- Tampilkan Konten untuk Dikirim -->
     <div id="tabelDikirim" class="hidden card-container">
         @if ($dikirim->isNotEmpty())
         @foreach ($dikirim as $transaksi)
         @foreach ($transaksi->details as $detail)
         <div class="card">
-            <img src="https://via.placeholder.com/300x200.png?text=Dikirim" alt="Dikirim">
+            <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
+                alt="Gambar Tanaman {{ $detail->gambar }}"
+                onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
             <div class="card-body">
-                <h5>{{ $detail->nama_tanaman }}</h5>
+                <h5>{{ $detail->tanaman->namaTanaman }}</h5>
                 <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
                 <p>Jumlah: {{ $detail->jumlah }}</p>
-                <p>Total Harga: Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</p>
+                <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
             </div>
         </div>
         @endforeach
@@ -305,12 +311,14 @@
         @foreach ($selesai as $transaksi)
         @foreach ($transaksi->details as $detail)
         <div class="card">
-            <img src="https://via.placeholder.com/300x200.png?text=Selesai" alt="Selesai">
+            <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
+                alt="Gambar Tanaman {{ $detail->gambar }}"
+                onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
             <div class="card-body">
-                <h5>{{ $detail->nama_tanaman }}</h5>
+                <h5>{{ $detail->tanaman->namaTanaman }}</h5>
                 <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
                 <p>Jumlah: {{ $detail->jumlah }}</p>
-                <p>Total Harga: Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</p>
+                <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
             </div>
         </div>
         @endforeach

@@ -391,7 +391,7 @@
                     @foreach ($cartItems as $item)
                     <tr>
                         <td><input type="checkbox" class="plant-checkbox" data-item-id="{{ $item->idTanaman }}"
-                                data-price="{{ $item->harga_satuan }}" data-total="{{ $item->harga_total }}"
+                                data-price="{{ $item->harga_satuan }}" data-total="{{ $item->jumlah * $item->harga_satuan }}"
                                 onclick="updateSubtotal()"></td>
                         <td>
                             <!-- Menampilkan Gambar dan Nama Tanaman di Samping -->
@@ -425,14 +425,22 @@
                             </div>
                         </td>
 
-                        <td id="total-{{ $item->idTanaman }}">{{ number_format($item->harga_total) }}
+                        <td id="total-{{ $item->idTanaman }}">{{ number_format($item->jumlah * $item->harga_satuan) }}
                         </td>
                         <td>
-                            <form action="{{ route('cart.remove', $item->idTanaman) }}" method="POST">
+                            <form action="{{ route('cart.remove', $item->idTanaman) }}" method="POST" onsubmit="return confirmDelete()">
+                                <!-- bagian cahyoooo benerin sini yaaa buat notif sebelum di hapus -->
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Hapus</button>
                             </form>
+
+                            <script>
+                                function confirmDelete() {
+                                    return confirm("Apakah Anda yakin ingin menghapus item ini dari keranjang?");
+                                }
+                            </script>
+                            <!-- bagian cahyoooo benerin sini yaaa buat notif sebelum di hapus -->
                         </td>
                     </tr>
                     @endforeach

@@ -16,17 +16,41 @@
             margin-top: 20px;
         }
 
-        .table th, .table td {
+        .table th,
+        .table td {
             text-align: center;
         }
 
         .btn-warning {
             margin-top: 20px;
         }
+
+        .back-btn {
+            background-color: #6c757d;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .back-btn:hover {
+            background-color: #5a6268;
+        }
     </style>
 </head>
 
 <body>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0" style="font-weight: bold; font-size: 35px; color: #243a56">Daftar Tanaman</h1>
+
+        <a href="{{ route('homeKywn') }}" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Kembali
+        </a>
+    </div>
+
+
 
     <div class="container">
         <h1>Nama Tanaman: {{ $tanaman->namaTanaman }}</h1>

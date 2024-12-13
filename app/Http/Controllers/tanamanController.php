@@ -196,45 +196,53 @@ class tanamanController extends Controller
         return view('viewT', compact('tanaman', 'stokLogs'));
     }
 
-    public function hapusTanaman(Request $request)
-    {
-        // Mendapatkan array ID tanaman dari permintaan
-        $ids = $request->input('ids'); // Pastikan Anda mengirim array ID dengan nama 'ids'
 
-        if ($ids) {
-            foreach ($ids as $id) {
-                // Temukan tanaman berdasarkan ID
-                $tanaman = tanamanModel::find($id);
+    // public function destroy(Request $request)
+    // {
+    //     // Ambil ID tanaman dari permintaan
+    //     $ids = explode(',', $request->input('ids'));
 
-                if ($tanaman) {
-                    // Hapus gambar dari penyimpanan jika ada
-                    if ($tanaman->gambar) {
-                        Storage::delete('images/' . $tanaman->gambar);
-                    }
+    //     // Hapus tanaman berdasarkan ID yang diberikan
+    //     tanamanModel::whereIn('idTanaman', $ids)->delete();
 
-                    // Hapus tanaman dari database
-                    $tanaman->delete();
-                }
-            }
-
-            return redirect()->back()->with('success', 'Tanaman berhasil dihapus.');
-        }
-
-        return redirect()->back()->with('error', 'Tidak ada tanaman yang dipilih untuk dihapus.');
-    }
-
+    //     // Redirect kembali dengan pesan sukses
+    //     return redirect()->back()->with('success', 'Tanaman berhasil dihapus.');
+    // }
 
     public function destroy(Request $request)
     {
         // Ambil ID tanaman dari permintaan
         $ids = explode(',', $request->input('ids'));
-
-        // Hapus tanaman berdasarkan ID yang diberikan
-        tanamanModel::whereIn('idTanaman', $ids)->delete();
-
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Tanaman berhasil dihapus.');
+    
+        // Debug untuk memastikan ID yang diterima
+        // \Log::info('IDs yang diterima: ', $ids);
+    
+        try {
+            // Hapus data terkait di tabel stok_log terlebih dahulu
+            DB::table('stok_log')->whereIn('idTanaman', $ids)->delete();
+    
+            // Hapus tanaman berdasarkan ID yang diberikan
+            tanamanModel::whereIn('idTanaman', $ids)->delete();
+    
+            // Redirect kembali dengan pesan sukses
+            return redirect()->back()->with('success', 'Tanaman dan stok terkait berhasil dihapus.');
+        } catch (\Exception $e) {
+            // Tangani error jika penghapusan gagal
+            return redirect()->back()->with('error', 'Gagal menghapus data: ' . $e->getMessage());
+        }
     }
+    
+    
+
+
+
+
+
+
+
+
+
+
 
     // UNTUK SEARCH
     public function search(Request $request)
