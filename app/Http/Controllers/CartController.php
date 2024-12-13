@@ -39,42 +39,42 @@ class CartController extends Controller
         return view('cart', ['cartItems' => $cartItems]);
     }
 
-    // Menambahkan produk ke keranjang
-    public function addToCart(Request $request, $productId)
-    {
-        $request->validate([
-            'jumlah' => 'required|integer|min:1',
-        ]);
+    // // Menambahkan produk ke keranjang
+    // public function addToCart(Request $request, $productId)
+    // {
+    //     $request->validate([
+    //         'jumlah' => 'required|integer|min:1',
+    //     ]);
 
-        $product = tanamanModel::find($productId);
+    //     $product = tanamanModel::find($productId);
 
-        if (!$product) {
-            return response()->json(['message' => 'Produk tidak ditemukan!'], 404);
-        }
+    //     if (!$product) {
+    //         return response()->json(['message' => 'Produk tidak ditemukan!'], 404);
+    //     }
 
-        // Ambil data keranjang atau buat keranjang baru
-        // Mengakses data pengguna dari guard 'pelanggans'
-        $keranjang = cartModel::where('idCust', auth('pelanggan')->id())
-            ->where('idTanaman', $productId)
-            ->first();
+    //     // Ambil data keranjang atau buat keranjang baru
+    //     // Mengakses data pengguna dari guard 'pelanggans'
+    //     $keranjang = cartModel::where('idCust', auth('pelanggan')->id())
+    //         ->where('idTanaman', $productId)
+    //         ->first();
 
 
-        if ($keranjang) {
-            // Jika produk sudah ada di keranjang, update jumlahnya
-            $keranjang->jumlah += $request->jumlah;
-            $keranjang->harga_total = $keranjang->jumlah * $product->hargaTanaman;
-            $keranjang->save();
-        } else {
-            // Jika produk belum ada di keranjang, buat entri baru
-            cartModel::create([
-                'idCust' => auth('pelanggan')->id(),
-                'idTanaman' => $productId,
-                'jumlah' => $request->jumlah,
-                'harga_satuan' => $product->hargaTanaman,
-            ]);
-        }
-        return response()->json(['message' => 'Produk berhasil ditambahkan ke keranjang!']);
-    }
+    //     if ($keranjang) {
+    //         // Jika produk sudah ada di keranjang, update jumlahnya
+    //         $keranjang->jumlah += $request->jumlah;
+    //         $keranjang->harga_total = $keranjang->jumlah * $product->hargaTanaman;
+    //         $keranjang->save();
+    //     } else {
+    //         // Jika produk belum ada di keranjang, buat entri baru
+    //         cartModel::create([
+    //             'idCust' => auth('pelanggan')->id(),
+    //             'idTanaman' => $productId,
+    //             'jumlah' => $request->jumlah,
+    //             'harga_satuan' => $product->hargaTanaman,
+    //         ]);
+    //     }
+    //     return response()->json(['message' => 'Produk berhasil ditambahkan ke keranjang!']);
+    // }
 
 
     // Menghapus produk dari keranjang

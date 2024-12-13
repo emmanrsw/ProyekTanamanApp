@@ -248,7 +248,6 @@
             </div>
         </div>
     </nav>
-    {{-- <div class="container"> --}}
     <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -262,9 +261,7 @@
             </div>
         </div>
     </div>
-    {{-- </div> --}}
 
-    {{-- <div class="container"> --}}
     <div class="row filter-section">
         <div class="col-md-3">
             <div class="filter-price">
@@ -311,8 +308,7 @@
             </div>
         </div>
     </div>
-    </div>
-    </div>
+
     <script>
         document.querySelectorAll('.btn-add-to-cart').forEach(button => {
             button.addEventListener('click', function() {
@@ -373,7 +369,7 @@
             <!-- Footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="addToCart(${product.idTanaman})" ; style="background-color:#4B553D">Tambah ke Keranjang</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="addToCart(${product.idTanaman})" style="background-color:#4B553D">Tambah ke Keranjang</button>
             </div>
         </div>
     </div>
@@ -405,38 +401,105 @@
         //             console.error('Error:', error);
         //         });
         // }
+        // function addToCart(productId) {
+        //     // Ambil jumlah dari input yang ada di modal
+        //     const jumlah = document.getElementById('jumlah').value;
+
+        //     // Pastikan jumlah adalah angka yang valid
+        //     if (jumlah < 1) {
+        //         alert('Jumlah tidak valid');
+        //         return;
+        //     }
+
+        //     fetch(`/cart/add/${productId}`, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        //             },
+        //             body: JSON.stringify({
+        //                 productId: productId,
+        //                 jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
+        //             })
+        //         })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             Swal.fire({
+        //                 title: 'Berhasil!',
+        //                 text: data.message || "Produk berhasil ditambahkan ke keranjang!",
+        //                 icon: 'success',
+        //                 confirmButtonText: 'OK'
+        //             })
+        //         })
+        //         .catch(error => {
+        //             console.error('Error:', error);
+        //         });
+        // }
+
         function addToCart(productId) {
             // Ambil jumlah dari input yang ada di modal
             const jumlah = document.getElementById('jumlah').value;
 
-            // Pastikan jumlah adalah angka yang valid
-            if (jumlah < 1) {
-                alert('Jumlah tidak valid');
+            // Debugging: Cek apakah jumlah sudah terambil dengan benar
+            console.log('Jumlah:', jumlah);
+
+            // Pastikan jumlah adalah angka yang valid dan lebih besar dari 0
+            if (isNaN(jumlah) || jumlah < 1) {
+                alert('Jumlah tidak valid. Masukkan angka yang lebih besar dari 0.');
                 return;
             }
 
+            // Cek apakah CSRF token ada
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            if (!csrfToken) {
+                console.error('CSRF Token tidak ditemukan!');
+                alert('Terjadi masalah dengan CSRF token.');
+                return;
+            }
+
+            // Menampilkan data yang akan dikirim untuk debugging
+            console.log('Mengirim data ke server:', {
+                productId: productId,
+                jumlah: jumlah
+            });
+
+            // Kirim data ke server menggunakan Fetch API
             fetch(`/cart/add/${productId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        'X-CSRF-TOKEN': csrfToken
                     },
                     body: JSON.stringify({
                         productId: productId,
                         jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
                     })
                 })
+                // .then(response => {
+                //     if (!response.ok) {
+                //         throw new Error('Response tidak berhasil');
+                //     }
+                //     return response.json();
+                // })
                 .then(response => response.json())
                 .then(data => {
+                    // Menampilkan notifikasi sukses dengan SweetAlert
                     Swal.fire({
                         title: 'Berhasil!',
                         text: data.message || "Produk berhasil ditambahkan ke keranjang!",
                         icon: 'success',
                         confirmButtonText: 'OK'
-                    })
+                    });
                 })
                 .catch(error => {
+                    // Menangani error jika ada masalah saat pengiriman
                     console.error('Error:', error);
+                    Swal.fire({
+                        title: 'Oops!',
+                        text: 'Terjadi kesalahan, silakan coba lagi.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
                 });
         }
 
