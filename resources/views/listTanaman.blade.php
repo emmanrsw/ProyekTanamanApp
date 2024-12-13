@@ -405,39 +405,39 @@
             //         });
             // }
             function addToCart(productId) {
-                // Ambil jumlah dari input yang ada di modal
-                const jumlah = document.getElementById('jumlah').value;
+    // Ambil jumlah dari input yang ada di modal
+    const jumlah = document.getElementById('jumlah').value;
 
-                // Pastikan jumlah adalah angka yang valid
-                if (jumlah < 1) {
-                    alert('Jumlah tidak valid');
-                    return;
-                }
+    // Pastikan jumlah adalah angka yang valid
+    if (jumlah < 1) {
+        alert('Jumlah tidak valid');
+        return;
+    }
 
-                fetch(`/cart/add/${productId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({
-                        productId: productId,
-                        jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
-                    })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        Swal.fire({
-                            title: 'Berhasil!',
-                            text: data.message || "Produk berhasil ditambahkan ke keranjang!",
-                            icon: 'success',
-                            confirmButtonText: 'OK'
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            }
+    fetch(`/cart/add/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                productId: productId,
+                jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            Swal.fire({
+                title: 'Berhasil!',
+                text: data.message || "Produk berhasil ditambahkan ke keranjang!",
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
 
             function sortProducts() {
                 const sortBy = document.querySelector('.sort-by').value;

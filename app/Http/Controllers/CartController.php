@@ -54,7 +54,7 @@ class CartController extends Controller
 
         // Tambahkan ke keranjang
         $keranjang = new cartModel();
-        $keranjang->idCust = auth()->id();  // Pastikan pelanggan sudah login
+        $keranjang->idCust = auth('pelanggan')->id();  // Pastikan pelanggan sudah login
         $keranjang->idTanaman = $productId;
         $keranjang->jumlah = $jumlah;
         $keranjang->harga_satuan = $product->hargaTanaman;
