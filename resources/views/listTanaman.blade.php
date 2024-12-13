@@ -132,7 +132,7 @@
         position: absolute;
         top: 60px;
         right: 10px;
-        background-color:  #4B553D;
+        background-color: #4B553D;
         border-radius: 5px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         z-index: 1000;
@@ -227,8 +227,8 @@
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
                         <!-- Jika pengguna memiliki gambar profil -->
-                        <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
-                            alt="User Profile" class="rounded-circle" width="30" height="30">
+                        <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}" alt="User Profile"
+                            class="rounded-circle" width="30" height="30">
                     @else
                         <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
                         <i class="fa fa-user"></i>
@@ -255,73 +255,74 @@
         </div>
     </nav>
     {{-- <div class="container"> --}}
-    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="/Img/1bg.png" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="/Img/2bg.png" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="/Img/3bg.png" class="d-block w-100" alt="...">
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="/Img/1bg.png" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="/Img/2bg.png" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="/Img/3bg.png" class="d-block w-100" alt="...">
+                </div>
             </div>
         </div>
-    </div>
-    {{-- </div> --}}
+        {{--
+    </div> --}}
 
     {{-- <div class="container"> --}}
-    <div class="row filter-section">
-        <div class="col-md-3">
-            <div class="filter-price">
-                <p><strong>Price</strong></p>
-                <form action="{{ route('tanaman.show') }}" method="GET">
-                    <div class="d-flex" style="width: 210px; font-size: 14px;">
-                        <input type="number" name="min_price" class="form-control form-control-sm" placeholder="Min"
-                            value="{{ request('min_price') }}">
-                        <strong class="mx-2">-</strong>
-                        <input type="number" name="max_price" class="form-control form-control-sm" placeholder="Max"
-                            value="{{ request('max_price') }}">
-                    </div>
-                    <button type="submit" class="btn btn-custom mt-3">Apply Filter</button>
-                </form>
+        <div class="row filter-section">
+            <div class="col-md-3">
+                <div class="filter-price">
+                    <p><strong>Price</strong></p>
+                    <form action="{{ route('tanaman.show') }}" method="GET">
+                        <div class="d-flex" style="width: 210px; font-size: 14px;">
+                            <input type="number" name="min_price" class="form-control form-control-sm" placeholder="Min"
+                                value="{{ request('min_price') }}">
+                            <strong class="mx-2">-</strong>
+                            <input type="number" name="max_price" class="form-control form-control-sm" placeholder="Max"
+                                value="{{ request('max_price') }}">
+                        </div>
+                        <button type="submit" class="btn btn-custom mt-3">Apply Filter</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5><strong>Tanaman</strong></h5>
+                    <form method="GET" action="{{ route('tanaman.show') }}">
+                        <select class="form-select" style="width: 110px; font-size: 14px;" aria-label="Sort by"
+                            name="sort" onchange="this.form.submit()">
+                            <option value="default" {{ request('sort') == 'default' ? 'selected' : '' }}>Default
+                            </option>
+                            <option value="price_low_high" {{ request('sort') == 'price_low_high' ? 'selected' : '' }}>
+                                Price: Low to High</option>
+                            <option value="price_high_low" {{ request('sort') == 'price_high_low' ? 'selected' : '' }}>
+                                Price: High to Low</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="product-grid">
+                    @foreach ($tanaman as $tanaman)
+                        <div class="product-card">
+                            <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
+                                alt="{{ $tanaman->namaTanaman }}">
+                            <h5>{{ $tanaman->namaTanaman }}</h5>
+                            <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
+                            <button class="btn btn-primary btn-add-to-cart" data-product='@json($tanaman)'>View
+                                Details</button>
+                            <meta name="csrf-token" content="{{ csrf_token() }}">
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
-        <div class="col-md-9">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5><strong>Tanaman</strong></h5>
-                <form method="GET" action="{{ route('tanaman.show') }}">
-                    <select class="form-select" style="width: 110px; font-size: 14px;" aria-label="Sort by"
-                        name="sort" onchange="this.form.submit()">
-                        <option value="default" {{ request('sort') == 'default' ? 'selected' : '' }}>Default
-                        </option>
-                        <option value="price_low_high" {{ request('sort') == 'price_low_high' ? 'selected' : '' }}>
-                            Price: Low to High</option>
-                        <option value="price_high_low" {{ request('sort') == 'price_high_low' ? 'selected' : '' }}>
-                            Price: High to Low</option>
-                    </select>
-                </form>
-            </div>
-            <div class="product-grid">
-                @foreach ($tanaman as $tanaman)
-                    <div class="product-card">
-                        <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
-                            alt="{{ $tanaman->namaTanaman }}">
-                        <h5>{{ $tanaman->namaTanaman }}</h5>
-                        <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
-                        <button class="btn btn-primary btn-add-to-cart"
-                            data-product='@json($tanaman)'>View Details</button>
-                        <meta name="csrf-token" content="{{ csrf_token() }}">
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
     </div>
     </div>
     <script>
         document.querySelectorAll('.btn-add-to-cart').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const product = JSON.parse(this.dataset.product);
                 showProductModal(product);
             });
@@ -422,39 +423,39 @@
             //         });
             // }
             function addToCart(productId) {
-    // Ambil jumlah dari input yang ada di modal
-    const jumlah = document.getElementById('jumlah').value;
+                // Ambil jumlah dari input yang ada di modal
+                const jumlah = document.getElementById('jumlah').value;
 
-    // Pastikan jumlah adalah angka yang valid
-    if (jumlah < 1) {
-        alert('Jumlah tidak valid');
-        return;
-    }
+                // Pastikan jumlah adalah angka yang valid
+                if (jumlah < 1) {
+                    alert('Jumlah tidak valid');
+                    return;
+                }
 
-    fetch(`/cart/add/${productId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({
-                productId: productId,
-                jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            Swal.fire({
-                title: 'Berhasil!',
-                text: data.message || "Produk berhasil ditambahkan ke keranjang!",
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
+                fetch(`/cart/add/${productId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        productId: productId,
+                        jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        Swal.fire({
+                            title: 'Berhasil!',
+                            text: data.message || "Produk berhasil ditambahkan ke keranjang!",
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
 
             function sortProducts() {
                 const sortBy = document.querySelector('.sort-by').value;
@@ -471,16 +472,16 @@
                     x.style.display = "block";
                 }
             }
-
-            // function myFunction() {
-            //     var x = document.getElementById("myLinks");
-            //     if (x.style.display === "block") {
-            //         x.style.display = "none";
-            //     } else {
-            //         x.style.display = "block";
-            //     }
-            // }
-        </script>
+        }
+        // function myFunction() {
+        //     var x = document.getElementById("myLinks");
+        //     if (x.style.display === "block") {
+        //         x.style.display = "none";
+        //     } else {
+        //         x.style.display = "block";
+        //     }
+        // }
+    </script>
 
 </body>
 
