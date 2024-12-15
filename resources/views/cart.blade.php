@@ -294,23 +294,23 @@
             <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
-                    <!-- Jika pengguna memiliki gambar profil -->
-                    <img src="{{ asset('storage/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
-                        alt="User Profile" class="rounded-circle" width="30" height="30">
+                        <!-- Jika pengguna memiliki gambar profil -->
+                        <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
+                            alt="User Profile" class="rounded-circle" width="30" height="30">
                     @else
-                    <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
-                    <i class="fa fa-user"></i>
+                        <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
+                        <i class="fa fa-user"></i>
                     @endif
                 </a>
                 <div id="myLinks" style="display: none;">
                     @if (Auth::guard('pelanggan')->check())
-                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
-                        {{ Auth::guard('pelanggan')->user()->usernameCust }}
-                    </a>
-                    <a href="#" style="font-size: 1rem;">Ubah Password</a>
-                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                        </a>
+                        <a href="#" style="font-size: 1rem;">Ubah Password</a>
+                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
                     @else
-                    <a href="{{ route('login.login') }}" class="nav-link">Login</a>
+                        <a href="{{ route('login.login') }}" class="nav-link">Login</a>
                     @endif
                 </div>
             </div>
@@ -329,20 +329,21 @@
                     <!-- Contoh daftar item di keranjang -->
                     <ul class="list-group">
                         @forelse ($cartItems as $item)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <!-- Menampilkan Nama Tanaman dan Jumlah -->
-                            {{ $item->tanaman->namaTanaman }} ({{ $item->jumlah }})
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <!-- Menampilkan Nama Tanaman dan Jumlah -->
+                                {{ $item->tanaman->namaTanaman }} ({{ $item->jumlah }})
 
-                            <!-- Menampilkan Gambar Tanaman -->
-                            <img src="{{ asset('Img/' . $item->tanaman->gambar) }}" alt="{{ $item->tanaman->namaTanaman }}" style="width: 50px; height: 50px;">
+                                <!-- Menampilkan Gambar Tanaman -->
+                                <img src="{{ asset('Img/' . $item->tanaman->gambar) }}"
+                                    alt="{{ $item->tanaman->namaTanaman }}" style="width: 50px; height: 50px;">
 
-                            <!-- Menampilkan Harga -->
-                            <span class="badge bg-primary rounded-pill">
-                                Rp{{ number_format($item->harga_satuan, 0, ',', '.') }}
-                            </span>
-                        </li>
+                                <!-- Menampilkan Harga -->
+                                <span class="badge bg-primary rounded-pill">
+                                    Rp{{ number_format($item->harga_satuan, 0, ',', '.') }}
+                                </span>
+                            </li>
                         @empty
-                        <p>Keranjang Anda kosong.</p>
+                            <p>Keranjang Anda kosong.</p>
                         @endforelse
                     </ul>
 
@@ -356,96 +357,117 @@
     </div>
     {{-- <div class="container"> --}}
     @if (session('success'))
-    <script>
-        Swal.fire({
-            position: "center", // Muncul di tengah
-            icon: "success", // Ikon sukses
-            title: "{{ session('success') }}", // Pesan sukses
-            showConfirmButton: false, // Tidak ada tombol konfirmasi
-            timer: 1000, // Waktu tampil 3 detik
-            customClass: {
-                popup: 'swal-wide' // Tambahkan kelas kustom untuk lebar popup
-            }
-        });
-    </script>
+        <script>
+            Swal.fire({
+                position: "center", // Muncul di tengah
+                icon: "success", // Ikon sukses
+                title: "{{ session('success') }}", // Pesan sukses
+                showConfirmButton: false, // Tidak ada tombol konfirmasi
+                timer: 1000, // Waktu tampil 3 detik
+                customClass: {
+                    popup: 'swal-wide' // Tambahkan kelas kustom untuk lebar popup
+                }
+            });
+        </script>
     @endif
 
     <div class="cart-container">
         <!-- Bagian Keranjang Belanja -->
         <div class="cart-items">
             @if ($cartItems->isEmpty())
-            <p>Keranjang Anda kosong.</p>
+                <p>Keranjang Anda kosong.</p>
             @else
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nama Tanaman</th>
-                        <th>Harga</th>
-                        <th>Jumlah</th>
-                        <th>Total Harga</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($cartItems as $item)
-                    <tr>
-                        <td><input type="checkbox" class="plant-checkbox" data-item-id="{{ $item->idTanaman }}"
-                                data-price="{{ $item->harga_satuan }}" data-total="{{ $item->jumlah * $item->harga_satuan }}"
-                                onclick="updateSubtotal()"></td>
-                        <td>
-                            <!-- Menampilkan Gambar dan Nama Tanaman di Samping -->
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <img src="{{ asset('images/' . $item->tanaman->gambar) }}"
-                                    alt="{{ $item->tanaman->namaTanaman }}"
-                                    style="width: 50px; height: 50px; object-fit: cover;">
-                                <span>{{ $item->tanaman->namaTanaman }}</span>
-                            </div>
-                        </td>
-                        <td class="harga_satuan">{{ number_format($item->harga_satuan) }}</td>
-                        <td>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama Tanaman</th>
+                            <th>Harga</th>
+                            <th>Jumlah</th>
+                            <th>Total Harga</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($cartItems as $item)
+                            <tr>
+                                <td><input type="checkbox" class="plant-checkbox" data-item-id="{{ $item->idTanaman }}"
+                                        data-price="{{ $item->harga_satuan }}"
+                                        data-total="{{ $item->jumlah * $item->harga_satuan }}"
+                                        onclick="updateSubtotal()"></td>
+                                <td>
+                                    <!-- Menampilkan Gambar dan Nama Tanaman di Samping -->
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <img src="{{ asset('images/' . $item->tanaman->gambar) }}"
+                                            alt="{{ $item->tanaman->namaTanaman }}"
+                                            style="width: 50px; height: 50px; object-fit: cover;">
+                                        <span>{{ $item->tanaman->namaTanaman }}</span>
+                                    </div>
+                                </td>
+                                <td class="harga_satuan">{{ number_format($item->harga_satuan) }}</td>
+                                <td>
 
-                            <div class="quantity-wrapper">
-                                <!-- Form untuk Mengurangi Jumlah -->
-                                <form method="POST" action="{{ route('cart.decreaseqty', ['rowId' => $item->idKeranjang]) }}">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="btn-minus">-</button>
-                                </form>
+                                    <div class="quantity-wrapper">
+                                        <!-- Form untuk Mengurangi Jumlah -->
+                                        <form method="POST"
+                                            action="{{ route('cart.decreaseqty', ['rowId' => $item->idKeranjang]) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="btn-minus">-</button>
+                                        </form>
 
-                                <!-- Input untuk Menampilkan Jumlah -->
-                                <input type="text" class="jumlah-input" value="{{ $item->jumlah }}" data-id="{{ $item->idKeranjang }}" readonly>
+                                        <!-- Input untuk Menampilkan Jumlah -->
+                                        <input type="text" class="jumlah-input" value="{{ $item->jumlah }}"
+                                            data-id="{{ $item->idKeranjang }}" readonly>
 
-                                <!-- Form untuk Menambah Jumlah -->
-                                <form method="POST" action="{{ route('cart.increaseqty', ['rowId' => $item->idKeranjang]) }}">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="btn-plus">+</button>
-                                </form>
-                            </div>
-                        </td>
+                                        <!-- Form untuk Menambah Jumlah -->
+                                        <form method="POST"
+                                            action="{{ route('cart.increaseqty', ['rowId' => $item->idKeranjang]) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="btn-plus">+</button>
+                                        </form>
+                                    </div>
+                                </td>
 
-                        <td id="total-{{ $item->idTanaman }}">{{ number_format($item->jumlah * $item->harga_satuan) }}
-                        </td>
-                        <td>
-                            <form action="{{ route('cart.remove', $item->idTanaman) }}" method="POST" onsubmit="return confirmDelete()">
-                                <!-- bagian cahyoooo benerin sini yaaa buat notif sebelum di hapus -->
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Hapus</button>
-                            </form>
+                                <td id="total-{{ $item->idTanaman }}">
+                                    {{ number_format($item->jumlah * $item->harga_satuan) }}
+                                </td>
+                                <td>
+                                    <form id="delete-form-{{ $item->idTanaman }}"
+                                        action="{{ route('cart.remove', $item->idTanaman) }}" method="POST">
+                                        <!-- bagian cahyoooo benerin sini yaaa buat notif sebelum di hapus -->
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger"
+                                            onclick="confirmDelete('{{ $item->idTanaman }}')">Hapus</button>
+                                    </form>
 
-                            <script>
-                                function confirmDelete() {
-                                    return confirm("Apakah Anda yakin ingin menghapus item ini dari keranjang?");
-                                }
-                            </script>
-                            <!-- bagian cahyoooo benerin sini yaaa buat notif sebelum di hapus -->
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                                    <script>
+                                        function confirmDelete(itemId) {
+                                            Swal.fire({
+                                                title: "Apakah Anda yakin?",
+                                                text: "Item ini akan dihapus dari keranjang!",
+                                                icon: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#3085d6",
+                                                cancelButtonColor: "#d33",
+                                                confirmButtonText: "Ya, hapus!",
+                                                cancelButtonText: "Batal"
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    // Submit form jika pengguna mengonfirmasi
+                                                    document.getElementById('delete-form-' + itemId).submit();
+                                                }
+                                            });
+                                        }
+                                    </script>
+                                    <!-- bagian cahyoooo benerin sini yaaa buat notif sebelum di hapus -->
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             @endif
         </div>
 
@@ -474,9 +496,9 @@
                 <button type="submit" class="checkout-btn" id="checkoutButton" disabled>Lanjutkan Ke
                     Pembayaran</button>
                 @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
                 @endif
             </form>
             <script>

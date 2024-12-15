@@ -197,51 +197,76 @@
 
         .testimonials {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            /* Membuat elemen berada di tengah */
+            gap: 20px;
+            /* Jarak antar testimonial */
+            flex-wrap: wrap;
+            /* Elemen turun jika tidak muat */
         }
 
         .testimonial {
             background-color: #fff;
             border-radius: 10px;
+            justify-content: center;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            width: 30%;
+            padding: 30px;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 20px;
+            margin-left: 70px;
+            margin-right: 20px;
             text-align: center;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            /* Rata tengah vertikal */
+            height: 300px;
+            /* Tinggi tetap */
+            transition: transform 0.2s ease;
+        }
+
+        .testimonial:hover {
+            transform: translateY(-10px);
+        }
+
+        .testimonial p {
+            flex-grow: 1;
+            font-size: 1rem;
+            color: #666;
+            margin: 15px 0;
+            /* Isi teks tetap rapi */
         }
 
         .testimonial .quote {
             color: #4B553D;
-            font-size: 24px;
-        }
-
-        .testimonial p {
-            font-size: 16px;
-            color: #666;
-            margin: 20px 0;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
 
         .testimonial .profile {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .testimonial .profile img {
             border-radius: 50%;
             width: 50px;
             height: 50px;
+            object-fit: cover;
             margin-right: 10px;
         }
 
         .testimonial .profile .name {
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: bold;
             color: #333;
         }
 
         .testimonial .profile .role {
-            font-size: 14px;
+            font-size: 0.875rem;
             color: #999;
         }
 
@@ -249,31 +274,6 @@
             color: #f39c12;
             margin-top: 10px;
         }
-
-        .navigation {
-            display: flex;
-            justify-content: center;
-            margin-top: 40px;
-        }
-
-        .navigation .nav-button {
-            background-color: #fff;
-            border: none;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            color: #4B553D;
-            cursor: pointer;
-            font-size: 20px;
-            height: 40px;
-            margin: 0 10px;
-            width: 40px;
-        }
-
-        .navigation .nav-button:hover {
-            background-color: #888;
-            color
-        }
-    
     </style>
 </head>
 
@@ -392,7 +392,6 @@
     <div class="header">
         <h1>Client Testimonial</h1>
     </div>
-
     <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active"></button>
@@ -401,79 +400,120 @@
         </div>
 
         <div class="carousel-inner">
-            <!-- Testimonial 1 -->
+            <!-- Slide 1 -->
             <div class="carousel-item active">
-                <div class="testimonial">
-                    <div class="quote"><i class="fas fa-quote-left"></i></div>
-                    <p>Punya banyak tanaman dari Tanam.in bikin rumah saya jadi lebih asri.</p>
-                    <div class="profile">
-                        <img src="https://via.placeholder.com/50" alt="Robert Fox">
-                        <div class="name">Robert Fox</div>
+                <div class="row">
+                    <!-- Testimonial 1 -->
+                    <div class="col-md-4">
+                        <div class="testimonial">
+                            <div class="quote"><i class="fas fa-quote-left"></i></div>
+                            <p>Punya banyak tanaman dari Tanam.in bikin rumah saya jadi lebih asri.</p>
+                            <div class="profile">
+                                <img src="images/muka2.jpg" alt="Robert Fox">
+                                <div class="name">Chill Guy</div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
                     </div>
-                    <div class="rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                            class="fas fa-star"></i><i class="fas fa-star"></i>
+                    <!-- Testimonial 2 -->
+                    <div class="col-md-4">
+                        <div class="testimonial">
+                            <div class="quote"><i class="fas fa-quote-left"></i></div>
+                            <p>Tanaman dari Tanam.in sangat berkualitas, dan pengirimannya cepat!</p>
+                            <div class="profile">
+                                <img src="images/muka4.jpg"" alt="Jenny Wilson">
+                                <div class="name">Jenny Wilson</div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 3 -->
+                    <div class="col-md-4">
+                        <div class="testimonial">
+                            <div class="quote"><i class="fas fa-quote-left"></i></div>
+                            <p>Pelayanan Tanam.in luar biasa! Saya sangat merekomendasikannya.</p>
+                            <div class="profile">
+                                <img src="images/muka5.jpg" alt="Kristin Watson">
+                                <div class="name">Kristin Watson</div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Testimonial 2 -->
+            <!-- Slide 2 -->
             <div class="carousel-item">
-                <div class="testimonial">
-                    <div class="quote"><i class="fas fa-quote-left"></i></div>
-                    <p>Tanaman dari Tanam.in sangat berkualitas, dan pengirimannya cepat!</p>
-                    <div class="profile">
-                        <img src="https://via.placeholder.com/50" alt="Jenny Wilson">
-                        <div class="name">Jenny Wilson</div>
+                <div class="row">
+                    <!-- Testimonial 4 -->
+                    <div class="col-md-4">
+                        <div class="testimonial">
+                            <div class="quote"><i class="fas fa-quote-left"></i></div>
+                            <p>Tanaman di sini membuat ruangan kerja saya jadi lebih segar.</p>
+                            <div class="profile">
+                                <img src="images/muka1.jpg" alt="Michael Scott">
+                                <div class="name">Michael Scott</div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
                     </div>
-                    <div class="rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                            class="fas fa-star"></i><i class="fas fa-star"></i>
+                    <!-- Testimonial 5 -->
+                    <div class="col-md-4">
+                        <div class="testimonial">
+                            <div class="quote"><i class="fas fa-quote-left"></i></div>
+                            <p>Proses pemesanan mudah, tanaman sampai dalam kondisi baik!</p>
+                            <div class="profile">
+                                <img src="images/muka6.jpg" alt="Pam Beesly">
+                                <div class="name">Pam Beesly</div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Testimonial 3 -->
-            <div class="carousel-item">
-                <div class="testimonial">
-                    <div class="quote"><i class="fas fa-quote-left"></i></div>
-                    <p>Pelayanan Tanam.in luar biasa! Saya sangat merekomendasikannya.</p>
-                    <div class="profile">
-                        <img src="https://via.placeholder.com/50" alt="Kristin Watson">
-                        <div class="name">Kristin Watson</div>
-                    </div>
-                    <div class="rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                            class="fas fa-star"></i><i class="fas fa-star"></i>
+                    <!-- Testimonial 6 -->
+                    <div class="col-md-4">
+                        <div class="testimonial">
+                            <div class="quote"><i class="fas fa-quote-left"></i></div>
+                            <p>Saya suka dengan koleksi tanaman hias yang ditawarkan di sini.</p>
+                            <div class="profile">
+                                <img src="images/muka3.jpg" alt="Jim Halpert">
+                                <div class="name">Trevor Philips</div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel"
-            data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel"
-            data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function myFunction() {
-            var x = document.getElementById("myLinks");
-            if (x.style.display === "block") {
-                x.style.display = "none";
-            } else {
-                x.style.display = "block";
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            function myFunction() {
+                var x = document.getElementById("myLinks");
+                if (x.style.display === "block") {
+                    x.style.display = "none";
+                } else {
+                    x.style.display = "block";
+                }
             }
-        }
-    </script>
+        </script>
 </body>
 
 </html>
