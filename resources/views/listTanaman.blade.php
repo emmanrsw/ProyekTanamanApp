@@ -132,7 +132,7 @@
         position: absolute;
         top: 60px;
         right: 10px;
-        background-color:  #4B553D;
+        background-color: #4B553D;
         border-radius: 5px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         z-index: 1000;
@@ -226,35 +226,35 @@
             <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
-                        <!-- Jika pengguna memiliki gambar profil -->
-                        <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
-                            alt="User Profile" class="rounded-circle" width="30" height="30">
+                    <!-- Jika pengguna memiliki gambar profil -->
+                    <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}" alt="User Profile"
+                        class="rounded-circle" width="30" height="30">
                     @else
-                        <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
-                        <i class="fa fa-user"></i>
+                    <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
+                    <i class="fa fa-user"></i>
                     @endif
                 </a>
                 <div id="myLinks" style="display: none;">
                     @if (Auth::guard('pelanggan')->check())
-                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
-                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
-                        </a>
-                        <a href="#" style="font-size: 1rem;">Ubah Password
+                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                        {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                    </a>
+                    <a href="#" style="font-size: 1rem;">Ubah Password
 
-                        </a>
-                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout
+                    </a>
+                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout
 
-                        </a>
+                    </a>
                     @else
-                        <a href="{{ route('login.login') }}" class="nav-link">Login
+                    <a href="{{ route('login.login') }}" class="nav-link">Login
 
-                        </a>
+                    </a>
                     @endif
                 </div>
             </div>
         </div>
     </nav>
-    {{-- <div class="container"> --}}
+
     <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -268,9 +268,9 @@
             </div>
         </div>
     </div>
-    {{-- </div> --}}
+    {{--
+    </div> --}}
 
-    {{-- <div class="container"> --}}
     <div class="row filter-section">
         <div class="col-md-3">
             <div class="filter-price">
@@ -304,21 +304,20 @@
             </div>
             <div class="product-grid">
                 @foreach ($tanaman as $tanaman)
-                    <div class="product-card">
-                        <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
-                            alt="{{ $tanaman->namaTanaman }}">
-                        <h5>{{ $tanaman->namaTanaman }}</h5>
-                        <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
-                        <button class="btn btn-primary btn-add-to-cart"
-                            data-product='@json($tanaman)'>View Details</button>
-                        <meta name="csrf-token" content="{{ csrf_token() }}">
-                    </div>
+                <div class="product-card">
+                    <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
+                        alt="{{ $tanaman->namaTanaman }}">
+                    <h5>{{ $tanaman->namaTanaman }}</h5>
+                    <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
+                    <button class="btn btn-primary btn-add-to-cart" data-product='@json($tanaman)'>View
+                        Details</button>
+                    <meta name="csrf-token" content="{{ csrf_token() }}">
+                </div>
                 @endforeach
             </div>
         </div>
     </div>
-    </div>
-    </div>
+
     <script>
         document.querySelectorAll('.btn-add-to-cart').forEach(button => {
             button.addEventListener('click', function() {
@@ -391,7 +390,7 @@
         }
 
         function addToCart(productId) {
-            console.log(`Menambahkan produk dengan ID: ${productId} ke keranjang.`);
+            // console.log(`Menambahkan produk dengan ID: ${productId} ke keranjang.`);
 
             // Ambil jumlah dari input yang ada di modal
             const jumlah = document.getElementById('jumlah').value;
