@@ -223,13 +223,18 @@
             <a href="{{ route('cart') }}" class="nav-link">
                 <i class="fa fa-shopping-cart"></i>
             </a>
+            <!-- User Icon -->
             <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
+
                     <!-- Jika pengguna memiliki gambar profil -->
                     <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}" alt="User Profile"
                         class="rounded-circle" width="30" height="30">
-                    @else
+                        
+                        <!-- Jika pengguna memiliki gambar profil -->
+                        <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}" alt="User Profile"
+                            class="rounded-circle" width="30" height="30">                    @else
                     <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
                     <i class="fa fa-user"></i>
                     @endif
@@ -249,6 +254,13 @@
                     <a href="{{ route('login.login') }}" class="nav-link">Login
 
                     </a>
+                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                        </a>
+                        <a href="#" style="font-size: 1rem;">Ubah Password</a>
+                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                    @else
+                        <a href="{{ route('login.login') }}" class="nav-link">Login</a>
                     @endif
                 </div>
             </div>
@@ -318,9 +330,75 @@
         </div>
     </div>
 
+    {{-- <div class="container"> --}}
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="/Img/1bg.png" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="/Img/2bg.png" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="/Img/3bg.png" class="d-block w-100" alt="...">
+                </div>
+            </div>
+        </div>
+        {{--
+    </div> --}}
+
+    {{-- <div class="container"> --}}
+        <div class="row filter-section">
+            <div class="col-md-3">
+                <div class="filter-price">
+                    <p><strong>Price</strong></p>
+                    <form action="{{ route('tanaman.show') }}" method="GET">
+                        <div class="d-flex" style="width: 210px; font-size: 14px;">
+                            <input type="number" name="min_price" class="form-control form-control-sm" placeholder="Min"
+                                value="{{ request('min_price') }}">
+                            <strong class="mx-2">-</strong>
+                            <input type="number" name="max_price" class="form-control form-control-sm" placeholder="Max"
+                                value="{{ request('max_price') }}">
+                        </div>
+                        <button type="submit" class="btn btn-custom mt-3">Apply Filter</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5><strong>Tanaman</strong></h5>
+                    <form method="GET" action="{{ route('tanaman.show') }}">
+                        <select class="form-select" style="width: 110px; font-size: 14px;" aria-label="Sort by"
+                            name="sort" onchange="this.form.submit()">
+                            <option value="default" {{ request('sort') == 'default' ? 'selected' : '' }}>Default
+                            </option>
+                            <option value="price_low_high" {{ request('sort') == 'price_low_high' ? 'selected' : '' }}>
+                                Price: Low to High</option>
+                            <option value="price_high_low" {{ request('sort') == 'price_high_low' ? 'selected' : '' }}>
+                                Price: High to Low</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="product-grid">
+                    @foreach ($tanaman as $tanaman)
+                        <div class="product-card">
+                            <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
+                                alt="{{ $tanaman->namaTanaman }}">
+                            <h5>{{ $tanaman->namaTanaman }}</h5>
+                            <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
+                            <button class="btn btn-primary btn-add-to-cart" data-product='@json($tanaman)'>View
+                                Details</button>
+                            <meta name="csrf-token" content="{{ csrf_token() }}">
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
     <script>
         document.querySelectorAll('.btn-add-to-cart').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const product = JSON.parse(this.dataset.product);
                 showProductModal(product);
             });
@@ -401,7 +479,17 @@
                 return;
             }
 
-            fetch(`/cart/add/${productId}`, {
+            function addToCart(productId) {
+                // Ambil jumlah dari input yang ada di modal
+                const jumlah = document.getElementById('jumlah').value;
+
+                // Pastikan jumlah adalah angka yang valid
+                if (jumlah < 1) {
+                    alert('Jumlah tidak valid');
+                    return;
+                }
+
+                fetch(`/cart/add/${productId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -412,28 +500,31 @@
                         jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
                     })
                 })
-                .then(response => response.json())
-                .then(data => {
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        text: data.message || "Produk berhasil ditambahkan ke keranjang!",
-                        icon: 'success',
-                        confirmButtonText: 'OK'
+                    .then(response => response.json())
+                    .then(data => {
+                        Swal.fire({
+                            title: 'Berhasil!',
+                            text: data.message || "Produk berhasil ditambahkan ke keranjang!",
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
                     })
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
+            function sortProducts() {
+                const sortBy = document.querySelector('.sort-by').value;
+
+                // Mengarahkan ke URL dengan query string untuk pengurutan
+                window.location.href = `?sortBy=${sortBy}`;
+            }
+
         }
 
-        function sortProducts() {
-            const sortBy = document.querySelector('.sort-by').value;
-
-            // Mengarahkan ke URL dengan query string untuk pengurutan
-            window.location.href = `?sortBy=${sortBy}`;
-        }
-
-
+    </script>
+    <script>
         function myFunction() {
             var x = document.getElementById("myLinks");
             if (x.style.display === "block") {
