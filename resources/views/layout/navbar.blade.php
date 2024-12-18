@@ -121,11 +121,6 @@
         vertical-align: baseline;
         /* Menyelaraskan ikon dengan teks secara vertikal */
     }
-    .container-fluid {
-    margin: 0;
-    padding: 0;
-    height: auto;
-}
 </style>
 
 <body>
@@ -141,10 +136,10 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link"
                         href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="tanaman">Tanaman</a></li>
-                <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
-                <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
-                <li class="nav-item"><a class="nav-link" href="pesanan">Pesanan Saya</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('listTanaman') }}">Tanaman</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('kontak') }}">Kontak</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('tentangKami') }}">Tentang Kami</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('pesanan') }}">Pesanan Saya</a></li>
             </ul>
         </div>
         <div class="navbar-icons d-flex align-items-center">
@@ -217,7 +212,7 @@
         @yield('content')
     </div>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
     function myFunction() {
         var x = document.getElementById("myLinks");

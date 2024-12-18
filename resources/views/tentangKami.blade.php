@@ -1,98 +1,8 @@
-<html>
+@extends('layout.navbar')
 
 <head>
-    <title>
-        Tanam.in
-    </title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body {
-            font-family: 'Poppins', 'Poppins';
-            margin: 0;
-            padding: 0;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #000;
-        }
-
-        .navbar-brand .highlight {
-            color: #4B553D;
-        }
-
-        .navbar-nav .nav-link {
-            color: #333;
-            margin-right: 20px;
-        }
-
-        .navbar-icons {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-        }
-
-        .navbar-icons a {
-            margin-left: 20px;
-            color: #333;
-            font-size: 1.2rem;
-        }
-
-        .navbar-toggler-icon {
-            color: #333;
-        }
-
-        .topnav {
-            position: relative;
-        }
-
-        .topnav .icon {
-            font-size: 1.2rem;
-            cursor: pointer;
-            color: #333;
-        }
-
-        #myLinks {
-            position: absolute;
-            top: 60px;
-            right: 10px;
-            background-color: #4B553D;
-            border-radius: 5px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            font-size: 14px;
-            padding: 10px 10px;
-        }
-
-        #myLinks a {
-            color: white;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            margin-left: 0;
-            line-height: 1.5;
-        }
-
-        #myLinks a:hover {
-            background-color: #ddd;
-            color: black;
-            border-radius: 5px;
-        }
-
         .content {
             display: flex;
             justify-content: space-between;
@@ -128,7 +38,7 @@
         .jumbotron img {
             width: 100%;
             /* Memastikan gambar mengambil seluruh lebar elemen */
-            height: 300;
+            height: 200;
             /* Menjaga rasio gambar */
             display: block;
             /* Menghilangkan spasi kecil di bawah gambar */
@@ -277,57 +187,8 @@
     </style>
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="{{ route('home') }}">
-            <span>Tanam</span><span class="highlight">.in</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="tanaman">Tanaman</a></li>
-                <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
-                <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
-                <li class="nav-item"><a class="nav-link" href="pesanan">Pesanan Saya</a></li>
-
-            </ul>
-        </div>
-        <div class="navbar-icons d-flex align-items-center">
-            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#searchModal">
-                <i class="fa fa-search"></i>
-            </a>
-            <a href="{{ route('cart') }}" class="nav-link">
-                <i class="fa fa-shopping-cart"></i>
-            </a>
-            <div class="topnav">
-                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                    @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
-                        <!-- Jika pengguna memiliki gambar profil -->
-                        <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
-                            alt="User Profile" class="rounded-circle" width="30" height="30">
-                    @else
-                        <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
-                        <i class="fa fa-user"></i>
-                    @endif
-                </a>
-                <div id="myLinks" style="display: none;">
-                    @if (Auth::guard('pelanggan')->check())
-                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
-                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
-                        </a>
-                        <a href="#" style="font-size: 1rem;">Ubah Password</a>
-                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
-                    @else
-                        <a href="{{ route('login.login') }}" class="nav-link">Login</a>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </nav>
+@section('content')
+<div class="container-fluid p-0">
     <div class="container-fluid">
         <div class="jumbotron">
             <img src="/Img/backgroundTK.jpg" alt="jumbotron" class="img-fluid">
@@ -424,7 +285,7 @@
                             <div class="quote"><i class="fas fa-quote-left"></i></div>
                             <p>Tanaman dari Tanam.in sangat berkualitas, dan pengirimannya cepat!</p>
                             <div class="profile">
-                                <img src="images/muka4.jpg"" alt="Jenny Wilson">
+                                <img src="images/muka4.jpg"" alt=" Jenny Wilson">
                                 <div class="name">Jenny Wilson</div>
                             </div>
                             <div class="rating">
@@ -502,18 +363,5 @@
                 </div>
             </div>
         </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            function myFunction() {
-                var x = document.getElementById("myLinks");
-                if (x.style.display === "block") {
-                    x.style.display = "none";
-                } else {
-                    x.style.display = "block";
-                }
-            }
-        </script>
-</body>
-
-</html>
+    </div>
+    @endsection

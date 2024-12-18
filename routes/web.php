@@ -7,10 +7,11 @@ Route::get('/', function () {
 });
 Route::get('/tentangKami', function () {
     return view('tentangKami');
-});
+})->name('tentangKami');
+
 Route::get('/kontak', function () {
     return view('kontak');
-});
+})->name('kontak');
 
 use App\Http\Controllers\PelangganController;
 
