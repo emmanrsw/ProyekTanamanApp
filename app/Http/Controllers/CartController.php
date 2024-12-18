@@ -249,4 +249,8 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Jumlah tanaman berhasil dikurangi.');;
     }
+
+
+
+    
 }

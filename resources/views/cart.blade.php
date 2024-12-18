@@ -353,13 +353,10 @@
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
                         <!-- Jika pengguna memiliki gambar profil -->
-<<<<<<< HEAD
                         <img src="{{ asset('storage/' . Auth::guard('pelanggan')->user()->gambarCust) }}" alt="User Profile"
                             class="rounded-circle" width="30" height="30">
-=======
                         <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
                             alt="User Profile" class="rounded-circle" width="30" height="30">
->>>>>>> 83717685cb7613c833d0481ed5920688926333e9
                     @else
                         <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
                         <i class="fa fa-user"></i>
@@ -419,9 +416,7 @@
         </div>
     </div>
     {{-- <div class="container"> --}}
-<<<<<<< HEAD
         @if (session('success'))
-=======
     @if (session('success'))
         <script>
             Swal.fire({
@@ -567,7 +562,6 @@
                     </div>
                 @endif
             </form>
->>>>>>> 83717685cb7613c833d0481ed5920688926333e9
             <script>
                 Swal.fire({
                     position: "center", // Muncul di tengah
