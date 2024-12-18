@@ -53,6 +53,17 @@
         font-size: 1.2rem;
     }
 
+    .nav-link {
+        color: #000;
+        /* Warna default */
+    }
+
+    .nav-link.active {
+        color: #4B553D;
+        /* Warna saat aktif */
+        font-weight: bold;
+    }
+
     .topnav {
         position: relative;
     }
@@ -148,17 +159,41 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link"
-                        href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('listTanaman') }}">Tanaman</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('kontak') }}">Kontak</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('tentangKami') }}">Tentang Kami</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('pesanan') }}">Pesanan Saya</a></li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
+                        href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">
+                        Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('listTanaman') ? 'active' : '' }}"
+                        href="{{ route('listTanaman') }}">
+                        Tanaman
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('kontak') ? 'active' : '' }}" href="{{ route('kontak') }}">
+                        Kontak
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('tentangKami') ? 'active' : '' }}"
+                        href="{{ route('tentangKami') }}">
+                        Tentang Kami
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('pesanan') ? 'active' : '' }}"
+                        href="{{ route('pesanan') }}">
+                        Pesanan Saya
+                    </a>
+                </li>
             </ul>
         </div>
+
         <div class="navbar-icons d-flex align-items-center">
             <!-- Search Icon in Navbar -->
-            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#searchModal">
+            <a href="#" class="nav-link position-relative" data-bs-toggle="modal" data-bs-target="#searchModal">
                 <i class="fa fa-search"></i>
             </a>
 
@@ -190,12 +225,12 @@
             </div>
 
             <!-- Shopping Cart Icon -->
-            <a href="{{ route('cart') }}" class="nav-link">
+            <a href="{{ route('cart') }}" class="nav-link position-relative">
                 <i class="fa fa-shopping-cart"></i>
             </a>
 
             <!-- User Icon -->
-            <div class="topnav">
+            <div class="topnav position-relative">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
                         <!-- Jika pengguna memiliki gambar profil -->
