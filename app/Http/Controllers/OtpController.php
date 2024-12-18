@@ -44,6 +44,8 @@ class OtpController extends Controller
         // Format nomor telepon agar sesuai dengan standar internasional (+62)
         $nomor = $this->formatNomorTelepon($pelanggan->notlpCust);
 
+        Log::info('Nomor telepon yang akan digunakan: ' . $nomor);
+
         // Buat OTP secara acak
         $otp = rand(100000, 999999);
         $waktu = Carbon::now();
@@ -68,28 +70,30 @@ class OtpController extends Controller
     // Memformat nomor telepon agar sesuai dengan format internasional (+62)
     private function formatNomorTelepon($nomor)
     {
-        $nomor = preg_replace('/\D/', '', $nomor); // Hapus karakter selain angka
+        $nomor = preg_replace('/\D/', '', $nomor); // Hapus karakter non-angka
         if (substr($nomor, 0, 1) === '0') {
-            return '+62' . substr($nomor, 1); // Jika dimulai dengan 0, ganti menjadi +62
+            return '+62' . substr($nomor, 1); // Ganti 0 di awal dengan +62
+        }
+        if (substr($nomor, 0, 2) === '62') {
+            return '+' . $nomor; // Tambahkan "+" jika dimulai dengan 62
         }
         if (substr($nomor, 0, 3) !== '+62') {
-            return '+62' . $nomor; // Jika tidak ada +62, tambahkan +62
+            return '+62' . $nomor; // Tambahkan +62 jika belum ada
         }
-        return $nomor; // Kembalikan nomor jika sudah sesuai format
+        return $nomor;
     }
 
+    // Mengirim OTP ke WhatsApp menggunakan API eksternal
     protected function sendOtpToWhatsapp($nomor, $otp)
     {
-        // Menyiapkan data untuk dikirim ke API WhatsApp
         $data = [
             'target' => $nomor,
             'message' => "Your OTP: " . $otp
         ];
 
-        // Inisialisasi cURL untuk mengirim permintaan ke API
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            "Authorization: WZnBcwQ94dJrZA9ZzcLu" // API key untuk Fonnte atau API yang digunakan
+            "Authorization: WZnBcwQ94dJrZA9ZzcLu" // API key Anda
         ]);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -97,22 +101,32 @@ class OtpController extends Controller
         curl_setopt($curl, CURLOPT_URL, "https://api.fonnte.com/send"); // URL API WhatsApp
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+
         $result = curl_exec($curl);
 
-        // Debug jika terjadi kesalahan
         if (curl_errno($curl)) {
-            Log::error('Curl error: ' . curl_error($curl)); // Log error jika terjadi masalah
-            return false; // Jika ada error cURL, return false
-        } else {
-            Log::info('Response from WhatsApp API: ' . $result);
-            $decodedResponse = json_decode($result, true);
-            Log::info('Decoded Response: ' . print_r($decodedResponse, true)); // Log respons yang sudah di-decode
+            Log::error('Curl error: ' . curl_error($curl));
+            curl_close($curl);
+            return false;
         }
 
         curl_close($curl);
-        return true; // Jika berhasil, return true
-    }
 
+        // Debug respons API
+        $decodedResponse = json_decode($result, true);
+        if (!$decodedResponse) {
+            Log::error('Failed to decode API response: ' . $result);
+            return false;
+        }
+
+        if (isset($decodedResponse['status']) && $decodedResponse['status'] == 'success') {
+            Log::info('OTP sent successfully to ' . $nomor);
+            return true;
+        }
+
+        Log::error('Failed to send OTP: ' . $result);
+        return false;
+    }
 
     // Verifikasi OTP yang dimasukkan oleh pengguna
     public function verifyOtp(Request $request)
