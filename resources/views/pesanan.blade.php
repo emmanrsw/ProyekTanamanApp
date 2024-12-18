@@ -233,7 +233,7 @@
             </ul>
         </div>
     </nav>
-    <h2 style="text-align: center; font-size: 20px; margin-top:15px; ">Klik button dibawah ini untuk melihat pesanan!</h2>
+
     <section class="banner">
         <!-- Sedang Dikemas -->
         <div class="icon-container" id="sedangDikemas" onclick="toggleSection('sedangDikemas')"
@@ -256,6 +256,7 @@
             <span class="text">Selesai</span>
         </div>
     </section>
+    <h2 style="text-align: center; font-size: 20px; margin-top:15px; ">Klik button diatas ini untuk melihat pesanan!</h2>
 
     <!-- Tampilkan Konten untuk Sedang Dikemas -->
     <div id="tabelSedangDikemas" class="hidden card-container">
