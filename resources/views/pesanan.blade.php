@@ -5,17 +5,113 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <style>
-    .banner {
+    /* Card Styling */
+    .card {
         display: flex;
+        flex-direction: row;
+        align-items: center;
+        /* Agar isi card sejajar secara horizontal */
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .card-content {
+        display: flex;
+        flex-direction: row;
+        /* Menyusun gambar di kiri dan konten di kanan secara horizontal */
         justify-content: space-between;
         align-items: center;
-        background-color: #f5f7f0;
-        padding: 80px 40px;
         width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
+        padding: 5px;
+    }
+
+    .card:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        /* Efek hover untuk meningkatkan interaktivitas */
+    }
+
+    .card img {
+        width: 120px;
+        /* Ukuran gambar yang konsisten */
+        height: 120px;
+        /* Sesuaikan tinggi agar proporsional */
+        object-fit: cover;
+        /* Agar gambar tetap terpotong dengan proporsional */
+        margin-right: 15px;
+        /* Memberikan jarak antar gambar dan informasi */
+        flex-shrink: 0;
+        /* Gambar tidak akan mengecil jika konten di kanan terlalu besar */
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 15px;
+        flex-grow: 1;
+        /* Membuat card-body mengisi sisa ruang */
+    }
+
+    .card h5 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: bold;
+        color: #4B553D;
+    }
+
+    .card-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin-left: 15px;
+        /* Memberikan jarak antar gambar dan informasi */
+        flex-grow: 1;
+        /* Agar informasi mengisi sisa ruang */
+    }
+
+    .card-info h6 {
+        margin-bottom: 5px;
+        font-size: 14px;
+        font-weight: normal;
+    }
+
+    .card-info p {
+        margin: 3px 0;
+        font-size: 14px;
+    }
+
+    .card p {
+        margin: 3px 0;
+        font-size: 14px;
+        color: #6c757d;
+    }
+
+    /* Container for all cards */
+    .card-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* Add spacing and a clear structure for the section */
+    #tabelSedangDikemas,
+    #tabelDikirim,
+    #tabelSelesai {
+        display: none;
+    }
+
+    /* Styling for each section's header */
+    .banner {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background-color: #f5f7f0;
+        /* padding: 10px 40px; */
         margin-top: 20px;
-        height: 100px;
         border-radius: 10px;
     }
 
@@ -27,151 +123,46 @@
         justify-content: center;
         padding: 20px;
         transition: background-color 0.3s ease;
+        text-align: center;
     }
 
     .icon-container i {
         font-size: 2rem;
+        margin-bottom: 8px;
     }
 
     .icon-container .text {
-        font-size: 1.5rem;
-    }
-
-    .btn-custom {
-        background-color: #4B553D;
-        color: white;
-        padding: 15px 30px;
-        border-radius: 5px;
-        font-size: 1rem;
-        border: none;
-    }
-
-    .btn-custom:hover {
-        background-color: gray;
-    }
-
-    #barangAda {
-        background-color: #4B553D;
-        color: white;
-        padding: 10px;
-        border-radius: 5px;
-    }
-
-    #barangTidakAda {
-        background-color: #dc3545;
-        color: white;
-        padding: 10px;
-        border-radius: 5px;
-    }
-
-    #belanjaBtn.hidden {
-        display: none;
-    }
-
-    #sedangDikemas,
-    #dikirim,
-    #selesai {
-        opacity: 0.5;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-
-    #sedangDikemas.active,
-    #dikirim.active,
-    #selesai.active {
-        opacity: 1;
-        transform: scale(1.1);
+        font-size: 1.2rem;
+        color: #6c757d;
     }
 
     .icon-container.active {
         color: #4B553D;
     }
 
-    #pesananSedangDikemas,
-    #pesananDikirim,
-    #pesananSelesai {
-        display: none;
-    }
-
-    .icon-container[style="pointer-events: none;"] {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    .card {
-        display: flex;
-        flex-direction: row;
-        /* Gambar di kiri dan konten di kanan */
-        align-items: left;
-        margin-bottom: 15px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        overflow: hidden;
-    }
-
-    .card img {
-        max-width: 120px;
-        margin-right: 15px;
-        object-fit: cover;
-        height: auto;
-    }
-
-    .card-body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 15px;
-    }
-
-    .card h5 {
-        margin: 0;
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-    .card p {
-        margin: 5px 0;
-        font-size: 14px;
-    }
-
-    .card-container {
-        display: flex;
-        flex-direction: column;
-        /* Card akan menurun satu per satu */
-        gap: 15px;
-    }
-
-    .hidden {
-        display: none;
-    }
-
-    .card-content {
-        display: flex;
-        /* Menjadikan flexbox untuk sejajar horizontal */
-        align-items: left;
-        /* Vertikal tengah */
-    }
-
+    /* Hint message */
     #hintMessage {
         background-color: #f8f9fa;
-        /* Warna latar belakang abu-abu terang */
         border: 1px dashed #ccc;
-        /* Border berupa garis putus-putus */
         padding: 20px;
         margin: 20px auto;
         border-radius: 8px;
         font-size: 1rem;
         color: #4B553D;
         max-width: 500px;
-        /* Lebar maksimum */
     }
 
-    .btn-primary {
-        background-color: #4B553D;
+    /* General Styling for the page */
+    .container-fluid {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
     }
 </style>
 
 @section('content')
     <div class="container-fluid p-0">
+        <!-- Banner -->
         <section class="banner">
             <!-- Sedang Dikemas -->
             <div class="icon-container" id="sedangDikemas" onclick="toggleSection('sedangDikemas')"
@@ -195,27 +186,27 @@
             </div>
         </section>
 
-        <!-- Tampilkan Konten untuk Sedang Dikemas -->
+        <!-- Konten Sedang Dikemas -->
         <div id="tabelSedangDikemas" class="hidden card-container">
             @if ($sedangDikemas->isNotEmpty())
                 @foreach ($sedangDikemas as $transaksi)
                     <div class="card">
-                        <div class="card-body">
-                            <h5>Transaksi ID: {{ $transaksi->idTJual }}</h5>
-                            <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
-                            <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
-                            @foreach ($transaksi->details as $detail)
-                                <div class="card-content">
-                                    <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
-                                        alt="Gambar Tanaman {{ $detail->tanaman->gambar }}"
-                                        onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
-                                    <div>
-                                        <h6>{{ $detail->tanaman->namaTanaman }}</h6>
-                                        <p>Jumlah: {{ $detail->jumlah }}</p>
-                                    </div>
+                        <!-- Gambar Tanaman -->
+                        @foreach ($transaksi->details as $detail)
+                            <div class="card-content">
+                                <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
+                                    alt="Gambar Tanaman {{ $detail->tanaman->gambar }}"
+                                    onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
+                                <!-- Informasi Transaksi -->
+                                <div class="card-info">
+                                    <h5>Transaksi ID: {{ $transaksi->idTJual }}</h5>
+                                    <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
+                                    <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
+                                    <h6>Jumlah: {{ $detail->jumlah }}</h6>
+                                    <p>{{ $detail->tanaman->namaTanaman }}</p>
                                 </div>
-                            @endforeach
-                        </div>
+                            </div>
+                        @endforeach
                     </div>
                 @endforeach
             @else
@@ -223,26 +214,25 @@
             @endif
         </div>
 
+        <!-- Konten Dikirim -->
         <div id="tabelDikirim" class="hidden card-container">
             @if ($dikirim->isNotEmpty())
                 @foreach ($dikirim as $transaksi)
                     <div class="card">
-                        <div class="card-body">
-                            <h5>Transaksi ID: {{ $transaksi->idTJual }}</h5>
-                            <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
-                            <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
-                            @foreach ($transaksi->details as $detail)
-                                <div class="card-content">
-                                    <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
-                                        alt="Gambar Tanaman {{ $detail->tanaman->gambar }}"
-                                        onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
-                                    <div>
-                                        <h6>{{ $detail->tanaman->namaTanaman }}</h6>
-                                        <p>Jumlah: {{ $detail->jumlah }}</p>
-                                    </div>
+                        @foreach ($transaksi->details as $detail)
+                            <div class="card-content">
+                                <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
+                                    alt="Gambar Tanaman {{ $detail->tanaman->gambar }}"
+                                    onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
+                                <div class="card-info">
+                                    <h5>Transaksi ID: {{ $transaksi->idTJual }}</h5>
+                                    <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
+                                    <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
+                                    <h6>Jumlah: {{ $detail->jumlah }}</h6>
+                                    <p>{{ $detail->tanaman->namaTanaman }}</p>
                                 </div>
-                            @endforeach
-                        </div>
+                            </div>
+                        @endforeach
                     </div>
                 @endforeach
             @else
@@ -250,26 +240,25 @@
             @endif
         </div>
 
+        <!-- Konten Selesai -->
         <div id="tabelSelesai" class="hidden card-container">
             @if ($selesai->isNotEmpty())
                 @foreach ($selesai as $transaksi)
                     <div class="card">
-                        <div class="card-body">
-                            <h5>Transaksi ID: {{ $transaksi->idTJual }}</h5>
-                            <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
-                            <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
-                            @foreach ($transaksi->details as $detail)
-                                <div class="card-content">
-                                    <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
-                                        alt="Gambar Tanaman {{ $detail->tanaman->gambar }}"
-                                        onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
-                                    <div>
-                                        <h6>{{ $detail->tanaman->namaTanaman }}</h6>
-                                        <p>Jumlah: {{ $detail->jumlah }}</p>
-                                    </div>
+                        @foreach ($transaksi->details as $detail)
+                            <div class="card-content">
+                                <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
+                                    alt="Gambar Tanaman {{ $detail->tanaman->gambar }}"
+                                    onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
+                                <div class="card-info">
+                                    <h5>Transaksi ID: {{ $transaksi->idTJual }}</h5>
+                                    <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
+                                    <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
+                                    <h6>Jumlah: {{ $detail->jumlah }}</h6>
+                                    <p>{{ $detail->tanaman->namaTanaman }}</p>
                                 </div>
-                            @endforeach
-                        </div>
+                            </div>
+                        @endforeach
                     </div>
                 @endforeach
             @else
@@ -290,23 +279,18 @@
             </div>
         @endif
     </div>
+
     <script>
         function toggleSection(section) {
-            // Reset semua tabel dan ikon
             const sections = ['sedangDikemas', 'dikirim', 'selesai'];
             sections.forEach(sec => {
-                // Menyembunyikan tabel yang tidak relevan
                 document.getElementById('tabel' + capitalizeFirstLetter(sec)).style.display = 'none';
-                // Menghapus kelas 'active' dari ikon
                 document.getElementById(sec).classList.remove('active');
             });
 
-            // Menampilkan tabel yang sesuai dengan status yang dipilih
             document.getElementById('tabel' + capitalizeFirstLetter(section)).style.display = 'block';
-            // Menambahkan kelas 'active' pada ikon yang diklik
             document.getElementById(section).classList.add('active');
 
-            // Sembunyikan pesan petunjuk setelah klik
             const hintMessage = document.getElementById('hintMessage');
             if (hintMessage) {
                 hintMessage.style.display = 'none';
