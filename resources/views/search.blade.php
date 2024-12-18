@@ -52,48 +52,70 @@
         font-size: 1.2rem;
     }
 
+    /* Styling for the product grid */
     .product-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        /* Responsive grid layout */
         gap: 20px;
-        margin-top: 20px;
+        padding: 20px;
     }
 
+    /* Styling for individual product cards */
     .product-card {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 16px;
-        text-align: center;
         background-color: #fff;
+        border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s;
+        overflow: hidden;
+        text-align: center;
+        padding: 15px;
+        transition: transform 0.3s ease;
     }
 
     .product-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
-        /* Shadow saat hover */
+        /* Subtle hover effect */
     }
 
+    /* Image styling inside product card */
     .product-card img {
         width: 100%;
         height: auto;
-        border-radius: 5px;
-        margin-bottom: 10px;
+        border-radius: 8px;
+        object-fit: cover;
     }
 
-    .product-card h5 {
+    /* Styling for product info section (title and price) */
+    .product-info {
+        margin: 10px 0;
+    }
+
+    .product-info h5 {
         font-size: 18px;
-        /* Ukuran font heading */
-        font-weight: bold;
-        margin-bottom: 5px;
+        margin: 10px 0;
+        color: #333;
     }
 
-    .product-card p {
+    .product-info p {
         font-size: 16px;
-        /* Ukuran font untuk teks lainnya */
-        margin-bottom: 10px;
+        color: #777;
     }
+
+    /* Button styling */
+    .btn-add-to-cart {
+        background-color: #007bff;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-add-to-cart:hover {
+        background-color: #0056b3;
+    }
+
 
     .btn-primary {
         font-size: 16px;
@@ -109,6 +131,7 @@
         background-color: #3a422f;
     }
 
+    /* card */
     .modal-dialog {
         max-width: 500px;
         /* Atur ukuran maksimum modal */
@@ -227,8 +250,7 @@
                 </div>
                 <div class="modal-body">
                     <form action="{{ route('searchTanaman') }}" method="GET">
-                        <input type="text" name="query" class="form-control" placeholder="Cari tanaman..."
-                            required>
+                        <input type="text" name="query" class="form-control" placeholder="Cari tanaman..." required>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -257,32 +279,34 @@
         </div>
     </div>
     <div class="container">
-
-        {{-- <h3>Hasil Pencarian : {{ $query }}</h3> --}}
-
         @if (isset($message))
-            <div class="alert alert-warning">
+            <div class="alert alert-danger mt-4">
                 {{ $message }}
-            </div>
-        @else
-            <div class="product-grid">
+            </div> @else
+        <!-- Display search query -->
+        @if(isset($query))
+            <h3 style="margin-top: 10px; font-weight: 650;font-size: 20px;">Hasil Pencarian: {{ $query }}</h3>
+        @endif
+            <div class="product-grid mb-4">
                 @foreach ($tanamans as $tanaman)
                     <div class="product-card">
                         <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
                             alt="{{ $tanaman->namaTanaman }}">
-                        <h5>{{ $tanaman->namaTanaman }}</h5>
-                        <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
-                        <button class="btn btn-primary btn-add-to-cart"
-                            data-product='@json($tanaman)'>View Details</button>
+                        <div class="product-info">
+                            <h5>{{ $tanaman->namaTanaman }}</h5>
+                            <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
+                        </div>
+                        <button class="btn btn-primary btn-add-to-cart" data-product='@json($tanaman)'>View Details</button>
                     </div>
                 @endforeach
             </div>
         @endif
     </div>
 
+
     <script>
         document.querySelectorAll('.btn-add-to-cart').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const product = JSON.parse(this.dataset.product);
                 showProductModal(product);
             });
@@ -358,15 +382,15 @@
             }
 
             fetch(`/cart/add/${productId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        jumlah
-                    })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    jumlah
                 })
+            })
                 .then(response => response.json())
                 .then(data => {
                     Swal.fire({
