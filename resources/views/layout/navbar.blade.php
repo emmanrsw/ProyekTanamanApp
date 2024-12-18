@@ -121,6 +121,20 @@
         vertical-align: baseline;
         /* Menyelaraskan ikon dengan teks secara vertikal */
     }
+
+    .btn-primary {
+        background-color: #4B553D;
+        /* Ganti dengan warna yang diinginkan */
+        border-color: #4B553D;
+        /* Ganti dengan warna yang diinginkan */
+    }
+
+    .btn-primary:hover {
+        background-color: gray;
+        /* Ganti dengan warna yang lebih gelap saat tombol dihover */
+        border-color: gray;
+        /* Ganti dengan warna yang lebih gelap saat tombol dihover */
+    }
 </style>
 
 <body>

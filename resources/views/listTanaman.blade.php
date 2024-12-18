@@ -1,5 +1,7 @@
 @extends('layout.navbar')
-
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
 <style>
     button.btn-custom {
         background-color: #4B553D;

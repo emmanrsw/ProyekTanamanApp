@@ -416,8 +416,7 @@
             </div>
         </div>
     </div>
-    {{-- <div class="container"> --}}
-    @if (session('success'))
+    
     @if (session('success'))
     <script>
         Swal.fire({
