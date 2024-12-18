@@ -179,7 +179,7 @@
                                 <div class="d-flex align-items-center">
                                     <img src="{{ asset('images/' . $item->gambar) }}" alt="{{ $item->namaTanaman }}"
                                         class="img-thumbnail" width="40">
-                                    <div class="ml-3">
+                                    <div class="ml-3 text-left ">
                                         <strong>{{ $item->namaTanaman }}</strong>
                                         <p class="text-muted">{{ $item->deskripsi }}</p>
                                     </div>
