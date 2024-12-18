@@ -25,32 +25,40 @@
             margin-top: 20px;
         }
 
-        .back-btn {
-            background-color: #6c757d;
+        .logout-btn {
+            background-color:rgb(143, 253, 170);
             color: white;
             border-radius: 5px;
             padding: 10px 20px;
             font-size: 16px;
-            cursor: pointer;
-            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        .logout-btn a{
+            color :#4B553D;
+        }
+        .logout-btn:hover {
+            background-color: #5a6268;
+            text-decoration: none;
         }
 
-        .back-btn:hover {
-            background-color: #5a6268;
+        .navbar {
+            color: #333;
         }
     </style>
 </head>
 
 <body>
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0" style="font-weight: bold; font-size: 35px; color: #243a56">Daftar Tanaman</h1>
-
-        <a href="{{ route('homeKywn') }}" class="logout-btn">
-            <i class="fas fa-sign-out-alt"></i> Kembali
-        </a>
-    </div>
-
-
+    <!-- Navbar Container -->
+    <nav class="navbar navbar-expand-lg" style="background-color: #4B553D">
+        <div class="container"> 
+            <h1 class="navbar-brand mb-0" style="font-weight: bold; font-size: 35px; color: #f4f4f4">Daftar Tanaman</h1>
+            <a href="{{ route('homeKywn') }}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Kembali
+            </a>
+        </div>
+    </nav>
 
     <div class="container">
         <h1>Nama Tanaman: {{ $tanaman->namaTanaman }}</h1>
@@ -68,19 +76,17 @@
             </thead>
             <tbody>
                 @foreach ($stokLogs as $log)
-                <tr>
-                    <td>{{ $log->jumlah_sebelumnya }}</td>
-                    <td>{{ \Carbon\Carbon::parse($log->tanggal)->format('d-M') }}</td>
-                    <td>{{ $log->jumlah_terjual }}</td>
-                    <td>{{ $log->jumlah_masuk }}</td>
-                    <td>{{ $log->jumlah_baru }}</td>
-                </tr>
+                    <tr>
+                        <td>{{ $log->jumlah_sebelumnya }}</td>
+                        <td>{{ \Carbon\Carbon::parse($log->tanggal)->format('d-M') }}</td>
+                        <td>{{ $log->jumlah_terjual }}</td>
+                        <td>{{ $log->jumlah_masuk }}</td>
+                        <td>{{ $log->jumlah_baru }}</td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
         <a href="{{ route('editTanaman', ['id' => $tanaman->idTanaman]) }}" class="btn btn-warning">Edit Tanaman</a>
-
-
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

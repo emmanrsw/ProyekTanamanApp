@@ -101,7 +101,10 @@ class AuthController extends Controller
             // return redirect()->route('login.login');
             return redirect()->route('login.login')->with('msg', 'Registrasi berhasil! Anda dapat login.');
         } else {
-            return redirect()->back()->withErrors($cradential)->withInput();
+            // return redirect()->back()->withErrors($cradential)->withInput();
+          
+                return redirect()->back()->withInput()->with('error', 'Konfirmasi password tidak sesuai!');
+            
         }
     }
 
