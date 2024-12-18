@@ -1,146 +1,149 @@
-
-// function addToCart(productId) {
-        //     fetch(`/cart/add/${productId}`, {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        //             },
-        //             body: JSON.stringify({
-        //                 productId: productId
-        //             })
-        //         })
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             alert(data.message || "Produk berhasil ditambahkan ke keranjang!");
-        //         })
-        //         .catch(error => {
-        //             console.error('Error:', error);
-        //         });
-        // }
-        // function addToCart(productId) {
-        //     // Ambil jumlah dari input yang ada di modal
-        //     const jumlah = document.getElementById('jumlah').value;
-
-        //     // Pastikan jumlah adalah angka yang valid
-        //     if (jumlah < 1) {
-        //         alert('Jumlah tidak valid');
-        //         return;
-        //     }
-
-        //     fetch(`/cart/add/${productId}`, {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        //             },
-        //             body: JSON.stringify({
-        //                 productId: productId,
-        //                 jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
-        //             })
-        //         })
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             Swal.fire({
-        //                 title: 'Berhasil!',
-        //                 text: data.message || "Produk berhasil ditambahkan ke keranjang!",
-        //                 icon: 'success',
-        //                 confirmButtonText: 'OK'
-        //             })
-        //         })
-        //         .catch(error => {
-        //             console.error('Error:', error);
-        //         });
-        // }
-
-
-
-
-
-
-
-
-
-
-function addToCart(productId) {
-            // Ambil jumlah dari input yang ada di modal
-            const jumlah = document.getElementById('jumlah').value;
-
-            // Debugging: Cek apakah jumlah sudah terambil dengan benar
-            console.log('Jumlah:', jumlah);
-
-            // Pastikan jumlah adalah angka yang valid dan lebih besar dari 0
-            if (isNaN(jumlah) || jumlah < 1) {
-                alert('Jumlah tidak valid. Masukkan angka yang lebih besar dari 0.');
-                return;
-            }
-
-            // Cek apakah CSRF token ada
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            if (!csrfToken) {
-                console.error('CSRF Token tidak ditemukan!');
-                alert('Terjadi masalah dengan CSRF token.');
-                return;
-            }
-
-            // Menampilkan data yang akan dikirim untuk debugging
-            console.log('Mengirim data ke server:', {
-                productId: productId,
-                jumlah: jumlah
+<<<<<<< HEAD
+        @if (session('success'))
+=======
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                position: "center", // Muncul di tengah
+                icon: "success", // Ikon sukses
+                title: "{{ session('success') }}", // Pesan sukses
+                showConfirmButton: false, // Tidak ada tombol konfirmasi
+                timer: 1000, // Waktu tampil 3 detik
+                customClass: {
+                    popup: 'swal-wide' // Tambahkan kelas kustom untuk lebar popup
+                }
             });
+        </script>
+    @endif
 
-            // Kirim data ke server menggunakan Fetch API
-            fetch(`/cart/add/${productId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({
-                        productId: productId,
-                        jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
-                    })
-                })
-                // .then(response => {
-                //     if (!response.ok) {
-                //         throw new Error('Response tidak berhasil');
-                //     }
-                //     return response.json();
-                // })
-                .then(response => response.json())
-                .then(data => {
-                    // Menampilkan notifikasi sukses dengan SweetAlert
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        text: data.message || "Produk berhasil ditambahkan ke keranjang!",
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
-                })
-                .catch(error => {
-                    // Menangani error jika ada masalah saat pengiriman
-                    console.error('Error:', error);
-                    Swal.fire({
-                        title: 'Oops!',
-                        text: 'Terjadi kesalahan, silakan coba lagi.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                });
-        }
+    <div class="cart-container">
+        <!-- Bagian Keranjang Belanja -->
+        <div class="cart-items">
+            @if ($cartItems->isEmpty())
+                <p>Keranjang Anda kosong.</p>
+            @else
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama Tanaman</th>
+                            <th>Harga</th>
+                            <th>Jumlah</th>
+                            <th>Total Harga</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($cartItems as $item)
+                            <tr>
+                                <td><input type="checkbox" class="plant-checkbox" data-item-id="{{ $item->idTanaman }}"
+                                        data-price="{{ $item->harga_satuan }}"
+                                        data-total="{{ $item->jumlah * $item->harga_satuan }}"
+                                        onclick="updateSubtotal()"></td>
+                                <td>
+                                    <!-- Menampilkan Gambar dan Nama Tanaman di Samping -->
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <img src="{{ asset('images/' . $item->tanaman->gambar) }}"
+                                            alt="{{ $item->tanaman->namaTanaman }}"
+                                            style="width: 50px; height: 50px; object-fit: cover;">
+                                        <span>{{ $item->tanaman->namaTanaman }}</span>
+                                    </div>
+                                </td>
+                                <td class="harga_satuan">{{ number_format($item->harga_satuan) }}</td>
+                                <td>
 
-        function sortProducts() {
-            const sortBy = document.querySelector('.sort-by').value;
+                                    <div class="quantity-wrapper">
+                                        <!-- Form untuk Mengurangi Jumlah -->
+                                        <form method="POST"
+                                            action="{{ route('cart.decreaseqty', ['rowId' => $item->idKeranjang]) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="btn-minus">-</button>
+                                        </form>
 
-            // Mengarahkan ke URL dengan query string untuk pengurutan
-            window.location.href = `?sortBy=${sortBy}`;
-        }
+                                        <!-- Input untuk Menampilkan Jumlah -->
+                                        <input type="text" class="jumlah-input" value="{{ $item->jumlah }}"
+                                            data-id="{{ $item->idKeranjang }}" readonly>
 
-        function myFunction() {
-            var x = document.getElementById("myLinks");
-            if (x.style.display === "block") {
-                x.style.display = "none";
-            } else {
-                x.style.display = "block";
-            }
-        }
+                                        <!-- Form untuk Menambah Jumlah -->
+                                        <form method="POST"
+                                            action="{{ route('cart.increaseqty', ['rowId' => $item->idKeranjang]) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="btn-plus">+</button>
+                                        </form>
+                                    </div>
+                                </td>
+
+                                <td id="total-{{ $item->idTanaman }}">
+                                    {{ number_format($item->jumlah * $item->harga_satuan) }}
+                                </td>
+                                <td>
+                                    <form id="delete-form-{{ $item->idTanaman }}"
+                                        action="{{ route('cart.remove', $item->idTanaman) }}" method="POST">
+                                        <!-- bagian cahyoooo benerin sini yaaa buat notif sebelum di hapus -->
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger"
+                                            onclick="confirmDelete('{{ $item->idTanaman }}')">Hapus</button>
+                                    </form>
+
+                                    <script>
+                                        function confirmDelete(itemId) {
+                                            Swal.fire({
+                                                title: "Apakah Anda yakin?",
+                                                text: "Item ini akan dihapus dari keranjang!",
+                                                icon: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#3085d6",
+                                                cancelButtonColor: "#d33",
+                                                confirmButtonText: "Ya, hapus!",
+                                                cancelButtonText: "Batal"
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    // Submit form jika pengguna mengonfirmasi
+                                                    document.getElementById('delete-form-' + itemId).submit();
+                                                }
+                                            });
+                                        }
+                                    </script>
+                                    <!-- bagian cahyoooo benerin sini yaaa buat notif sebelum di hapus -->
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
+        </div>
+
+        <!-- Bagian Jumlah Keranjang -->
+        <div class="cart-summary">
+            <h5>Ringkasan Keranjang</h5>
+            <table>
+                <tr>
+                    <td>SUBTOTAL</td>
+                    <td class="subtotal">Rp0</td>
+                </tr>
+                <tr>
+                    <td>PAJAK (5%)</td>
+                    <td id="tax">Rp0</td>
+                </tr>
+                <tr class="total">
+                    <td>TOTAL</td>
+                    <td>Rp0</td>
+                </tr>
+            </table>
+
+            <form action="{{ route('transaksi') }}" method="POST" id="checkoutForm">
+                @csrf
+                <!-- Elemen hidden input untuk mengirim data checkbox -->
+                <input type="hidden" name="selectedItems" id="selectedItems">
+                <button type="submit" class="checkout-btn" id="checkoutButton" disabled>Lanjutkan Ke
+                    Pembayaran</button>
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+            </form>
+>>>>>>> 83717685cb7613c833d0481ed5920688926333e9
