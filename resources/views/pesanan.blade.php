@@ -233,55 +233,54 @@
             </ul>
         </div>
     </nav>
-
     <section class="banner">
-        <!-- Sedang Dikemas -->
-        <div class="icon-container" id="sedangDikemas" onclick="toggleSection('sedangDikemas')"
-            @if ($sedangDikemas->isEmpty() && $dikirim->isEmpty() && $selesai->isEmpty()) style="pointer-events: none;" @endif>
-            <i class="fa-solid fa-box-open"></i>
-            <span class="text">Sedang dikemas</span>
-        </div>
-
-        <!-- Dikirim -->
-        <div class="icon-container" id="dikirim" onclick="toggleSection('dikirim')"
-            @if ($sedangDikemas->isEmpty() && $dikirim->isEmpty() && $selesai->isEmpty()) style="pointer-events: none;" @endif>
-            <i class="fa-solid fa-truck-fast"></i>
-            <span class="text">Dikirim</span>
-        </div>
-
-        <!-- Selesai -->
-        <div class="icon-container" id="selesai" onclick="toggleSection('selesai')"
-            @if ($sedangDikemas->isEmpty() && $dikirim->isEmpty() && $selesai->isEmpty()) style="pointer-events: none;" @endif>
-            <i class="fa-solid fa-circle-check"></i>
-            <span class="text">Selesai</span>
-        </div>
-    </section>
-    <h2 style="text-align: center; font-size: 20px; margin-top:15px; ">Klik button diatas ini untuk melihat pesanan!</h2>
-
-    <!-- Tampilkan Konten untuk Sedang Dikemas -->
-    <div id="tabelSedangDikemas" class="hidden card-container">
-        @if ($sedangDikemas->isNotEmpty())
-        @foreach ($sedangDikemas as $transaksi)
-        @foreach ($transaksi->details as $detail)
-        <div class="card">
-            <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
-                alt="Gambar Tanaman {{ $detail->gambar }}"
-                onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
-            <div class="card-body">
-                <h5>{{ $detail->tanaman->namaTanaman }}</h5>
-                <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
-                <p>Jumlah: {{ $detail->jumlah }}</p>
-                <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
-            </div>
-        </div>
-        @endforeach
-        @endforeach
-        @else
-        <div class="text-center w-100">Tidak ada tanaman yang sedang dikemas.</div>
-        @endif
+    <!-- Sedang Dikemas -->
+    <div class="icon-container" id="sedangDikemas" onclick="toggleSection('sedangDikemas')"
+        @if ($sedangDikemas->isEmpty() && $dikirim->isEmpty() && $selesai->isEmpty()) style="pointer-events: none;" @endif>
+        <i class="fa-solid fa-box-open"></i>
+        <span class="text">Sedang dikemas</span>
     </div>
 
+    <!-- Dikirim -->
+    <div class="icon-container" id="dikirim" onclick="toggleSection('dikirim')"
+        @if ($sedangDikemas->isEmpty() && $dikirim->isEmpty() && $selesai->isEmpty()) style="pointer-events: none;" @endif>
+        <i class="fa-solid fa-truck-fast"></i>
+        <span class="text">Dikirim</span>
+    </div>
 
+    <!-- Selesai -->
+    <div class="icon-container" id="selesai" onclick="toggleSection('selesai')"
+        @if ($sedangDikemas->isEmpty() && $dikirim->isEmpty() && $selesai->isEmpty()) style="pointer-events: none;" @endif>
+        <i class="fa-solid fa-circle-check"></i>
+        <span class="text">Selesai</span>
+    </div>
+</section>
+
+<!-- Teks untuk mengarahkan user -->
+<h2 id="instruction" style="text-align: center; font-size: 20px; margin-top:15px; ">Klik button diatas ini untuk melihat pesanan!</h2>
+
+<!-- Tampilkan Konten untuk Sedang Dikemas -->
+<div id="tabelSedangDikemas" class="hidden card-container">
+    @if ($sedangDikemas->isNotEmpty())
+    @foreach ($sedangDikemas as $transaksi)
+    @foreach ($transaksi->details as $detail)
+    <div class="card">
+        <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
+            alt="Gambar Tanaman {{ $detail->gambar }}"
+            onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
+        <div class="card-body">
+            <h5>{{ $detail->tanaman->namaTanaman }}</h5>
+            <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
+            <p>Jumlah: {{ $detail->jumlah }}</p>
+            <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
+        </div>
+    </div>
+    @endforeach
+    @endforeach
+    @else
+    <div class="text-center w-100">Tidak ada tanaman yang sedang dikemas.</div>
+    @endif
+</div>
 
     <!-- Tampilkan Konten untuk Dikirim -->
     <div id="tabelDikirim" class="hidden card-container">
@@ -355,6 +354,18 @@
 
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    
+    function toggleSection(section) {
+        // Menyembunyikan teks instruksi ketika tombol diklik
+        document.getElementById('instruction').style.display = 'none';
+        
+        // Menampilkan konten sesuai section yang dipilih
+        if (section === 'sedangDikemas') {
+            document.getElementById('tabelSedangDikemas').classList.remove('hidden');
+        } else {
+            document.getElementById('tabelSedangDikemas').classList.add('hidden');
+        }
     }
 </script>
 
