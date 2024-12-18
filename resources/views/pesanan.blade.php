@@ -233,7 +233,7 @@
             </ul>
         </div>
     </nav>
-
+    <h2 style="text-align: center; font-size: 20px; margin-top:15px; ">Klik button dibawah ini untuk melihat pesanan!</h2>
     <section class="banner">
         <!-- Sedang Dikemas -->
         <div class="icon-container" id="sedangDikemas" onclick="toggleSection('sedangDikemas')"
