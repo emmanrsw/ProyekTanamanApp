@@ -37,13 +37,20 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 // Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
 
 
+// Rute untuk menampilkan form reset password setelah OTP diverifikasi
+Route::get('/resetPass}', [AuthController::class, 'showResetForm'])->name('password.reset');
+// Rute untuk menangani pengaturan password baru
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
 
-Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
-Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('forgot.password.send');
-Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
-Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
+// -----------------------------------------------------------------------------------------------------------
+use App\Http\Controllers\OtpController;
 
+Route::get('/otp', [OtpController::class, 'showOtpSendForm'])->name('otp.send');
+Route::get('/otpform', [OtpController::class, 'showOtpSendForm'])->name('otp.form');
+Route::post('/otp', [OtpController::class, 'sendOtp'])->name('otp.send.submit');
+Route::get('/otp/verify', [OtpController::class, 'showOtpForm'])->name('otp.verification');
+Route::post('/otp/verify', [OtpController::class, 'verifyOtp'])->name('otp.verify');
 
 
 
@@ -85,10 +92,3 @@ Route::put('/update-status/{idTJual}', [TransaksiController::class, 'updateStatu
 Route::get('/viewT/{id}', [TanamanController::class, 'viewT'])->name('viewT');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-
-use App\Http\Controllers\OtpController;
-
-Route::get('/otp', [OtpController::class, 'showOtpSendForm'])->name('otp.send');
-Route::post('/otp', [OtpController::class, 'sendOtp'])->name('otp.send.submit');
-Route::get('/otp/verify', [OtpController::class, 'showOtpForm'])->name('otp.verification');
-Route::post('/otp/verify', [OtpController::class, 'verifyOtp'])->name('otp.verify');

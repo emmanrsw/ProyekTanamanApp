@@ -98,7 +98,7 @@
 
     <div class="container">
         <h3>Lupa Username / Password</h3>
-        <form action="{{ route('reset') }}" method="POST" class="reset-password-form">
+        <form action="{{ route('reset-password') }}" method="POST" class="reset-password-form">
             @csrf
 
             <div class="form-group">

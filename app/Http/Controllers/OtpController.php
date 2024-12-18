@@ -128,7 +128,33 @@ class OtpController extends Controller
         return false;
     }
 
-    // Verifikasi OTP yang dimasukkan oleh pengguna
+    // // Verifikasi OTP yang dimasukkan oleh pengguna
+    // public function verifyOtp(Request $request)
+    // {
+    //     $idCust = Auth::id();
+    //     $otpInput = $request->input('otp');
+
+    //     // Ambil OTP yang sudah tersimpan di database
+    //     $otpRecord = DB::table('otp')->where('idCust', $idCust)->first();
+
+    //     // Cek apakah OTP ada di database
+    //     if (!$otpRecord) {
+    //         return back()->with('error', 'OTP tidak ditemukan.');
+    //     }
+
+    //     // Validasi apakah OTP yang dimasukkan sama dengan yang ada di database
+    //     if ((string) $otpInput === (string) $otpRecord->otp) {
+    //         // Cek apakah OTP masih valid (belum lebih dari 5 menit)
+    //         if (Carbon::parse($otpRecord->waktu)->diffInMinutes(Carbon::now()) <= 5) {
+    //             return back()->with('status', 'OTP valid, Anda berhasil login.');
+    //         } else {
+    //             return back()->with('error', 'OTP kedaluwarsa.');
+    //         }
+    //     } else {
+    //         return back()->with('error', 'OTP salah.');
+    //     }
+    // }
+
     public function verifyOtp(Request $request)
     {
         $idCust = Auth::id();
@@ -146,7 +172,12 @@ class OtpController extends Controller
         if ((string) $otpInput === (string) $otpRecord->otp) {
             // Cek apakah OTP masih valid (belum lebih dari 5 menit)
             if (Carbon::parse($otpRecord->waktu)->diffInMinutes(Carbon::now()) <= 5) {
-                return back()->with('status', 'OTP valid, Anda berhasil login.');
+                // Buat token untuk reset password
+                // $token = app('auth.password.broker')->createToken(Auth::user());
+
+                // Arahkan ke halaman reset password dengan token
+                return redirect()->route('password.reset')
+                    ->with('status', 'OTP valid. Silakan reset password Anda.');
             } else {
                 return back()->with('error', 'OTP kedaluwarsa.');
             }
