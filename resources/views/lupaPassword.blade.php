@@ -12,118 +12,141 @@
 </head>
 
 <style>
-    /* CSS untuk Halaman Lupa Username / Password */
-    .reset-password-form {
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        padding: 30px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        max-width: 500px;
-        margin: 50px auto;
+    body {
+        font-family: 'Poppins';
+        background-color: #f8f9fa;
     }
 
-    .reset-password-form h3 {
-        font-size: 24px;
+    .change-password-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .change-password-content {
+        display: flex;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        max-width: 700px;
+        width: 100%;
+        gap: 20px;
+    }
+
+    .icon-box {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .icon-box img {
+        width: 150px;
+        height: 150px;
+    }
+
+    .form-container {
+        flex: 2;
+    }
+
+    .form-container h3 {
+        font-size: 22px;
+        font-weight: bold;
         margin-bottom: 20px;
         text-align: center;
-        color: #333;
     }
 
-    .reset-password-form .form-group {
-        margin-bottom: 20px;
+    .form-group label {
+        font-weight: 600;
+        margin-bottom: 5px;
     }
 
-    .reset-password-form label {
-        font-size: 14px;
-        font-weight: bold;
-        color: #555;
-    }
-
-    .reset-password-form .form-control {
-        width: 100%;
-        padding: 10px;
-        font-size: 14px;
+    .form-control {
+        border: 1px solid #ddd;
         border-radius: 5px;
-        border: 1px solid #ccc;
-        margin-top: 5px;
-    }
-
-    .reset-password-form .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
-    }
-
-    .reset-password-form .alert-danger {
         font-size: 14px;
-        color: #e74c3c;
-        margin-top: 5px;
     }
 
-    .reset-password-form button {
-        width: 100%;
-        padding: 12px;
-        background-color: #007bff;
+    .btn-custom {
+        background-color: #4B553D;
         color: white;
-        font-size: 16px;
-        border: none;
+        padding: 10px;
         border-radius: 5px;
-        cursor: pointer;
+        border: none;
+        width: 100%;
+        font-size: 16px;
     }
 
-    .reset-password-form button:hover {
-        background-color: #0056b3;
+    .btn-custom:hover {
+        background-color: gray;
     }
 
-    @media (max-width: 576px) {
-        .reset-password-form {
-            padding: 20px;
-            margin: 20px;
+    @media (max-width: 768px) {
+        .change-password-content {
+            flex-direction: column;
+            align-items: center;
         }
 
-        .reset-password-form h3 {
-            font-size: 20px;
+        .icon-box img {
+            width: 100px;
+            height: 100px;
         }
+    }
 
-        .reset-password-form .form-control {
-            font-size: 16px;
-        }
-
-        .reset-password-form button {
-            font-size: 14px;
-        }
+    .icon-box img {
+        width: 100%;
+        /* Lebar maksimum gambar */
+        height: auto;
+        /* Menjaga rasio aspek gambar */
+        object-fit: contain;
+        /* Menghindari pemotongan gambar */
     }
 </style>
 
 <body>
 
-    <div class="container">
-        <h3>Lupa Username / Password</h3>
-        <form action="{{ route('reset-password') }}" method="POST" class="reset-password-form">
-            @csrf
-
-            <div class="form-group">
-                <label for="username">Username (optional)</label>
-                <input type="text" name="username" id="username" class="form-control" value="{{ old('username') }}">
-                @error('username')
-                <div class="alert alert-danger">{{ $message }}</div>
-                @enderror
+    <div class="container change-password-container">
+        <div class="change-password-content">
+            <!-- Gambar di sebelah kiri -->
+            <div class="icon-box">
+                <img src="{{ asset('Img/forgot-password.png') }}" alt="Password Icon">
             </div>
 
-            <div class="form-group">
-                <label for="password">New Password (optional)</label>
-                <input type="password" name="password" id="password" class="form-control">
-                @error('password')
-                <div class="alert alert-danger">{{ $message }}</div>
-                @enderror
-            </div>
+            <!-- Formulir di sebelah kanan -->
+            <div class="form-container">
+                <h3>Lupa Username / Password</h3>
+                <form action="{{ route('reset-password') }}" method="POST">
+                    @csrf
 
-            <div class="form-group">
-                <label for="password_confirmation">Confirm New Password</label>
-                <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
-            </div>
+                    <div class="form-group mb-3">
+                        <label for="username">Username (optional)</label>
+                        <input type="text" name="username" id="username" class="form-control"
+                            value="{{ old('username') }}">
+                        @error('username')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-            <button type="submit" class="btn btn-primary">Reset Username / Password</button>
-        </form>
+                    <div class="form-group mb-3">
+                        <label for="password">New Password (optional)</label>
+                        <input type="password" name="password" id="password" class="form-control">
+                        @error('password')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="password_confirmation">Confirm New Password</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation"
+                            class="form-control">
+                    </div>
+
+                    <button type="submit" class="btn btn-custom">Reset Username / Password</button>
+                </form>
+            </div>
+        </div>
     </div>
 
 </body>
