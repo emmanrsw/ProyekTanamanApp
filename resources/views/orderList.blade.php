@@ -172,8 +172,8 @@
                     <td>{{ $order->waktuTJual }}</td>
                     <td>{{ $order->metodeByr }}</td>
                     <td>{{ $order->pelanggan->alamatCust }}</td>
-                    <td>
-                        <ul>
+                    <td style="text-align: left;">
+                        <ul style=" margin-left: -20px;">
                             @foreach($order->details as $detail)
                             <li>
                                 {{ $detail->tanaman->namaTanaman }} - {{ $detail->jumlah }} x
@@ -184,7 +184,7 @@
                             @endforeach
                         </ul>
                     </td>
-                    <td>{{ number_format($order->harga_total, 0, ',', '.') }} IDR</td>
+                    <td>Rp{{ number_format($order->harga_total, 0, ',', '.') }}</td>
                     <td>
                         <span
                             class="order-status @if($order->statusTJual == 'Dikirim') pending @elseif($order->statusTJual == '') completed @else cancelled @endif">
