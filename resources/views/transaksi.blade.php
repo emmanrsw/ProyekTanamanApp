@@ -354,10 +354,10 @@
     </nav>
     <!-- Session Message -->
     @if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     @endif
     <div class="main-content">
         <div class="product-details">
@@ -372,13 +372,13 @@
                 </thead>
                 <tbody>
                     @foreach ($tanamanDipilih as $tanaman)
-                    <tr>
-                        <td>{{ $tanaman->tanaman->namaTanaman }}</td> <!-- Mengambil nama tanaman dari relasi -->
-                        <td>{{ number_format($tanaman->harga_satuan, 0, ',', '.') }}</td> <!-- Format harga satuan -->
-                        <td>{{ $tanaman->jumlah }}</td>
-                        <td>{{ number_format($tanaman->harga_satuan * $tanaman->jumlah, 0, ',', '.') }}</td>
-                        <!-- Total harga -->
-                    </tr>
+                        <tr>
+                            <td>{{ $tanaman->tanaman->namaTanaman }}</td> <!-- Mengambil nama tanaman dari relasi -->
+                            <td>{{ number_format($tanaman->harga_satuan, 0, ',', '.') }}</td> <!-- Format harga satuan -->
+                            <td>{{ $tanaman->jumlah }}</td>
+                            <td>{{ number_format($tanaman->harga_satuan * $tanaman->jumlah, 0, ',', '.') }}</td>
+                            <!-- Total harga -->
+                        </tr>
                     @endforeach
                 </tbody>
                 <!-- Tampilkan subtotal, pajak, dan total -->
@@ -417,23 +417,29 @@
 
                     <!-- Data detail transaksi -->
                     @foreach ($tanamanDipilih as $tanaman)
-                    <input type="hidden" name="tanaman[{{ $loop->index }}][idTanaman]"
-                        value="{{ $tanaman->idTanaman }}">
-                    <input type="hidden" name="tanaman[{{ $loop->index }}][namaTanaman]"
-                        value="{{ $tanaman->namaTanaman }}">
-                    <input type="hidden" name="tanaman[{{ $loop->index }}][jumlah]" value="{{ $tanaman->jumlah }}">
-                    <input type="hidden" name="tanaman[{{ $loop->index }}][harga_satuan]"
-                        value="{{ $tanaman->harga_satuan }}">
-                    <input type="hidden" name="tanaman[{{ $loop->index }}][subtotal]"
-                        value="{{ $tanaman->harga_satuan * $tanaman->jumlah }}">
+                        <input type="hidden" name="tanaman[{{ $loop->index }}][idTanaman]"
+                            value="{{ $tanaman->idTanaman }}">
+                        <input type="hidden" name="tanaman[{{ $loop->index }}][namaTanaman]"
+                            value="{{ $tanaman->namaTanaman }}">
+                        <input type="hidden" name="tanaman[{{ $loop->index }}][jumlah]" value="{{ $tanaman->jumlah }}">
+                        <input type="hidden" name="tanaman[{{ $loop->index }}][harga_satuan]"
+                            value="{{ $tanaman->harga_satuan }}">
+                        <input type="hidden" name="tanaman[{{ $loop->index }}][subtotal]"
+                            value="{{ $tanaman->harga_satuan * $tanaman->jumlah }}">
                     @endforeach
 
                     <button type="submit" class="btn" id="btnBayar">BAYAR SEKARANG</button>
                 </form>
 
-                <!-- Tambahkan SweetAlert -->
                 <script>
-                    document.getElementById('btnBayar').addEventListener('click', function() {
+                    // <!-- Tambahkan SweetAlert -->
+                    let isProcessing = false;
+
+                    document.getElementById('btnBayar').addEventListener('click', function (e) {
+                        e.preventDefault(); // Mencegah form langsung submit
+                        if (isProcessing) return; // Mencegah klik berulang
+                        isProcessing = true;
+
                         Swal.fire({
                             title: "Transaksi Berhasil!",
                             text: "Terima kasih atas pembayaran Anda!",
@@ -442,13 +448,16 @@
                             confirmButtonColor: "#3085d6",
                             cancelButtonColor: "#d33",
                             confirmButtonText: "Lihat Pesanan",
-                            cancelButtonText: "Tutup"
+                            cancelButtonText: "Tutup",
+                            allowOutsideClick: false, // Mencegah klik di luar menutup pop-up
+                            allowEscapeKey: false    // Mencegah tombol Esc menutup pop-up
                         }).then((result) => {
+                            isProcessing = false; // Aktifkan kembali klik tombol
+
+
                             if (result.isConfirmed) {
-                                // Jika pengguna memilih "Lihat Pesanan"
                                 window.location.href = "{{ route('pesanan') }}";
                             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                                // Jika pengguna memilih "Tutup"
                                 window.location.href = "{{ route('home') }}";
                             }
                         });
