@@ -213,7 +213,7 @@ class TransaksiController extends Controller
         $sedangDikemas = transaksiModel::where('idCust', $userId)->where('statusTJual', 'sedang dikemas')
             ->with('details')  // Memuat relasi detail transaksi
             ->get();
-        $dikirim = transaksiModel::where('idCust', $userId)->where('statusTJual', 'dikirim')
+        $dikirim = transaksiModel::where('idCust', $userId)->whereRaw('LOWER(statusTJual) = ?', ['dikirim'])
             ->with('details')  // Memuat relasi detail transaksi
             ->get();
         $selesai = transaksiModel::where('idCust', $userId)->where('statusTJual', 'selesai')

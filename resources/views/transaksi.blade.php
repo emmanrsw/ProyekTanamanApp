@@ -1,59 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layout.navbar')
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HomePage</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <style>
-    body {
-        font-family: 'Poppins';
-    }
-
-    /* Navbar */
-    .navbar {
-        background-color: white;
-        padding: 20px 80px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 0;
-    }
-
-    .navbar-brand {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #000;
-    }
-
-    .navbar-brand .highlight {
-        color: #4B553D;
-    }
-
-    .navbar-nav .nav-link {
-        color: #333;
-        margin-right: 20px;
-    }
-
-    .navbar-icons {
-        display: flex;
-        align-items: center;
-        margin-left: auto;
-    }
-
-    .navbar-icons a {
-        margin-left: 20px;
-        color: #333;
-        font-size: 1.2rem;
-    }
-
-
     .main-content {
         display: flex;
         justify-content: space-between;
@@ -274,7 +226,6 @@
         background-color: #c82333;
     }
 
-
     .action-buttons {
         display: flex;
         /* Menggunakan flexbox untuk menata tombol secara bersebelahan */
@@ -307,58 +258,9 @@
         /* Efek hover: sedikit transparan saat di-hover */
     }
 </style>
-</head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#"><span>Tanam</span><span class="highlight">.in</span></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="home">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="tanaman">Tanaman</a></li>
-                <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
-                <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
-                <li class="nav-item"><a class="nav-link" href="pesanan">Pesanan Saya</a></li>
-            </ul>
-        </div>
-        <div class="navbar-icons d-flex align-items-center">
-            <!-- Search Icon -->
-            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#searchModal">
-                <i class="fa fa-search"></i>
-            </a>
-
-
-            <!-- Shopping Cart Icon -->
-            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#cartModal">
-                <i class="fa fa-shopping-cart"></i>
-            </a>
-            <!-- User Icon -->
-            <div class="topnav">
-                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                    <i class="fa fa-bars"></i>
-                </a>
-                <div id="myLinks" style="display: none;">
-                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
-                        <i class="fa fa-user"></i> {{ session('usernameCust') }}
-                    </a>
-                    <a href="#" style="font-size: 1rem;">Ubah Password</a>
-                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
-                </div>
-            </div>
-
-        </div>
-    </nav>
-    <!-- Session Message -->
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+@section('content')
+<div class="container-fluid p-0">
     <div class="main-content">
         <div class="product-details">
             <table class="table">
@@ -571,7 +473,5 @@
             document.getElementById('popupContent').style.display = 'none';
         }
     </script>
-    </div>
-</body>
-
-</html>
+</div>
+@endsection
