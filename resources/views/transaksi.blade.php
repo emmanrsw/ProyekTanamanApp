@@ -431,40 +431,63 @@
                     <button type="submit" class="btn" id="btnBayar">BAYAR SEKARANG</button>
                 </form>
 
+                <!-- Tambahkan SweetAlert -->
                 <script>
-                    // <!-- Tambahkan SweetAlert -->
-                    let isProcessing = false;
+                    document.getElementById('btnBayar').addEventListener('click', function (event) {
+                        // Mencegah tombol melakukan submit atau redirect default
+                        event.preventDefault();
 
-                    document.getElementById('btnBayar').addEventListener('click', function (e) {
-                        e.preventDefault(); // Mencegah form langsung submit
-                        if (isProcessing) return; // Mencegah klik berulang
-                        isProcessing = true;
-
+                        // Menampilkan konfirmasi "Apakah Anda Yakin?"
                         Swal.fire({
-                            title: "Transaksi Berhasil!",
-                            text: "Terima kasih atas pembayaran Anda!",
-                            icon: "success",
+                            title: "Apakah Anda Yakin?",
+                            text: "Anda akan melakukan pembayaran untuk pesanan ini.",
+                            icon: "question",
                             showCancelButton: true,
                             confirmButtonColor: "#3085d6",
                             cancelButtonColor: "#d33",
-                            confirmButtonText: "Lihat Pesanan",
-                            cancelButtonText: "Tutup",
-                            allowOutsideClick: false, // Mencegah klik di luar menutup pop-up
-                            allowEscapeKey: false    // Mencegah tombol Esc menutup pop-up
+                            confirmButtonText: "YA",
+                            cancelButtonText: "TIDAK",
+                            allowOutsideClick: false, // Mencegah klik luar menutup alert
+                            allowEscapeKey: false    // Mencegah tombol Esc menutup alert
                         }).then((result) => {
-                            isProcessing = false; // Aktifkan kembali klik tombol
-
-
                             if (result.isConfirmed) {
-                                window.location.href = "{{ route('pesanan') }}";
+                                // Jika pengguna memilih "YA", tampilkan pesan transaksi berhasil
+                                Swal.fire({
+                                    title: "Transaksi Berhasil!",
+                                    text: "Terima kasih atas pembayaran Anda!",
+                                    icon: "success",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#3085d6",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Lihat Pesanan",
+                                    cancelButtonText: "Tutup",
+                                    allowOutsideClick: false, // Mencegah klik luar menutup alert
+                                    allowEscapeKey: false    // Mencegah tombol Esc menutup alert
+                                }).then((result) => {
+                                    // Selalu submit form transaksi
+                                    document.getElementById('formTransaksi').submit();
+
+                                    // Setelah form disubmit, lakukan redirect sesuai dengan pilihan pengguna
+                                    if (result.isConfirmed) {
+                                        // Redirect ke halaman pesanan jika tombol "Lihat Pesanan" diklik
+                                        setTimeout(function () {
+                                            window.location.href = "{{ route('pesanan') }}"; // Ganti dengan route pesanan Anda
+                                        }, 500); // Menunggu sedikit waktu setelah submit form
+                                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                        // Pastikan form disubmit terlebih dahulu sebelum redirect ke halaman home
+                                        setTimeout(function () {
+                                            document.getElementById('formTransaksi').submit(); // Pastikan form tetap disubmit
+                                            window.location.href = "{{ route('home') }}"; // Redirect ke halaman utama setelah data disubmit
+                                        }, 500); // Memberikan waktu untuk submit form sebelum redirect
+                                    }
+                                });
                             } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                // Jika pengguna memilih "TIDAK", lakukan pengalihan ke halaman home
                                 window.location.href = "{{ route('home') }}";
                             }
                         });
                     });
                 </script>
-
-
             </div>
         </div>
         <div class="summary">
