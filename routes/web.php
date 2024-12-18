@@ -84,3 +84,45 @@ Route::get('/orderlist', [TransaksiController::class, 'show_order'])->name('orde
 Route::put('/update-status/{idTJual}', [TransaksiController::class, 'updateStatus'])->name('updateStatus');
 Route::get('/viewT/{id}', [TanamanController::class, 'viewT'])->name('viewT');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+use App\Http\Controllers\OtpController;
+
+// // Route untuk menampilkan form OTP
+// Route::get('/otp', [OtpController::class, 'showForm'])->name('otp.form');
+
+// // // Route untuk mengirim OTP
+// // Route::post('/send-otp', [OtpController::class, 'sendOtp'])->name('otp.send');
+
+// // // Route untuk verifikasi OTP
+// // Route::post('/verify-otp', [OtpController::class, 'verifyOtp'])->name('otp.verify');
+
+
+// // Route untuk menampilkan form OTP
+// Route::get('/verifikasi-otp', [OtpController::class, 'showOtpForm'])->name('otp.ver');
+// // Route untuk mengirim OT
+// // Route::post('/send-otp', [OtpController::class, 'sendOtp'])->name('otp.send');
+// // Route untuk memverifikasi OTP
+// // Route::post('/verify-otp', [OtpController::class, 'verifyOtp'])->name('otp.verify');
+
+
+
+// // Route untuk menyimpan OTP
+// Route::post('/otp/store', [OTPController::class, 'storeOTP']);
+
+// // Route untuk validasi OTP
+// Route::post('/otp/validate', [OTPController::class, 'validateOTP']);
+
+
+
+
+// // Route::get('/otp/form', [OtpController::class, 'showForm'])->name('otp.form');
+// // Route::get('/otp/verifikasi', [OtpController::class, 'showOtpForm'])->name('otp.ver');
+// Route::post('/otp/send', [OtpController::class, 'sendOtp'])->name('otp.send');
+// Route::post('/otp/verify', [OtpController::class, 'verifyOtp'])->name('otp.verify');
+
+
+Route::get('/otp', [OtpController::class, 'showOtpSendForm'])->name('otp.send');
+Route::post('/otp', [OtpController::class, 'sendOtp'])->name('otp.send.submit');
+Route::get('/otp/verify', [OtpController::class, 'showOtpForm'])->name('otp.verification');
+Route::post('/otp/verify', [OtpController::class, 'verifyOtp'])->name('otp.verify');
