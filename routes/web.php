@@ -87,9 +87,19 @@ Route::post('/transaksi', [TransaksiController::class, 'prosesTransaksi'])->name
 Route::post('/transaksi/simpan', [TransaksiController::class, 'simpanTransaksi'])->name('transaksi.simpan');
 Route::get('/pesanan', [TransaksiController::class, 'showPesanan'])->name('pesanan');
 
+
+
 // ----------------------------- transaksi di karyawan
 Route::get('/orderlist', [TransaksiController::class, 'show_order'])->name('orderlist');
 Route::put('/update-status/{idTJual}', [TransaksiController::class, 'updateStatus'])->name('updateStatus');
 Route::get('/viewT/{id}', [TanamanController::class, 'viewT'])->name('viewT');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// use App\Http\Controllers\PaymentController;
+
+// Route::get('payment', [PaymentController::class, 'showPaymentPage'])->name('payment.page');
+// Route::post('payment/process', [PaymentController::class, 'processPayment'])->name('payment.process');
+// Route::post('payment/notification', [PaymentController::class, 'handleNotification'])->name('payment.notification');
+
+// // Jika menggunakan nama route untuk Midtrans
+// Route::get('midtrans/payment', [PaymentController::class, 'midtransPayment'])->name('midtrans.payment');

@@ -81,6 +81,7 @@
 
     .payment-methods input {
         margin-right: 10px;
+        
     }
 
     .payment-methods .note {
@@ -449,11 +450,14 @@
                 <a href="#">FAQ</a>
             </div>
             <div>
-                <h4>USEFUL LINKS</h4>
-                <a href="#">Special Offers</a>
-                <a href="#">Gift Cards</a>
-                <a href="#">Advertising</a>
-                <a href="#">Terms of Use</a>
+                <h4>ALAMAT</h4>
+                <p>Jl. Raya No. 123, Kota X, Indonesia</p>
+                <h4>MEDIA SOSIAL</h4>
+                <p>
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-whatsapp"></i>
+                </p>
             </div>
         </div>
         <p>

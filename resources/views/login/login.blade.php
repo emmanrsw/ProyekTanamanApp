@@ -212,17 +212,7 @@
                     <div id="checkboxError" class="error">Anda harus mencentang kotak ini untuk melanjutkan.</div>
                 </div>
 
-                <h6 class="or-text my-3">Atau Login melalui</h6>
-
-                <!-- Social Buttons - Horizontal Layout -->
-                <div class="social-buttons">
-                    <button type="button" class="btn-social btn-google">
-                        <img src="Img/logo_google.png" alt="Google" width="20" height="20" style="margin-right: 8px;"> Google
-                    </button>
-                    <button type="button" class="btn-social btn-apple">
-                        <img src="Img/logo_apple.png" alt="Apple" width="25" height="25" style="margin-right: 8px;"> Apple
-                    </button>
-                </div>
+                
 
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>

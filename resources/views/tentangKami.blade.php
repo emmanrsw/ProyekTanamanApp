@@ -35,13 +35,13 @@
             border-radius: 10px;
         }
 
-        .jumbotron img {
+        .carousel-inner img {
             width: 100%;
-            /* Memastikan gambar mengambil seluruh lebar elemen */
-            height: 200;
-            /* Menjaga rasio gambar */
-            display: block;
-            /* Menghilangkan spasi kecil di bawah gambar */
+            /* Menyesuaikan lebar gambar dengan container */
+            height: auto;
+            /* Memastikan tinggi tetap proporsional */
+            object-fit: cover;
+            /* Menangani kasus jika gambar memiliki rasio aspek berbeda */
         }
 
         .text {
@@ -188,180 +188,190 @@
 </head>
 
 @section('content')
-<div class="container-fluid p-0">
-    <div class="container-fluid">
-        <div class="jumbotron">
-            <img src="/Img/backgroundTK.jpg" alt="jumbotron" class="img-fluid">
-        </div>
-        <div class="content">
-            <div class="text">
-                <h1>
-                    100% Tanaman Hias Pilihan Terbaik
-                </h1>
-                <p>
-                    Tanam.in adalah toko online khusus tanaman hias yang dirancang untuk memenuhi kebutuhan dekorasi
-                    rumah
-                    Anda. Kami percaya bahwa tanaman memiliki kekuatan untuk membuat setiap ruangan terasa hidup dan
-                    segar.
-                    Koleksi kami mencakup tanaman hias berkualitas tinggi, hasil dari kerja sama dengan petani lokal
-                    yang
-                    berpengalaman.
-                </p>
+    <div class="container-fluid p-0">
+        <div class="container-fluid">
+            <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="/Img/1bg.png" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/Img/2bg.png" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/Img/3bg.png" class="d-block w-100" alt="...">
+                    </div>
+                </div>
             </div>
-            <div class="image">
-                <img alt="A happy farmer holding a basket of fresh vegetables in a garden" height="400"
-                    src="Img/petani.png" width="600" />
+            <div class="content">
+                <div class="text">
+                    <h1>
+                        100% Tanaman Hias Pilihan Terbaik
+                    </h1>
+                    <p>
+                        Tanam.in adalah toko online khusus tanaman hias yang dirancang untuk memenuhi kebutuhan dekorasi
+                        rumah
+                        Anda. Kami percaya bahwa tanaman memiliki kekuatan untuk membuat setiap ruangan terasa hidup dan
+                        segar.
+                        Koleksi kami mencakup tanaman hias berkualitas tinggi, hasil dari kerja sama dengan petani lokal
+                        yang
+                        berpengalaman.
+                    </p>
+                </div>
+                <div class="image">
+                    <img alt="A happy farmer holding a basket of fresh vegetables in a garden" height="400"
+                        src="Img/petani.png" width="600" />
+                </div>
             </div>
-        </div>
-        <div class="content">
-            <div class="image">
-                <img alt="Delivery person holding a blue crate filled with various groceries" height="400"
-                    src="Img/kurir.png" width="600" />
-            </div>
-            <div class="text">
-                <h1>
-                    Kami Mengirim, Anda Menikmati Keindahannya.
-                </h1>
-                <p>
-                    Kami menyediakan berbagai macam tanaman hias sesuai kebutuhanmu
-                </p>
-                <ul>
-                    <li>
-                        <i class="fas fa-check-circle">
+            <div class="content">
+                <div class="image">
+                    <img alt="Delivery person holding a blue crate filled with various groceries" height="400"
+                        src="Img/kurir.png" width="600" />
+                </div>
+                <div class="text">
+                    <h1>
+                        Kami Mengirim, Anda Menikmati Keindahannya.
+                    </h1>
+                    <p>
+                        Kami menyediakan berbagai macam tanaman hias sesuai kebutuhanmu
+                    </p>
+                    <ul>
+                        <li>
+                            <i class="fas fa-check-circle">
+                            </i>
+                            Beragam Pilihan
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle">
+                            </i>
+                            Tanaman Berkualitas
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle">
+                            </i>
+                            Dukungan Terbaik
+                        </li>
+                    </ul>
+                    <a class="button" href="/tanaman">
+                        Shop Now
+                        <i class="fas fa-arrow-right">
                         </i>
-                        Beragam Pilihan
-                    </li>
-                    <li>
-                        <i class="fas fa-check-circle">
-                        </i>
-                        Tanaman Berkualitas
-                    </li>
-                    <li>
-                        <i class="fas fa-check-circle">
-                        </i>
-                        Dukungan Terbaik
-                    </li>
-                </ul>
-                <a class="button" href="/tanaman">
-                    Shop Now
-                    <i class="fas fa-arrow-right">
-                    </i>
-                </a>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="header">
-        <h1>Client Testimonial</h1>
-    </div>
-    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2"></button>
+        <div class="header">
+            <h1>Client Testimonial</h1>
         </div>
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2"></button>
+            </div>
 
-        <div class="carousel-inner">
-            <!-- Slide 1 -->
-            <div class="carousel-item active">
-                <div class="row">
-                    <!-- Testimonial 1 -->
-                    <div class="col-md-4">
-                        <div class="testimonial">
-                            <div class="quote"><i class="fas fa-quote-left"></i></div>
-                            <p>Punya banyak tanaman dari Tanam.in bikin rumah saya jadi lebih asri.</p>
-                            <div class="profile">
-                                <img src="images/muka2.jpg" alt="Robert Fox">
-                                <div class="name">Chill Guy</div>
+            <div class="carousel-inner">
+                <!-- Slide 1 -->
+                <div class="carousel-item active">
+                    <div class="row">
+                        <!-- Testimonial 1 -->
+                        <div class="col-md-4">
+                            <div class="testimonial">
+                                <div class="quote"><i class="fas fa-quote-left"></i></div>
+                                <p>Punya banyak tanaman dari Tanam.in bikin rumah saya jadi lebih asri.</p>
+                                <div class="profile">
+                                    <img src="images/muka2.jpg" alt="Robert Fox">
+                                    <div class="name">Chill Guy</div>
+                                </div>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                        class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
                             </div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <!-- Testimonial 2 -->
+                        <div class="col-md-4">
+                            <div class="testimonial">
+                                <div class="quote"><i class="fas fa-quote-left"></i></div>
+                                <p>Tanaman dari Tanam.in sangat berkualitas, dan pengirimannya cepat!</p>
+                                <div class="profile">
+                                    <img src="images/muka4.jpg"" alt=" Jenny Wilson">
+                                    <div class="name">Jenny Wilson</div>
+                                </div>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                        class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Testimonial 3 -->
+                        <div class="col-md-4">
+                            <div class="testimonial">
+                                <div class="quote"><i class="fas fa-quote-left"></i></div>
+                                <p>Pelayanan Tanam.in luar biasa! Saya sangat merekomendasikannya.</p>
+                                <div class="profile">
+                                    <img src="images/muka5.jpg" alt="Kristin Watson">
+                                    <div class="name">Kristin Watson</div>
+                                </div>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                        class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Testimonial 2 -->
-                    <div class="col-md-4">
-                        <div class="testimonial">
-                            <div class="quote"><i class="fas fa-quote-left"></i></div>
-                            <p>Tanaman dari Tanam.in sangat berkualitas, dan pengirimannya cepat!</p>
-                            <div class="profile">
-                                <img src="images/muka4.jpg"" alt=" Jenny Wilson">
-                                <div class="name">Jenny Wilson</div>
-                            </div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="carousel-item">
+                    <div class="row">
+                        <!-- Testimonial 4 -->
+                        <div class="col-md-4">
+                            <div class="testimonial">
+                                <div class="quote"><i class="fas fa-quote-left"></i></div>
+                                <p>Tanaman di sini membuat ruangan kerja saya jadi lebih segar.</p>
+                                <div class="profile">
+                                    <img src="images/muka1.jpg" alt="Michael Scott">
+                                    <div class="name">Michael Scott</div>
+                                </div>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                        class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Testimonial 3 -->
-                    <div class="col-md-4">
-                        <div class="testimonial">
-                            <div class="quote"><i class="fas fa-quote-left"></i></div>
-                            <p>Pelayanan Tanam.in luar biasa! Saya sangat merekomendasikannya.</p>
-                            <div class="profile">
-                                <img src="images/muka5.jpg" alt="Kristin Watson">
-                                <div class="name">Kristin Watson</div>
+                        <!-- Testimonial 5 -->
+                        <div class="col-md-4">
+                            <div class="testimonial">
+                                <div class="quote"><i class="fas fa-quote-left"></i></div>
+                                <p>Proses pemesanan mudah, tanaman sampai dalam kondisi baik!</p>
+                                <div class="profile">
+                                    <img src="images/muka6.jpg" alt="Pam Beesly">
+                                    <div class="name">Pam Beesly</div>
+                                </div>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                        class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
                             </div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <!-- Testimonial 6 -->
+                        <div class="col-md-4">
+                            <div class="testimonial">
+                                <div class="quote"><i class="fas fa-quote-left"></i></div>
+                                <p>Saya suka dengan koleksi tanaman hias yang ditawarkan di sini.</p>
+                                <div class="profile">
+                                    <img src="images/muka3.jpg" alt="Jim Halpert">
+                                    <div class="name">Trevor Philips</div>
+                                </div>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                        class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Slide 2 -->
-            <div class="carousel-item">
-                <div class="row">
-                    <!-- Testimonial 4 -->
-                    <div class="col-md-4">
-                        <div class="testimonial">
-                            <div class="quote"><i class="fas fa-quote-left"></i></div>
-                            <p>Tanaman di sini membuat ruangan kerja saya jadi lebih segar.</p>
-                            <div class="profile">
-                                <img src="images/muka1.jpg" alt="Michael Scott">
-                                <div class="name">Michael Scott</div>
-                            </div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                    class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Testimonial 5 -->
-                    <div class="col-md-4">
-                        <div class="testimonial">
-                            <div class="quote"><i class="fas fa-quote-left"></i></div>
-                            <p>Proses pemesanan mudah, tanaman sampai dalam kondisi baik!</p>
-                            <div class="profile">
-                                <img src="images/muka6.jpg" alt="Pam Beesly">
-                                <div class="name">Pam Beesly</div>
-                            </div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                    class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Testimonial 6 -->
-                    <div class="col-md-4">
-                        <div class="testimonial">
-                            <div class="quote"><i class="fas fa-quote-left"></i></div>
-                            <p>Saya suka dengan koleksi tanaman hias yang ditawarkan di sini.</p>
-                            <div class="profile">
-                                <img src="images/muka3.jpg" alt="Jim Halpert">
-                                <div class="name">Trevor Philips</div>
-                            </div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                    class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
     @endsection
