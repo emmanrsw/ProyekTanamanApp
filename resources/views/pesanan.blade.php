@@ -158,6 +158,9 @@
     color: #4B553D;
     max-width: 500px; /* Lebar maksimum */
 }
+.btn-primary{
+    background-color: #4B553D;
+}
 </style>
 
 @section('content')
@@ -185,10 +188,7 @@
         </div>
     </section>
 
-    <!-- Pesan Petunjuk -->
-<div id="hintMessage" class="text-center mt-4">
-    <p>Silakan klik button di atas untuk melihat status transaksi Anda.</p>
-</div>
+    
 
     <!-- Tampilkan Konten untuk Sedang Dikemas -->
     <div id="tabelSedangDikemas" class="hidden card-container">
@@ -280,6 +280,11 @@
         <p>Transaksi Belum dilalukan! Silahkan klik di bawah ini</p>
         <a href="{{ route('listTanaman') }}" class="btn btn-primary">Belanja Sekarang</a>
     </div>
+    @else
+<!-- Pesan Petunjuk -->
+<div id="hintMessage" class="text-center mt-4">
+    <p>Silakan klik button di atas untuk melihat status transaksi Anda.</p>
+</div>
     @endif
 </div>
 <script>
