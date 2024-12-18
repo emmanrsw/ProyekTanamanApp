@@ -160,9 +160,9 @@
                 @foreach ($tanamans as $tanaman)
                     <div class="product-card">
                         <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
-                            alt="{{ $tanaman->namaTanaman }}">
+                            alt="{{ ucwords(strtolower($tanaman->namaTanaman)) }}">
                         <div class="product-info">
-                            <h5>{{ $tanaman->namaTanaman }}</h5>
+                            <h5>{{ ucwords(strtolower($tanaman->namaTanaman)) }}</h5>
                             <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
                         </div>
                         <button class="btn btn-primary btn-add-to-cart" data-product='@json($tanaman)'>View Details</button>
@@ -180,6 +180,12 @@
         });
     });
 
+    function capitalizeWords(str) {
+        return str.replace(/\b\w/g, function (char) {
+            return char.toUpperCase();
+        });
+    }
+
     function showProductModal(product) {
         const existingModal = document.getElementById('productModal');
         if (existingModal) existingModal.remove();
@@ -191,7 +197,7 @@
             <!-- Header -->
             <div class="modal-header">
                 <h5 class="modal-title" id="productModalLabel"; style="font-weight: bold">
-                    ${product.namaTanaman}
+                    ${capitalizeWords(product.namaTanaman)}
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
