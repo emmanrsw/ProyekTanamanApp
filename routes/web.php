@@ -37,13 +37,20 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 // Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
 
 
+// Rute untuk menampilkan form reset password setelah OTP diverifikasi
+Route::get('/resetPass}', [AuthController::class, 'showResetForm'])->name('password.reset');
+// Rute untuk menangani pengaturan password baru
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
 
-Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
-Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('forgot.password.send');
-Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
-Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
+// -----------------------------------------------------------------------------------------------------------
+use App\Http\Controllers\OtpController;
 
+Route::get('/otp', [OtpController::class, 'showOtpSendForm'])->name('otp.send');
+Route::get('/otpform', [OtpController::class, 'showOtpSendForm'])->name('otp.form');
+Route::post('/otp', [OtpController::class, 'sendOtp'])->name('otp.send.submit');
+Route::get('/otp/verify', [OtpController::class, 'showOtpForm'])->name('otp.verification');
+Route::post('/otp/verify', [OtpController::class, 'verifyOtp'])->name('otp.verify');
 
 
 
@@ -77,13 +84,11 @@ use App\Http\Controllers\TransaksiController;
 
 Route::post('/transaksi', [TransaksiController::class, 'prosesTransaksi'])->name('transaksi');
 Route::post('/transaksi/simpan', [TransaksiController::class, 'simpanTransaksi'])->name('transaksi.simpan');
-// Route::get('/pesanan', [TransaksiController::class, 'show'])->name('pesanan');
 Route::get('/pesanan', [TransaksiController::class, 'showPesanan'])->name('pesanan');
 
 // ----------------------------- transaksi di karyawan
 Route::get('/orderlist', [TransaksiController::class, 'show_order'])->name('orderlist');
 Route::put('/update-status/{idTJual}', [TransaksiController::class, 'updateStatus'])->name('updateStatus');
-
 Route::get('/viewT/{id}', [TanamanController::class, 'viewT'])->name('viewT');
-
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+

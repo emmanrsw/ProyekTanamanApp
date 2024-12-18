@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class tanamanModel extends Model
 {
-    // use HasFactory;
     public $timestamps = false; // Nonaktifkan timestamps
 
     protected $table = 'tanaman';
@@ -24,6 +23,6 @@ class tanamanModel extends Model
 
     public function cartItems()
     {
-        return $this->hasMany(cartModel::class, 'idTanaman');
+        return $this->hasMany(cartModel::class, 'idTanaman', 'idTanaman');
     }
 }

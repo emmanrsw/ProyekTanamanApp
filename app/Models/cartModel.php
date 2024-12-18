@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-// class karyawan extends Model implements Authenticatable
 class cartModel extends Authenticatable
+
 {
     use HasFactory;
     use AuthenticatableTrait;
@@ -25,13 +26,13 @@ class cartModel extends Authenticatable
     // Relasi ke model Pelanggan
     public function pelanggan()
     {
-        return $this->belongsTo(pelangganModel::class, 'idCust', 'idCust');
+        return $this->belongsTo(pelangganModel::class, 'idCust');
     }
 
     // Relasi ke model Tanaman
     public function tanaman()
     {
-        return $this->belongsTo(tanamanModel::class, 'idTanaman', 'idTanaman');
+        return $this->belongsTo(tanamanModel::class, 'idTanaman');
     }
 
 }

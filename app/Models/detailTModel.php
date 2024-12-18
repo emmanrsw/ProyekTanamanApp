@@ -19,13 +19,6 @@ class detailTModel extends Model
         'jumlah',
     ];
 
-    // ini awal aslinya 
-    // public function transaksi()
-    // {
-    //     // Menggunakan 'idTJual' sebagai foreign key yang mengarah ke 'id' pada tabel transaksi
-    //     return $this->belongsTo(transaksiModel::class, 'idTJual', 'id');
-    // }
-
     public function transaksi()
     {
         // Mengubah foreign key menjadi 'idTJual'

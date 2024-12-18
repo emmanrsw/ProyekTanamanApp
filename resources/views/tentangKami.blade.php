@@ -66,34 +66,33 @@
             color: #333;
         }
 
-        .topnav #myLinks {
-            display: none;
+        #myLinks {
             position: absolute;
-            right: 0;
-            background-color: white;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            top: 60px;
+            right: 10px;
+            background-color: #4B553D;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             z-index: 1000;
-            padding: 10px;
+            font-size: 14px;
+            padding: 10px 10px;
         }
 
-        .topnav #myLinks a {
-            display: block;
-            color: #333;
+        #myLinks a {
+            color: white;
+            padding: 12px 16px;
             text-decoration: none;
-            padding: 5px 10px;
-            font-size: 1rem;
+            display: block;
+            margin-left: 0;
+            line-height: 1.5;
         }
 
-        .topnav #myLinks a:hover {
-            background-color: #f0f0f0;
+        #myLinks a:hover {
+            background-color: #ddd;
+            color: black;
+            border-radius: 5px;
         }
 
-        /* .header {
-            background-image: url('/assets/Img/backgroundT.jpg');
-            background-size: cover;
-            background-position: center;
-            height: 300px;
-        } */
         .content {
             display: flex;
             justify-content: space-between;
@@ -135,13 +134,6 @@
             /* Menghilangkan spasi kecil di bawah gambar */
         }
 
-        /* .container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            padding: 0 20px;
-        } */
         .text {
             flex: 1;
             padding-left: 50px;
@@ -205,81 +197,82 @@
 
         .testimonials {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            /* Membuat elemen berada di tengah */
+            gap: 20px;
+            /* Jarak antar testimonial */
+            flex-wrap: wrap;
+            /* Elemen turun jika tidak muat */
         }
 
         .testimonial {
             background-color: #fff;
             border-radius: 10px;
+            justify-content: center;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            width: 30%;
+            padding: 30px;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 20px;
+            margin-left: 70px;
+            margin-right: 20px;
             text-align: center;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            /* Rata tengah vertikal */
+            height: 300px;
+            /* Tinggi tetap */
+            transition: transform 0.2s ease;
+        }
+
+        .testimonial:hover {
+            transform: translateY(-10px);
+        }
+
+        .testimonial p {
+            flex-grow: 1;
+            font-size: 1rem;
+            color: #666;
+            margin: 15px 0;
+            /* Isi teks tetap rapi */
         }
 
         .testimonial .quote {
             color: #4B553D;
-            font-size: 24px;
-        }
-
-        .testimonial p {
-            font-size: 16px;
-            color: #666;
-            margin: 20px 0;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
 
         .testimonial .profile {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .testimonial .profile img {
             border-radius: 50%;
             width: 50px;
             height: 50px;
+            object-fit: cover;
             margin-right: 10px;
         }
 
         .testimonial .profile .name {
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: bold;
             color: #333;
         }
 
         .testimonial .profile .role {
-            font-size: 14px;
+            font-size: 0.875rem;
             color: #999;
         }
 
         .testimonial .rating {
             color: #f39c12;
             margin-top: 10px;
-        }
-
-        .navigation {
-            display: flex;
-            justify-content: center;
-            margin-top: 40px;
-        }
-
-        .navigation .nav-button {
-            background-color: #fff;
-            border: none;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            color: #4B553D;
-            cursor: pointer;
-            font-size: 20px;
-            height: 40px;
-            margin: 0 10px;
-            width: 40px;
-        }
-
-        .navigation .nav-button:hover {
-            background-color:#888;
-            color
         }
     </style>
 </head>
@@ -310,11 +303,11 @@
             <a href="{{ route('cart') }}" class="nav-link">
                 <i class="fa fa-shopping-cart"></i>
             </a>
-                        <div class="topnav">
+            <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
                         <!-- Jika pengguna memiliki gambar profil -->
-                        <img src="{{ asset('storage/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
+                        <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
                             alt="User Profile" class="rounded-circle" width="30" height="30">
                     @else
                         <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
@@ -397,141 +390,130 @@
         </div>
     </div>
     <div class="header">
-        <h1>
-            Client Testimonial
-        </h1>
-
-        <div class="testimonials">
-            <div class="testimonial">
-                <div class="quote">
-                    <i class="fas fa-quote-left">
-                    </i>
-                </div>
-                <p>
-                    Punya banyak tanaman dari Tanam.in bikin rumah saya jadi lebih asri. 
-                    Suka banget sama konsepnya yang mendukung petani lokal. Produk lokal dengan kualitas internasional!
-                </p>
-                <div class="profile">
-                    <img alt="Profile picture of Robert Fox" height="50"
-                        src="https://storage.googleapis.com/a1aa/image/XUAxppLrQsrCPtFAfgDkzPDcPjYhjIDFJCiaFKkn2TyST14JA.jpg"
-                        width="50" />
-                    <div>
-                        <div class="name">
-                            Robert Fox
-                        </div>
-                        <div class="role">
-                            Customer
-                        </div>
-                    </div>
-                </div>
-                <div class="rating">
-                    <i class="fas fa-star">
-                    </i>
-                    <i class="fas fa-star">
-                    </i>
-                    <i class="fas fa-star">
-                    </i>
-                    <i class="fas fa-star">
-                    </i>
-                    <i class="fas fa-star">
-                    </i>
-                </div>
-            </div>
-            <div class="testimonial">
-                <div class="quote">
-                    <i class="fas fa-quote-left">
-                    </i>
-                </div>
-                <p>
-                    Ini pengalaman belanja tanaman terbaik saya! Dari kemasan hingga kualitas tanaman, 
-                    semuanya sempurna. Philodendron yang saya pesan sampai dalam kondisi prima, bahkan ada tips perawatan juga!
-                </p>
-                <div class="profile">
-                    <img alt="Profile picture of Dianne Russell" height="50"
-                        src="https://storage.googleapis.com/a1aa/image/WkTSqcIB3WKlMZeCkeqjMoVf7Df3SX28fhypSVwbcV8P0UNeE.jpg"
-                        width="50" />
-                    <div>
-                        <div class="name">
-                            Dianne Russell
-                        </div>
-                        <div class="role">
-                            Customer
-                        </div>
-                    </div>
-                </div>
-                <div class="rating">
-                    <i class="fas fa-star">
-                    </i>
-                    <i class="fas fa-star">
-                    </i>
-                    <i class="fas fa-star">
-                    </i>
-                    <i class="fas fa-star">
-                    </i>
-                    <i class="fas fa-star">
-                    </i>
-                </div>
-            </div>
-            <div class="testimonial">
-                <div class="quote">
-                    <i class="fas fa-quote-left">
-                    </i>
-                </div>
-                <p>
-                    Awalnya saya ragu beli tanaman secara online, tapi Tanam.in benar-benar membuktikan kualitasnya. 
-                    Packaging-nya aman banget, dan tanamannya sehat sampai di rumah. Plus, harganya terjangkau!
-                </p>
-                <div class="profile">
-                    <img alt="Profile picture of Eleanor Pena" height="50"
-                        src="https://storage.googleapis.com/a1aa/image/YiBpJiufLm3NNyHF8ji6gNrEA8q6H2OkAJcTWyGveWZjmqxTA.jpg"
-                        width="50" />
-                    <div>
-                        <div class="name">
-                            Eleanor Pena
-                        </div>
-                        <div class="role">
-                            Customer
-                        </div>
-                    </div>
-                </div>
-                <div class="rating">
-                    <i class="fas fa-star">
-                    </i>
-                    <i class="fas fa-star">
-                    </i>
-                    <i class="fas fa-star">
-                    </i>
-                    <i class="fas fa-star">
-                    </i>
-                    <i class="fas fa-star">
-                    </i>
-                </div>
-            </div>
-        </div>
-        <div class="navigation">
-            <button class="nav-button">
-                <i class="fas fa-arrow-left">
-                </i>
-            </button>
-            <button class="nav-button">
-                <i class="fas fa-arrow-right">
-                </i>
-            </button>
-        </div>
+        <h1>Client Testimonial</h1>
     </div>
+    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2"></button>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function myFunction() {
-            var x = document.getElementById("myLinks");
-            if (x.style.display === "block") {
-                x.style.display = "none";
-            } else {
-                x.style.display = "block";
+        <div class="carousel-inner">
+            <!-- Slide 1 -->
+            <div class="carousel-item active">
+                <div class="row">
+                    <!-- Testimonial 1 -->
+                    <div class="col-md-4">
+                        <div class="testimonial">
+                            <div class="quote"><i class="fas fa-quote-left"></i></div>
+                            <p>Punya banyak tanaman dari Tanam.in bikin rumah saya jadi lebih asri.</p>
+                            <div class="profile">
+                                <img src="images/muka2.jpg" alt="Robert Fox">
+                                <div class="name">Chill Guy</div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="col-md-4">
+                        <div class="testimonial">
+                            <div class="quote"><i class="fas fa-quote-left"></i></div>
+                            <p>Tanaman dari Tanam.in sangat berkualitas, dan pengirimannya cepat!</p>
+                            <div class="profile">
+                                <img src="images/muka4.jpg"" alt="Jenny Wilson">
+                                <div class="name">Jenny Wilson</div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 3 -->
+                    <div class="col-md-4">
+                        <div class="testimonial">
+                            <div class="quote"><i class="fas fa-quote-left"></i></div>
+                            <p>Pelayanan Tanam.in luar biasa! Saya sangat merekomendasikannya.</p>
+                            <div class="profile">
+                                <img src="images/muka5.jpg" alt="Kristin Watson">
+                                <div class="name">Kristin Watson</div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+                <div class="row">
+                    <!-- Testimonial 4 -->
+                    <div class="col-md-4">
+                        <div class="testimonial">
+                            <div class="quote"><i class="fas fa-quote-left"></i></div>
+                            <p>Tanaman di sini membuat ruangan kerja saya jadi lebih segar.</p>
+                            <div class="profile">
+                                <img src="images/muka1.jpg" alt="Michael Scott">
+                                <div class="name">Michael Scott</div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 5 -->
+                    <div class="col-md-4">
+                        <div class="testimonial">
+                            <div class="quote"><i class="fas fa-quote-left"></i></div>
+                            <p>Proses pemesanan mudah, tanaman sampai dalam kondisi baik!</p>
+                            <div class="profile">
+                                <img src="images/muka6.jpg" alt="Pam Beesly">
+                                <div class="name">Pam Beesly</div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 6 -->
+                    <div class="col-md-4">
+                        <div class="testimonial">
+                            <div class="quote"><i class="fas fa-quote-left"></i></div>
+                            <p>Saya suka dengan koleksi tanaman hias yang ditawarkan di sini.</p>
+                            <div class="profile">
+                                <img src="images/muka3.jpg" alt="Jim Halpert">
+                                <div class="name">Trevor Philips</div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            function myFunction() {
+                var x = document.getElementById("myLinks");
+                if (x.style.display === "block") {
+                    x.style.display = "none";
+                } else {
+                    x.style.display = "block";
+                }
             }
-        }
-    </script>
-
+        </script>
 </body>
 
 </html>

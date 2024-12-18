@@ -14,7 +14,6 @@
             font-family: 'Poppins';
             margin: 0;
             padding: 0px;
-            /* box-sizing: border-box; */
         }
 
         .navbar {
@@ -65,28 +64,6 @@
             font-size: 1.2rem;
             cursor: pointer;
             color: #333;
-        }
-
-        .topnav #myLinks {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: white;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            padding: 10px;
-        }
-
-        .topnav #myLinks a {
-            display: block;
-            color: #333;
-            text-decoration: none;
-            padding: 5px 10px;
-            font-size: 1rem;
-        }
-
-        .topnav #myLinks a:hover {
-            background-color: #f0f0f0;
         }
 
         .jumbotron img {
@@ -163,11 +140,13 @@
         .store-locations {
             display: flex;
             justify-content: center;
-            gap: 250px;
+            gap: 300px;
+            flex-wrap: wrap;
         }
 
         .store {
             text-align: center;
+            max-width: 300px;
         }
 
         .store img {
@@ -175,6 +154,12 @@
             height: 200px;
             border-radius: 50%;
             object-fit: cover;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .store img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
         }
 
         .store h3 {
@@ -185,29 +170,92 @@
         .store p {
             font-size: 16px;
             margin: 10px 0;
+            color: #555;
         }
 
         .store a {
             text-decoration: none;
-            color: #000;
+            color: #4B553D;
             font-weight: 500;
+        }
+
+        .store a:hover {
+            text-decoration: underline;
         }
 
         .hubungi-kami {
             padding: 20px;
             background-color: #f9f9f9;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .hubungi-kami h3 font-size: 24px;
-        margin-bottom: 10px;
-        font-weight: bold;
+        .hubungi-kami h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
 
         .hubungi-kami p {
-            font-size: 16px;
+            font-size: 14px;
             padding: 0px 270px;
             color: #555;
+        }
+
+        #myLinks {
+            position: absolute;
+            top: 60px;
+            right: 10px;
+            background-color: #4B553D;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            font-size: 14px;
+            padding: 10px 10px;
+        }
+
+        #myLinks a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            margin-left: 0;
+            line-height: 1.5;
+        }
+
+        #myLinks a:hover {
+            background-color: #ddd;
+            color: black;
+            border-radius: 5px;
+        }
+
+        footer {
+            margin-top: 80px;
+            padding: 20px 0;
+            background-color: #fff;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        footer .footer-links {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        footer .footer-links div {
+            width: 30%;
+        }
+
+        footer .footer-links h4 {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-links a {
+            display: block;
+            color: #666;
+            text-decoration: none;
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -244,7 +292,7 @@
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
                         <!-- Jika pengguna memiliki gambar profil -->
-                        <img src="{{ asset('storage/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
+                        <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
                             alt="User Profile" class="rounded-circle" width="30" height="30">
                     @else
                         <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
@@ -269,11 +317,6 @@
         <div class="jumbotron">
             <img src="/Img/backgroundTK.jpg" alt="jumbotron" class="img-fluid">
         </div>
-    </div>
-    <div class="hubungi-kami text-center my-4">
-        <h3>Hubungi Kami</h3>
-        <p>Untuk Informasi Lebih Lanjut Tentang Produk &amp; Layanan Kami. Silakan Kirim Email kepada Kami. Staf Kami
-            Selalu Ada Untuk Membantu Anda. Jangan Ragu!</p>
     </div>
     <div class="contact-section">
         <div class="contact-info">
@@ -320,142 +363,64 @@
             </form>
         </div>
     </div>
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Tanam.in - Hubungi Kami</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <style>
-            body {
-                font-family: 'Poppins', sans-serif;
-                margin: 0;
-                padding: 0;
-            }
-
-            .navbar {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 20px;
-                background-color: white;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-
-            .navbar-brand {
-                font-size: 1.5rem;
-                font-weight: 700;
-                color: #000;
-            }
-
-            .navbar-brand .highlight {
-                color: #4B553D;
-            }
-
-            .jumbotron img {
-                width: 100%;
-                height: auto;
-                display: block;
-            }
-
-            .offline-store {
-                text-align: center;
-                padding: 50px 80px;
-                background-color: #f9f9f9;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-                border-radius: 10px;
-                margin: 20px auto;
-            }
-
-            .offline-store h2 {
-                font-size: 28px;
-                font-weight: bold;
-                color: #333;
-                margin-bottom: 30px;
-            }
-
-            .store-locations {
-                display: flex;
-                justify-content: center;
-                gap: 50px;
-                flex-wrap: wrap;
-            }
-
-            .store {
-                text-align: center;
-                max-width: 300px;
-            }
-
-            .store img {
-                width: 200px;
-                height: 200px;
-                border-radius: 50%;
-                object-fit: cover;
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-            }
-
-            .store img:hover {
-                transform: scale(1.1);
-                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-            }
-
-            .store h3 {
-                font-size: 20px;
-                margin: 20px 0 10px;
-                color: #333;
-            }
-
-            .store p {
-                font-size: 16px;
-                margin: 10px 0;
-                color: #555;
-            }
-
-            .store a {
-                text-decoration: none;
-                color: #4B553D;
-                font-weight: 500;
-            }
-
-            .store a:hover {
-                text-decoration: underline;
-            }
-        </style>
-    </head>
-
-    <body>
-        <div class="offline-store">
-            <h2>Offline Store</h2>
-            <div class="store-locations">
-                <div class="store">
-                    <img src="https://storage.googleapis.com/a1aa/image/AGes711sX02MRCoq7m01QLZqurNrOqveRVdQeifCGF2eYLSeE.jpg"
-                        alt="Yogyakarta Store">
-                    <h3>Yogyakarta</h3>
-                    <p>Jalan Kaliurang, 22765 Sleman</p>
-                </div>
-                <div class="store">
-                    <img src="https://storage.googleapis.com/a1aa/image/jW0Vbk0Fu1aMAVaNIke5yT9V3fkd9mKHpKMhetpvr5lS2iknA.jpg"
-                        alt="Solo Store">
-                    <h3>Solo</h3>
-                    <p>Jalan Solo, 1049 Solo</p>
-                </div>
+    <div class="offline-store">
+        <h2>Offline Store</h2>
+        <div class="store-locations">
+            <div class="store">
+                <img src="https://storage.googleapis.com/a1aa/image/AGes711sX02MRCoq7m01QLZqurNrOqveRVdQeifCGF2eYLSeE.jpg"
+                    alt="Yogyakarta Store">
+                <h3>Yogyakarta</h3>
+                <p>Jalan Kaliurang, 22765 Sleman</p>
+            </div>
+            <div class="store">
+                <img src="https://storage.googleapis.com/a1aa/image/jW0Vbk0Fu1aMAVaNIke5yT9V3fkd9mKHpKMhetpvr5lS2iknA.jpg"
+                    alt="Solo Store">
+                <h3>Solo</h3>
+                <p>Jalan Solo, 1049 Solo</p>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            function myFunction() {
-                var x = document.getElementById("myLinks");
-                if (x.style.display === "block") {
-                    x.style.display = "none";
-                } else {
-                    x.style.display = "block";
-                }
+
+    <footer>
+        <div class="footer-links">
+            <div>
+                <h4>INFORMASI PERUSAHAAN</h4>
+                <a href="tentangKami">Tentang Kami</a>
+                <a href="home">Dashboard</a>
+                <a href="kontak">Hubungi Kami</a>
+            </div>
+            <div>
+                <h4>LINK BANTUAN</h4>
+                <a href="pesanan">Pelacakan</a>
+                <a href="pesanan">Status Pesanan</a>
+                <a href="pesanan">Pengiriman</a>
+                <a href="pesanan">Info Pengiriman</a>
+            </div>
+            <div>
+                <h4>MEDIA SOSIAL</h4>
+                <a href="https://www.facebook.com" target="_blank">Facebook</a>
+                <a href="https://www.instagram.com" target="_blank">Instagram</a>
+                <a href="https://www.twitter.com" target="_blank">Twitter</a>
+                <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+        <p>
+            © 2020 Tanam.in eCommerce<br />
+            Privacy Policy | Terms & Conditions
+        </p>
+
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myLinks");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
             }
-        </script>
-    </body>
+        }
+    </script>
+</body>
 
 </html>

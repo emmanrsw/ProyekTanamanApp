@@ -150,17 +150,13 @@
     #myLinks {
         position: absolute;
         top: 60px;
-        /* Sesuaikan dengan tinggi navbar Anda */
-        right: 0;
-        /* Memposisikan menu di sisi kanan */
-        background-color: #333;
+        right: 10px;
+        background-color: #4B553D;
         border-radius: 5px;
-        /* Menambahkan sudut membulat */
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        /* Menambahkan bayangan */
         z-index: 1000;
-        /* Pastikan menu berada di atas elemen lain */
         font-size: 14px;
+        padding: 10px 10px;
     }
 
     #myLinks a {
@@ -168,11 +164,14 @@
         padding: 12px 16px;
         text-decoration: none;
         display: block;
+        margin-left: 0;
+        line-height: 1.5;
     }
 
     #myLinks a:hover {
         background-color: #ddd;
         color: black;
+        border-radius: 5px;
     }
 
     #recent-search-list {
@@ -240,12 +239,14 @@
             </a>
 
             <!-- Search Modal -->
-            <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+            <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="searchModalLabel">Pencarian</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <!-- Input untuk pencarian -->
@@ -274,27 +275,26 @@
             <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
-                    <!-- Jika pengguna memiliki gambar profil -->
-                    <img src="{{ asset('storage/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
-                        alt="User Profile" class="rounded-circle" width="30" height="30">
+                        <!-- Jika pengguna memiliki gambar profil -->
+                        <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
+                            alt="User Profile" class="rounded-circle" width="30" height="30">
                     @else
-                    <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
-                    <i class="fa fa-user"></i>
+                        <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
+                        <i class="fa fa-user"></i>
                     @endif
                 </a>
                 <div id="myLinks" style="display: none;">
                     @if (Auth::guard('pelanggan')->check())
-                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
-                        {{ Auth::guard('pelanggan')->user()->usernameCust }}
-                    </a>
-                    <a href="#" style="font-size: 1rem;">Ubah Password</a>
-                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                        </a>
+                        <a href="{{ route('otp.form') }}" style="font-size: 1rem;">Ubah Password</a>
+                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
                     @else
-                    <a href="{{ route('login.login') }}" class="nav-link">Login</a>
+                        <a href="{{ route('login.login') }}" class="nav-link">Login</a>
                     @endif
                 </div>
             </div>
-        </div>
         </div>
     </nav>
 
@@ -409,22 +409,6 @@
             });
         }
 
-        // function displayRecentSearches() {
-        //     let recentSearches = JSON.parse(localStorage.getItem('recent_searches')) || [];
-
-        //     const recentSearchList = document.getElementById('recent-search-list');
-        //     recentSearchList.innerHTML = ''; // Clear the list before adding
-
-        //     recentSearches.forEach(query => {
-        //         const li = document.createElement('li');
-        //         li.innerHTML = `
-        //         <a href="#" class="recent-search-item" data-query="${query}">${query}</a>
-        //         <a href="#" class="delete-recent" data-query="${query}">Hapus</a>
-        //     `;
-        //         recentSearchList.appendChild(li);
-        //     });
-        // }
-
         // Event listener untuk menangani klik pada pencarian
         document.addEventListener('click', function(e) {
             if (e.target && e.target.classList.contains('recent-search-item')) {
@@ -456,7 +440,8 @@
             if (query) {
                 saveRecentSearch(query); // Simpan pencarian ke localStorage
                 // Lakukan pencarian berdasarkan query (bisa dikirim ke server atau lakukan pencarian di frontend)
-                window.location.href = `{{ route('searchTanaman') }}?query=${encodeURIComponent(query)}`; // Redirect ke halaman pencarian
+                window.location.href =
+                    `{{ route('searchTanaman') }}?query=${encodeURIComponent(query)}`; // Redirect ke halaman pencarian
             }
         });
 

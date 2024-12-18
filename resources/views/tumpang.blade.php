@@ -1,124 +1,146 @@
-    <!-- // ----------------------------------------------------------------------------------------------------------------------- -->
-    <!-- <script>
-        // ini barangnya gak ada samsek
-        isBarangAda = false; // Ganti dengan kondisi nyata dari data Anda
-        // Cek jika ada barang atau tidak
-        if (isBarangAda) {
 
-            // lgsg table
-            document.getElementById("messageText").innerText = "Barang sudah ada!";
-            document.getElementById("belanjaBtn").style.display = "none"; // Sembunyikan tombol belanja
-        } else {
-            document.getElementById("messageText").innerText = "Belum Ada! Silahkan klik dibawah ini.";
-            document.getElementById("belanjaBtn").style.display = "inline-block"; // Tampilkan tombol belanja
+// function addToCart(productId) {
+        //     fetch(`/cart/add/${productId}`, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        //             },
+        //             body: JSON.stringify({
+        //                 productId: productId
+        //             })
+        //         })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             alert(data.message || "Produk berhasil ditambahkan ke keranjang!");
+        //         })
+        //         .catch(error => {
+        //             console.error('Error:', error);
+        //         });
+        // }
+        // function addToCart(productId) {
+        //     // Ambil jumlah dari input yang ada di modal
+        //     const jumlah = document.getElementById('jumlah').value;
+
+        //     // Pastikan jumlah adalah angka yang valid
+        //     if (jumlah < 1) {
+        //         alert('Jumlah tidak valid');
+        //         return;
+        //     }
+
+        //     fetch(`/cart/add/${productId}`, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        //             },
+        //             body: JSON.stringify({
+        //                 productId: productId,
+        //                 jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
+        //             })
+        //         })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             Swal.fire({
+        //                 title: 'Berhasil!',
+        //                 text: data.message || "Produk berhasil ditambahkan ke keranjang!",
+        //                 icon: 'success',
+        //                 confirmButtonText: 'OK'
+        //             })
+        //         })
+        //         .catch(error => {
+        //             console.error('Error:', error);
+        //         });
+        // }
+
+
+
+
+
+
+
+
+
+
+function addToCart(productId) {
+            // Ambil jumlah dari input yang ada di modal
+            const jumlah = document.getElementById('jumlah').value;
+
+            // Debugging: Cek apakah jumlah sudah terambil dengan benar
+            console.log('Jumlah:', jumlah);
+
+            // Pastikan jumlah adalah angka yang valid dan lebih besar dari 0
+            if (isNaN(jumlah) || jumlah < 1) {
+                alert('Jumlah tidak valid. Masukkan angka yang lebih besar dari 0.');
+                return;
+            }
+
+            // Cek apakah CSRF token ada
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            if (!csrfToken) {
+                console.error('CSRF Token tidak ditemukan!');
+                alert('Terjadi masalah dengan CSRF token.');
+                return;
+            }
+
+            // Menampilkan data yang akan dikirim untuk debugging
+            console.log('Mengirim data ke server:', {
+                productId: productId,
+                jumlah: jumlah
+            });
+
+            // Kirim data ke server menggunakan Fetch API
+            fetch(`/cart/add/${productId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        productId: productId,
+                        jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
+                    })
+                })
+                // .then(response => {
+                //     if (!response.ok) {
+                //         throw new Error('Response tidak berhasil');
+                //     }
+                //     return response.json();
+                // })
+                .then(response => response.json())
+                .then(data => {
+                    // Menampilkan notifikasi sukses dengan SweetAlert
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: data.message || "Produk berhasil ditambahkan ke keranjang!",
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                })
+                .catch(error => {
+                    // Menangani error jika ada masalah saat pengiriman
+                    console.error('Error:', error);
+                    Swal.fire({
+                        title: 'Oops!',
+                        text: 'Terjadi kesalahan, silakan coba lagi.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                });
         }
-    </script> -->
-    <!-- // ----------------------------------------------------------------------------------------------------------------------- -->
 
+        function sortProducts() {
+            const sortBy = document.querySelector('.sort-by').value;
 
-
-
-
-
-
-
-// -----------------------------------------------------------------------------------------------------------------------
-        // document.getElementById("sedangDikemas").addEventListener("click", function () {
-        // // Sembunyikan #message1
-        // document.getElementById("message1").style.display = "none";
-
-        // // Tampilkan pesan di bawah banner
-        // var messageElement = document.getElementById("message");
-        // messageElement.textContent = "Tidak ada barang yang sedang dikemas";
-        // messageElement.style.display = "block";
-
-        // // Reset semua tombol dan atur tombol ini sebagai aktif
-        // resetActive();
-        // this.classList.add("active");
-        // });
-
-        // -----------------------------------------------------------------------------------------------------------------------
-        // document.getElementById("dikirim").addEventListener("click", function () {
-        // // Sembunyikan #message1
-        // document.getElementById("message1").style.display = "none";
-
-        // // Tampilkan pesan di bawah banner
-        // var messageElement = document.getElementById("message");
-        // messageElement.textContent = "Tidak ada barang yang dikirim";
-        // messageElement.style.display = "block";
-
-        // // Reset semua tombol dan atur tombol ini sebagai aktif
-        // resetActive();
-        // this.classList.add("active");
-        // });
-
-        // -----------------------------------------------------------------------------------------------------------------------
-        // document.getElementById("selesai").addEventListener("click", function () {
-        // // Sembunyikan #message1
-        // document.getElementById("message1").style.display = "none";
-
-        // // Tampilkan pesan di bawah banner
-        // var messageElement = document.getElementById("message");
-        // messageElement.textContent = "Belum ada barang yang terselesaikan";
-        // messageElement.style.display = "block";
-
-        // // Reset semua tombol dan atur tombol ini sebagai aktif
-        // resetActive();
-        // this.classList.add("active");
-        // });
-
-        // -----------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-           <!-- Elemen pesan yang akan ditampilkan di bawah banner -->
-    <div id="message1"
-        style="text-align: center; font-size: 1.2rem; color: #333; margin-top: 150px; position: relative;">
-        <!-- Ikon sebagai watermark -->
-        <i class="fa-brands fa-shopify"
-            style="font-size: 20rem; color: rgba(0, 0, 0, 0.1); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -1;"></i>
-
-        <p id="messageText" style="margin-bottom: 10px;"></p>
-
-        <a href="#" class="btn btn-custom mt-3" id="belanjaBtn" style="display: none;">Belanja Sekarang</a>
-    </div>
-
-    <!-- <script>
-        isBarangAda = true; // Ganti dengan kondisi nyata dari data Anda
-
-        if (isBarangAda) {
-            // Ubah teks dan tampilkan indikator barang sudah ada
-            document.getElementById("messageText").innerText = "Cek Status Pemesanan!";
-            document.getElementById("messageText").className = "barangAda"; // Menambahkan kelas untuk styling
-
-            // Sembunyikan tombol belanja
-            document.getElementById("belanjaBtn").classList.add("hidden");
-        } else {
-            // Ubah teks dan tampilkan indikator barang belum ada
-            document.getElementById("messageText").innerText = "Belum Ada! Silahkan klik dibawah ini.";
-            document.getElementById("messageText").className = "barangTidakAda"; // Menambahkan kelas untuk styling
-
-            // Tampilkan tombol belanja
-            document.getElementById("belanjaBtn").classList.remove("hidden");
+            // Mengarahkan ke URL dengan query string untuk pengurutan
+            window.location.href = `?sortBy=${sortBy}`;
         }
-    </script> -->
+
+        function myFunction() {
+            var x = document.getElementById("myLinks");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
+        }
