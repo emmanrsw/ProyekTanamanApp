@@ -227,7 +227,7 @@
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>
 
-            <p><a href="#">Lupa Password?</a></p>
+            <p><a href="{{ route('otp.form') }}">Lupa Password?</a></p>
             <p><a href="{{ route('register') }}">Register</a></p>
 
         </div>
