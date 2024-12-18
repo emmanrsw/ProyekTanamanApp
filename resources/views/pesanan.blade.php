@@ -160,7 +160,6 @@
 }
 </style>
 
-
 @section('content')
 <div class="container-fluid p-0">
 <section class="banner">
@@ -193,78 +192,88 @@
 
     <!-- Tampilkan Konten untuk Sedang Dikemas -->
     <div id="tabelSedangDikemas" class="hidden card-container">
-        @if ($sedangDikemas->isNotEmpty())
+    @if ($sedangDikemas->isNotEmpty())
         @foreach ($sedangDikemas as $transaksi)
-        @foreach ($transaksi->details as $detail)
-        <div class="card">
-            <div class="card-content">
-                <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
-                    alt="Gambar Tanaman {{ $detail->gambar }}"
-                    onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
+            <!-- Mulai kartu untuk setiap transaksi -->
+            <div class="card">
                 <div class="card-body">
-                    <h5>{{ $detail->tanaman->namaTanaman }}</h5>
+                    <h5>Transaksi ID: {{ $transaksi->idTJual }}</h5>
                     <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
-                    <p>Jumlah: {{ $detail->jumlah }}</p>
                     <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
+                    @foreach ($transaksi->details as $detail)
+                        <div class="card-content">
+                            <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
+                                 alt="Gambar Tanaman {{ $detail->tanaman->gambar }}"
+                                 onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
+                            <div>
+                                <h6>{{ $detail->tanaman->namaTanaman }}</h6>
+                                <p>Jumlah: {{ $detail->jumlah }}</p>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
-        </div>
+            <!-- End kartu untuk transaksi -->
         @endforeach
-        @endforeach
-        @else
+    @else
         <div class="text-center w-100">Tidak ada tanaman yang sedang dikemas.</div>
-        @endif
-    </div>
+    @endif
+</div>
 
-    <!-- Tampilkan Konten untuk Dikirim -->
-    <div id="tabelDikirim" class="hidden card-container">
-        @if ($dikirim->isNotEmpty())
+<div id="tabelDikirim" class="hidden card-container">
+    @if ($dikirim->isNotEmpty())
         @foreach ($dikirim as $transaksi)
-        @foreach ($transaksi->details as $detail)
-        <div class="card">
-            <div class="card-content">
-                <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
-                    alt="Gambar Tanaman {{ $detail->gambar }}"
-                    onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
+            <div class="card">
                 <div class="card-body">
-                    <h5>{{ $detail->tanaman->namaTanaman }}</h5>
+                    <h5>Transaksi ID: {{ $transaksi->idTJual }}</h5>
                     <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
-                    <p>Jumlah: {{ $detail->jumlah }}</p>
                     <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
+                    @foreach ($transaksi->details as $detail)
+                        <div class="card-content">
+                            <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
+                                 alt="Gambar Tanaman {{ $detail->tanaman->gambar }}"
+                                 onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
+                            <div>
+                                <h6>{{ $detail->tanaman->namaTanaman }}</h6>
+                                <p>Jumlah: {{ $detail->jumlah }}</p>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
-        </div>
         @endforeach
-        @endforeach
-        @else
+    @else
         <div class="text-center w-100">Tidak ada tanaman yang sedang dikirim.</div>
-        @endif
-    </div>
+    @endif
+</div>
 
-    <!-- Tampilkan Konten untuk Selesai -->
-    <div id="tabelSelesai" class="hidden card-container">
-        @if ($selesai->isNotEmpty())
+<div id="tabelSelesai" class="hidden card-container">
+    @if ($selesai->isNotEmpty())
         @foreach ($selesai as $transaksi)
-        @foreach ($transaksi->details as $detail)
-        <div class="card">
-            <div class="card-content">
-                <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
-                    alt="Gambar Tanaman {{ $detail->gambar }}"
-                    onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
+            <div class="card">
                 <div class="card-body">
-                    <h5>{{ $detail->tanaman->namaTanaman }}</h5>
+                    <h5>Transaksi ID: {{ $transaksi->idTJual }}</h5>
                     <p>Tanggal Pembelian: {{ $transaksi->tglTJual }}</p>
-                    <p>Jumlah: {{ $detail->jumlah }}</p>
                     <p>Total Harga: Rp {{ number_format($transaksi->harga_total, 0, ',', '.') }}</p>
+                    @foreach ($transaksi->details as $detail)
+                        <div class="card-content">
+                            <img src="{{ asset('images/' . $detail->tanaman->gambar) }}"
+                                 alt="Gambar Tanaman {{ $detail->tanaman->gambar }}"
+                                 onerror="this.src='https://via.placeholder.com/300x200.png?text=Gambar+Tidak+Tersedia'">
+                            <div>
+                                <h6>{{ $detail->tanaman->namaTanaman }}</h6>
+                                <p>Jumlah: {{ $detail->jumlah }}</p>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
-        </div>
         @endforeach
-        @endforeach
-        @else
+    @else
         <div class="text-center w-100">Tidak ada tanaman yang selesai.</div>
-        @endif
-    </div>
+    @endif
+</div>
+
     <!-- Tombol Bayar Sekarang jika tidak ada transaksi -->
     @if ($sedangDikemas->isEmpty() && $dikirim->isEmpty() && $selesai->isEmpty())
     <div class="text-center mt-4">
