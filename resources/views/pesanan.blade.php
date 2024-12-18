@@ -327,7 +327,7 @@
         <div class="text-center w-100">Tidak ada tanaman yang selesai.</div>
         @endif
     </div>
-    <!-- Tombol Bayar Sekarang jika tidak ada transaksi -->
+    <!-- Tombol Belanja Sekarang jika tidak ada transaksi -->
     @if ($sedangDikemas->isEmpty() && $dikirim->isEmpty() && $selesai->isEmpty())
     <div class="text-center mt-4">
         <p>Transaksi Belum dilalukan! Silahkan klik di bawah ini</p>

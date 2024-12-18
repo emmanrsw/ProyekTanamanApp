@@ -321,17 +321,17 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">
-            <span>Tanam</span><span class="highlight">.in</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand"
+            href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span
+                class="highlight">.in</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">Home</a>
-                </li>
+                <li class="nav-item"><a class="nav-link"
+                        href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="tanaman">Tanaman</a></li>
                 <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
                 <li class="nav-item"><a class="nav-link" href="tentangKami">Tentang Kami</a></li>
@@ -353,14 +353,21 @@
             <div class="topnav">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
-                    <img src="{{ asset('storage/' . Auth::guard('pelanggan')->user()->gambarCust) }}" alt="User Profile" class="rounded-circle" width="30" height="30">
+                    <!-- Jika pengguna memiliki gambar profil -->
+                    <img src="{{ asset('storage/' . Auth::guard('pelanggan')->user()->gambarCust) }}" alt="User Profile"
+                        class="rounded-circle" width="30" height="30">
+                    <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}"
+                        alt="User Profile" class="rounded-circle" width="30" height="30">
                     @else
+                    <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
                     <i class="fa fa-user"></i>
                     @endif
                 </a>
                 <div id="myLinks" style="display: none;">
                     @if (Auth::guard('pelanggan')->check())
-                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">{{ Auth::guard('pelanggan')->user()->usernameCust }}</a>
+                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                        {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                    </a>
                     <a href="#" style="font-size: 1rem;">Ubah Password</a>
                     <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
                     @else
@@ -380,24 +387,51 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <!-- Contoh daftar item di keranjang -->
                     <ul class="list-group">
                         @forelse ($cartItems as $item)
                         <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <!-- Menampilkan Nama Tanaman dan Jumlah -->
                             {{ $item->tanaman->namaTanaman }} ({{ $item->jumlah }})
-                            <img src="{{ asset('Img/' . $item->tanaman->gambar) }}" alt="{{ $item->tanaman->namaTanaman }}" style="width: 50px; height: 50px;">
-                            <span class="badge bg-primary rounded-pill">Rp{{ number_format($item->harga_satuan, 0, ',', '.') }}</span>
+
+                            <!-- Menampilkan Gambar Tanaman -->
+                            <img src="{{ asset('Img/' . $item->tanaman->gambar) }}"
+                                alt="{{ $item->tanaman->namaTanaman }}" style="width: 50px; height: 50px;">
+
+                            <!-- Menampilkan Harga -->
+                            <span class="badge bg-primary rounded-pill">
+                                Rp{{ number_format($item->harga_satuan, 0, ',', '.') }}
+                            </span>
                         </li>
                         @empty
                         <p>Keranjang Anda kosong.</p>
                         @endforelse
                     </ul>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+
                 </div>
             </div>
         </div>
     </div>
+    {{-- <div class="container"> --}}
+    @if (session('success'))
+    @if (session('success'))
+    <script>
+        Swal.fire({
+            position: "center", // Muncul di tengah
+            icon: "success", // Ikon sukses
+            title: "{{ session('success') }}", // Pesan sukses
+            showConfirmButton: false, // Tidak ada tombol konfirmasi
+            timer: 1000, // Waktu tampil 3 detik
+            customClass: {
+                popup: 'swal-wide' // Tambahkan kelas kustom untuk lebar popup
+            }
+        });
+    </script>
+    @endif
 
     <div class="cart-container">
         <div class="cart-items">
@@ -492,8 +526,11 @@
                 </div>
                 @endif
             </form>
+
         </div>
     </div>
+
+
 
     <footer>
         <div class="footer-links">
@@ -625,3 +662,5 @@
         }
     </script>
 </body>
+
+</html>
