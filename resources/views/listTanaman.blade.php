@@ -195,6 +195,9 @@
             return char.toUpperCase();
         });
     }
+    function formatRupiah(angka) {
+        return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
 
     function showProductModal(product) {
         const existingModal = document.getElementById('productModal');
@@ -224,7 +227,7 @@
                     <!-- Harga -->
                     <div class="product-info border-top border-bottom pb-2 pt-2 mb-3">
                         <span>Harga : </span>
-                        <span>Rp${product.hargaTanaman.toLocaleString()}</span>
+                        <span>Rp${formatRupiah(product.hargaTanaman)}</span>
                     </div>
                     <!-- Deskripsi -->
                     <div class="product-info border-bottom pb-2 mb-3">
