@@ -22,10 +22,10 @@ class OtpController extends Controller
     {
         $user = Auth::user();
 
-        // Cek apakah nomor telepon sudah diisi
-        if (!$user->notlpCust) {
-            return redirect()->route('pelanggan.profile')->with('error', 'Silakan isi nomor telepon terlebih dahulu.');
-        }
+        // // Cek apakah nomor telepon sudah diisi
+        // if (!$user->notlpCust) {
+        //     return redirect()->route('pelanggan.profile')->with('error', 'Silakan isi nomor telepon terlebih dahulu.');
+        // }
 
         return view('otp'); // View untuk form kirim OTP
     }
@@ -34,15 +34,24 @@ class OtpController extends Controller
     public function sendOtp(Request $request)
     {
         $idCust = Auth::id();
+        $nomorInput = $request->input('nomor');
 
         // Ambil data pelanggan berdasarkan id
         $pelanggan = DB::table('pelanggan')->where('idCust', $idCust)->first();
-        if (!$pelanggan || !$pelanggan->notlpCust) {
-            return back()->with('error', 'Nomor telepon tidak ditemukan.');
+        // if (!$pelanggan || !$pelanggan->notlpCust) {
+        //     return back()->with('error', 'Nomor telepon tidak ditemukan.');
+        // }
+        $nomor = $pelanggan ? $pelanggan->notlpCust : null;
+        // Jika nomor telepon tidak ada di profil, gunakan nomor dari input
+        if (!$nomor) {
+            if (!$nomorInput) {
+                return back()->with('error', 'Harap masukkan nomor telepon untuk menerima OTP.');
+            }
+            $nomor = $nomorInput;
         }
-
         // Format nomor telepon agar sesuai dengan standar internasional (+62)
-        $nomor = $this->formatNomorTelepon($pelanggan->notlpCust);
+        // 
+        $nomor = $this->formatNomorTelepon($nomor);
 
         Log::info('Nomor telepon yang akan digunakan: ' . $nomor);
 
