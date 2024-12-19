@@ -112,7 +112,7 @@
         /* Smooth background color transition */
         text-align: center;
         /* Centered text */
-        width: 15%;
+        width: auto;
         /* Full width */
         margin-top: 5px;
     }
@@ -199,17 +199,17 @@
                     <label>Alamat</label>
                     <input type="text" id="alamatCust" name="alamatCust" value="{{ $customer->alamatCust }}" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Simpan</button>
-                <a href="{{ route('pelanggan.profile') }}" class="btn btn-primary">Kembali</a>
-                <!-- Tombol Hapus Gambar (dalam form terpisah) -->
-                @if ($customer->gambarCust)
-                <form action="{{ route('pelanggan.hapusGambar') }}" method="POST" style="display:inline-block; margin-top: 10px;">
-                    @csrf
-                    <button type="submit" class="btn btn-primary">Hapus Gambar</button>
-                </form>
-                @endif
-            </form>
+                <button type="submit" class="btn btn-primary" style="float: left; margin-right: 10px;">Simpan</button>
+                <a href="{{ route('pelanggan.profile') }}" class="btn btn-primary" style="float: left; margin-right: 10px;">Kembali</a>
 
+            </form>
+            <!-- Tombol Hapus Gambar (dalam form terpisah) -->
+            @if ($customer->gambarCust)
+            <form action="{{ route('pelanggan.hapusGambar') }}" method="POST" style="float: left; margin-right: 10px;">
+                @csrf
+                <button type="submit" class="btn btn-primary">Hapus Gambar</button>
+            </form>
+            @endif
 
 
         </div>
