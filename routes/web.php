@@ -53,8 +53,6 @@ Route::post('/otp', [OtpController::class, 'sendOtp'])->name('otp.send.submit');
 Route::get('/otp/verify', [OtpController::class, 'showOtpForm'])->name('otp.verification');
 Route::post('/otp/verify', [OtpController::class, 'verifyOtp'])->name('otp.verify');
 
-
-
 // -----------------------------------------------------------------------------------------------------------
 use App\Http\Controllers\karyawanController;
 // -----------------------------------------------------------------------------------------------------------

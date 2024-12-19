@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
 use App\Models\OTP;
 
 class OtpController extends Controller
@@ -16,6 +17,8 @@ class OtpController extends Controller
     {
         return view('verOtp'); // View untuk halaman verifikasi OTP
     }
+
+
 
     // Menampilkan form untuk kirim OTP
     public function showOtpSendForm()
@@ -194,4 +197,5 @@ class OtpController extends Controller
             return back()->with('error', 'OTP salah.');
         }
     }
+    
 }
