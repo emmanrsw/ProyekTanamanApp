@@ -112,7 +112,7 @@
         /* Smooth background color transition */
         text-align: center;
         /* Centered text */
-        width: auto;
+        width: 15%;
         /* Full width */
         margin-top: 5px;
     }
@@ -205,9 +205,9 @@
             </form>
             <!-- Tombol Hapus Gambar (dalam form terpisah) -->
             @if ($customer->gambarCust)
-            <form action="{{ route('pelanggan.hapusGambar') }}" method="POST" style="float: left; margin-right: 10px;">
+            <form action="{{ route('pelanggan.hapusGambar') }}" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-primary">Hapus Gambar</button>
+                <button type="submit" class="btn btn-primary" style="float: left; margin-right: 10px;">Hapus Gambar</button>
             </form>
             @endif
 
