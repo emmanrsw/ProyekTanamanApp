@@ -1,5 +1,9 @@
 @extends('layout.navbar')
 
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
 <style>
     /* Styling for the product grid */
     .product-grid {
@@ -161,11 +165,11 @@
                     <div class="product-card">
                         <img src="{{ $tanaman->gambar ? asset('images/' . $tanaman->gambar) : asset('default-image.png') }}"
                             alt="{{ ucwords(strtolower($tanaman->namaTanaman)) }}">
-                        <div class="product-info">
-                            <h5>{{ ucwords(strtolower($tanaman->namaTanaman)) }}</h5>
-                            <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
-                        </div>
-                        <button class="btn btn-primary btn-add-to-cart" data-product='@json($tanaman)'>View Details</button>
+                        <h5>{{ ucwords(strtolower($tanaman->namaTanaman)) }}</h5>
+                        <p>Rp{{ number_format($tanaman->hargaTanaman, 0, ',', '.') }}</p>
+                        <button class="btn btn-primary btn-add-to-cart" data-product='@json($tanaman)'>View
+                            Details</button>
+                        <meta name="csrf-token" content="{{ csrf_token() }}">
                     </div>
                 @endforeach
             </div>
@@ -231,25 +235,28 @@
                         <span>Stok Tersedia : </span>
                         <span>${product.jmlTanaman} item</span>
                     </div> 
-                </div>
-            </div>
-            <!-- Footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="addToCart(${product.idTanaman})" ; style="background-color:#4B553D">Tambah ke Keranjang</button>
             </div>
         </div>
-                </div>
-            </div>
-        `;
+    </div>
+</div>
+
+            </div>`;
+
 
         document.body.insertAdjacentHTML('beforeend', modalContent);
         new bootstrap.Modal(document.getElementById('productModal')).show();
     }
 
     function addToCart(productId) {
+        // console.log(`Menambahkan produk dengan ID: ${productId} ke keranjang.`);
+
+        // Ambil jumlah dari input yang ada di modal
         const jumlah = document.getElementById('jumlah').value;
 
+        // Pastikan jumlah adalah angka yang valid
         if (jumlah < 1) {
             alert('Jumlah tidak valid');
             return;
@@ -262,7 +269,8 @@
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
             body: JSON.stringify({
-                jumlah
+                productId: productId,
+                jumlah: jumlah // Kirimkan jumlah yang dimasukkan pengguna
             })
         })
             .then(response => response.json())
@@ -272,11 +280,18 @@
                     text: data.message || "Produk berhasil ditambahkan ke keranjang!",
                     icon: 'success',
                     confirmButtonText: 'OK'
-                });
+                })
             })
             .catch(error => {
                 console.error('Error:', error);
             });
+    }
+
+    function sortProducts() {
+        const sortBy = document.querySelector('.sort-by').value;
+
+        // Mengarahkan ke URL dengan query string untuk pengurutan
+        window.location.href = `?sortBy=${sortBy}`;
     }
 </script>
 @endsection

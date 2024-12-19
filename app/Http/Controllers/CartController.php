@@ -98,6 +98,7 @@ class CartController extends Controller
     // Menambahkan produk ke keranjang
     public function addToCart(Request $request, $productId)
     {
+        Log::info('Request payload: ', $request->all());
         // Validasi jumlah
         $jumlah = $request->input('jumlah');
         if ($jumlah < 1) {
