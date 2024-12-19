@@ -17,6 +17,8 @@ use App\Http\Controllers\PelangganController;
 
 // Route::post('/editPelanggan', [PelangganController::class, 'edit'])->name('editProfile');
 // Route::post('/updatePelanggan', [PelangganController::class, 'updateProfile'])->name('updateProfile');
+Route::post('/pelanggan/hapus-gambar', [PelangganController::class, 'hapusGambar'])->name('pelanggan.hapusGambar');
+
 Route::middleware(['auth:pelanggan'])->group(function () {
     Route::get('/profile', [PelangganController::class, 'showProfile'])->name('pelanggan.profile');
     Route::get('/profile/edit', [PelangganController::class, 'edit'])->name('pelanggan.edit');

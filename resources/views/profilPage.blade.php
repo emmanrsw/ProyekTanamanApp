@@ -1,7 +1,6 @@
 @extends('layout.navbar')
 
 <style>
-
     .container-fluid {
         display: flex;
         max-width: 1300px;
@@ -131,12 +130,12 @@
         <div class="sidebar">
             <div class="profile-info">
                 @if ($customer->gambarCust)
-                    <!-- Jika ada gambar profil -->
-                    <img src="{{ asset('uploads/' . $customer->gambarCust) }}" alt="Profile Picture" class="rounded-circle"
-                        width="150">
+                <!-- Jika ada gambar profil -->
+                <img src="{{ asset('uploads/' . $customer->gambarCust) }}" alt="Profile Picture" class="rounded-circle"
+                    width="150">
                 @else
-                    <!-- Jika belum ada gambar profil -->
-                    <i class="fas fa-user-circle" style="font-size: 100px; color: #ddd;"></i>
+                <!-- Jika belum ada gambar profil -->
+                <i class="fas fa-user-circle" style="font-size: 100px; color: #ddd;"></i>
                 @endif
             </div>
             <a class="active" href="#"><i class="fas fa-user"></i> Akun Saya</a>
@@ -173,11 +172,6 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Edit</button>
                 <a href="{{ route('home') }}" class="btn btn-primary">Kembali</a>
-                <!-- Tombol Hapus Gambar Profil (Hanya jika ada gambar yang diunggah) -->
-                @if ($customer->gambarCust)
-                    <button type="submit" name="delete_image" value="1" class="btn btn-primary">Hapus
-                        Gambar</button>
-                @endif
             </form>
         </div>
     </div>

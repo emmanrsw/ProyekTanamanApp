@@ -208,4 +208,28 @@ class PelangganController extends Controller
 
         return back()->with('error', 'Tidak ada gambar profil yang dapat dihapus.');
     }
+
+    public function hapusGambar(Request $request)
+    {
+        // Ambil data pelanggan
+        $customer = Auth::user(); // Atau gunakan metode lain untuk mendapatkan data pelanggan
+
+        // Cek apakah gambar ada
+        if ($customer->gambarCust) {
+            $gambarPath = public_path('uploads/' . $customer->gambarCust);
+
+            // Hapus file dari direktori jika ada
+            if (file_exists($gambarPath)) {
+                unlink($gambarPath);
+            }
+
+            // Set kolom gambar menjadi null
+            $customer->gambarCust = null;
+            $customer->save();
+
+            return redirect()->back()->with('success', 'Gambar berhasil dihapus.');
+        }
+
+        return redirect()->back()->with('error', 'Gambar tidak ditemukan.');
+    }
 }

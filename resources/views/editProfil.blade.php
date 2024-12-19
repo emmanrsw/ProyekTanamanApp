@@ -133,10 +133,10 @@
                     @csrf
                     <label for="profileImage" class="d-block">
                         @if($customer->gambarCust) <!-- Jika sudah ada gambar profil -->
-                            <img src="{{ asset('uploads/' . $customer->gambarCust) }}" alt="Profile Picture"
-                                class="rounded-circle" width="150" id="profileImagePreview">
+                        <img src="{{ asset('uploads/' . $customer->gambarCust) }}" alt="Profile Picture"
+                            class="rounded-circle" width="150" id="profileImagePreview">
                         @else <!-- Jika belum ada gambar profil, tampilkan ikon profil default -->
-                            <i class="fas fa-user-circle" style="font-size: 100px; color: #ddd;"></i>
+                        <i class="fas fa-user-circle" style="font-size: 100px; color: #ddd;"></i>
                         @endif
                         <input type="file" id="profileImage" name="profileImage" accept="image/*" style="display: none;"
                             onchange="this.form.submit();">
@@ -181,8 +181,7 @@
                 @csrf <!-- Token CSRF untuk keamanan -->
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" id="usernameCust" name="usernameCust" value="{{ $customer->usernameCust }}"
-                        required>
+                    <input type="text" id="usernameCust" name="usernameCust" value="{{ $customer->usernameCust }}" required>
                 </div>
                 <div class="form-group">
                     <label>Nama</label>
@@ -202,15 +201,25 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Simpan</button>
                 <a href="{{ route('pelanggan.profile') }}" class="btn btn-primary">Kembali</a>
+                <!-- Tombol Hapus Gambar (dalam form terpisah) -->
+                @if ($customer->gambarCust)
+                <form action="{{ route('pelanggan.hapusGambar') }}" method="POST" style="display:inline-block; margin-top: 10px;">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">Hapus Gambar</button>
+                </form>
+                @endif
             </form>
+
+
+
         </div>
     </div>
 </div>
 <script>
     // Update preview image after file selection
-    document.getElementById('profileImage').addEventListener('change', function (event) {
+    document.getElementById('profileImage').addEventListener('change', function(event) {
         const reader = new FileReader();
-        reader.onload = function () {
+        reader.onload = function() {
             document.getElementById('profileImagePreview').src = reader.result;
         };
         reader.readAsDataURL(event.target.files[0]);
