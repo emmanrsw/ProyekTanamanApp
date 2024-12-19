@@ -17,6 +17,7 @@
 
         .contact-info {
             width: 40%;
+            margin-top: 85px;
         }
 
         .contact-info h3 {
@@ -60,7 +61,9 @@
 
         .offline-store {
             text-align: center;
-            padding: 20px;
+            padding: 10px;
+            margin-top: 20px;
+            margin-right: 20px;
             background-color: #f9f9f9;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
@@ -76,11 +79,14 @@
             justify-content: center;
             gap: 300px;
             flex-wrap: wrap;
+            margin-top: 30px;
+            margin-right: 40px;
         }
 
         .store {
             text-align: center;
             max-width: 300px;
+            margin-right: 30px;
         }
 
         .store img {
@@ -164,35 +170,38 @@
             text-decoration: none;
             margin-bottom: 5px;
         }
-         .carousel-inner img {
-        width: 100%;
-        /* Menyesuaikan lebar gambar dengan container */
-        height: auto;
-        /* Memastikan tinggi tetap proporsional */
-        object-fit: cover;
-        /* Menangani kasus jika gambar memiliki rasio aspek berbeda */
-    }
+
+        .carousel-inner img {
+            width: 100%;
+            /* Menyesuaikan lebar gambar dengan container */
+            height: auto;
+            /* Memastikan tinggi tetap proporsional */
+            object-fit: cover;
+            /* Menangani kasus jika gambar memiliki rasio aspek berbeda */
+        }
     </style>
 </head>
 
 @section('content')
-    <div class="container-fluid p-0">
-        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="/Img/1bg.png" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="/Img/2bg.png" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="/Img/3bg.png" class="d-block w-100" alt="...">
-                </div>
+<div class="container-fluid p-0">
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/Img/1bg.png" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="/Img/2bg.png" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="/Img/3bg.png" class="d-block w-100" alt="...">
             </div>
         </div>
+    </div>
+    <div class="contact-and-store-container"
+        style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px;">
+        <!-- Contact Section -->
         <div class="contact-section">
-            <div class="contact-info">
-
+            <div class="contact-info" style="text-align: center; flex: 3;">
                 <p>
                     <i class="fas fa-map-marker-alt"></i>
                     <strong>Alamat</strong>
@@ -203,9 +212,9 @@
                     <i class="fas fa-phone"></i>
                     <strong>Telepon</strong>
                     <br />
-                    Mobile: +(+84) 546-6789
+                    Mobile: (+62) 8546-6789-8573
                     <br />
-                    Hotline: +(+84) 456-6789
+                    Hotline: (+62) 8456-6789-8573
                 </p>
                 <p>
                     <i class="fas fa-clock"></i>
@@ -215,74 +224,62 @@
                     <br />
                     Saturday-Sunday: 9:00 - 21:00
                 </p>
-
-            </div>
-            <div class="contact-form">
-                <form action="/submit-contact" method="POST">
-                    <label for="name">Nama</label>
-                    <input type="text" id="name" name="name" placeholder="Masukkan nama Anda" />
-
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Masukkan email Anda" />
-
-                    <label for="subject">Subjek</label>
-                    <input type="text" id="subject" name="subject" placeholder="Subjek pesan Anda (Opsional)" />
-
-                    <label for="message">Pesan</label>
-                    <textarea id="message" name="message" placeholder="Tulis pesan Anda di sini"></textarea>
-
-                    <button type="submit">Kirim</button>
-                </form>
             </div>
         </div>
-        <div class="offline-store">
-            <h2>Offline Store</h2>
-            <div class="store-locations">
-                <div class="store">
-                    <img src="https://storage.googleapis.com/a1aa/image/AGes711sX02MRCoq7m01QLZqurNrOqveRVdQeifCGF2eYLSeE.jpg"
-                        alt="Yogyakarta Store">
-                    <h3>Yogyakarta</h3>
-                    <p>Jalan Kaliurang, 22765 Sleman</p>
-                </div>
-                <div class="store">
-                    <img src="https://storage.googleapis.com/a1aa/image/jW0Vbk0Fu1aMAVaNIke5yT9V3fkd9mKHpKMhetpvr5lS2iknA.jpg"
-                        alt="Solo Store">
-                    <h3>Solo</h3>
-                    <p>Jalan Solo, 1049 Solo</p>
+
+             <!-- Offline Store Section -->
+            <div class="store-locations" style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                <h2 style="font-weight: bold; text-align: center; margin-right: 40px;">Offline Store</h2>
+                <div style="display: flex; gap: 20px; justify-content: center;">
+                    <div class="store" style="text-align: center; flex: 1; margin-right: 40px;">
+                        <img src="https://storage.googleapis.com/a1aa/image/AGes711sX02MRCoq7m01QLZqurNrOqveRVdQeifCGF2eYLSeE.jpg"
+                            alt="Yogyakarta Store" style="width: 100%; max-width: 200px;">
+                        <h3>Yogyakarta</h3>
+                        <p>Jalan Kaliurang, 22765 Sleman</p>
+                    </div>
+                    <div class="store" style="text-align: center; flex: 1; margin-right: 20px;">
+                        <img src="https://storage.googleapis.com/a1aa/image/jW0Vbk0Fu1aMAVaNIke5yT9V3fkd9mKHpKMhetpvr5lS2iknA.jpg"
+                            alt="Solo Store" style="width: 100%; max-width: 200px;">
+                        <h3>Solo</h3>
+                        <p>Jalan Solo, 1049 Solo</p>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <footer>
-                <div class="footer-links">
-                    <div>
-                        <h4>INFORMASI PERUSAHAAN</h4>
-                        <a href="tentangKami">Tentang Kami</a>
-                        <a href="home">Dashboard</a>
-                        <a href="kontak">Hubungi Kami</a>
-                    </div>
-                    <div>
-                        <h4>LINK BANTUAN</h4>
-                        <a href="pesanan">Pelacakan</a>
-                        <a href="pesanan">Status Pesanan</a>
-                        <a href="pesanan">Pengiriman</a>
-                        <a href="pesanan">Info Pengiriman</a>
-                    </div>
-                    <div>
-                        <h4>ALAMAT</h4>
-                        <p>Jl. Raya No. 123, Kota X, Indonesia</p>
-                        <h4>MEDIA SOSIAL</h4>
-                        <p>
-                            <i class="fa-brands fa-facebook"></i>
-                            <i class="fa-brands fa-instagram"></i>
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </p>
-                    </div>
-                </div>
+    <!-- Footer Section -->
+    <hr style="border: 1px solid #ccc; margin-top: 20px;">
+    <footer>
+        <div class="footer-links">
+            <div>
+                <h4>INFORMASI PERUSAHAAN</h4>
+                <a href="tentangKami">Tentang Kami</a>
+                <a href="home">Dashboard</a>
+                <a href="kontak">Hubungi Kami</a>
+            </div>
+            <div>
+                <h4>LINK BANTUAN</h4>
+                <a href="pesanan">Pelacakan</a>
+                <a href="pesanan">Status Pesanan</a>
+                <a href="pesanan">Pengiriman</a>
+                <a href="pesanan">Info Pengiriman</a>
+            </div>
+            <div>
+                <h4>ALAMAT</h4>
+                <p>Jl. Raya No. 123, Kota X, Indonesia</p>
+                <h4>MEDIA SOSIAL</h4>
                 <p>
-                    © 2020 Tanam.in eCommerce<br />
-                    Privacy Policy | Terms & Conditions
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-whatsapp"></i>
                 </p>
-
-            </footer>
+            </div>
         </div>
-    @endsection
+        <p>
+            © 2020 Tanam.in eCommerce<br />
+            Privacy Policy | Terms & Conditions
+        </p>
+    </footer>
+</div>
+@endsection
