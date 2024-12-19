@@ -16,7 +16,7 @@ class CartController extends Controller
     {
         // Pastikan pengguna sudah login
         if (!auth('pelanggan')->check()) {
-            return redirect()->route('login')->with('error', 'Harap login terlebih dahulu');
+            return redirect()->route('login.login')->with('error', 'Harap login terlebih dahulu');
         }
 
         // Mengambil ID pengguna yang sedang login
@@ -183,7 +183,7 @@ class CartController extends Controller
     {
         // Pastikan pengguna sudah login
         if (!auth('pelanggan')->check()) {
-            return redirect()->route('login')->with('error', 'Harap login terlebih dahulu');
+            return redirect()->route('login.login')->with('error', 'Harap login terlebih dahulu');
         }
 
         // Mengambil ID pengguna yang sedang login
@@ -201,7 +201,7 @@ class CartController extends Controller
     {
         // Pastikan pengguna sudah login
         if (!auth('pelanggan')->check()) {
-            return redirect()->route('login')->with('error', 'Harap login terlebih dahulu');
+            return redirect()->route('login.login')->with('error', 'Harap login terlebih dahulu');
         }
 
         // Temukan item di keranjang berdasarkan rowId
@@ -228,7 +228,7 @@ class CartController extends Controller
     {
         // Pastikan pengguna sudah login
         if (!auth('pelanggan')->check()) {
-            return redirect()->route('login')->with('error', 'Harap login terlebih dahulu');
+            return redirect()->route('login.login')->with('error', 'Harap login terlebih dahulu');
         }
 
         // Temukan item di keranjang berdasarkan rowId

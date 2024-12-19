@@ -151,7 +151,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand"
-            href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}"><span>Tanam</span><span
+            href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('login.login') }}"><span>Tanam</span><span
                 class="highlight">.in</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -161,30 +161,31 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
-                        href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('register') }}">
+                        href="{{ Auth::guard('pelanggan')->check() ? route('home') : route('login.login') }}">
                         Home
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('listTanaman') ? 'active' : '' }}"
-                        href="{{ route('listTanaman') }}">
+                        href="{{ Auth::guard('pelanggan')->check() ? route('listTanaman') : route('login.login') }}">
                         Tanaman
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('kontak') ? 'active' : '' }}" href="{{ route('kontak') }}">
+                    <a class="nav-link {{ request()->routeIs('kontak') ? 'active' : '' }}"
+                        href="{{ Auth::guard('pelanggan')->check() ? route('kontak') : route('login.login') }}">
                         Kontak
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('tentangKami') ? 'active' : '' }}"
-                        href="{{ route('tentangKami') }}">
+                        href="{{ Auth::guard('pelanggan')->check() ? route('tentangKami') : route('login.login') }}">
                         Tentang Kami
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('pesanan') ? 'active' : '' }}"
-                        href="{{ route('pesanan') }}">
+                        href="{{ Auth::guard('pelanggan')->check() ? route('pesanan') : route('login.login') }}">
                         Pesanan Saya
                     </a>
                 </li>
@@ -233,23 +234,23 @@
             <div class="topnav position-relative">
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     @if (Auth::guard('pelanggan')->check() && Auth::guard('pelanggan')->user()->gambarCust)
-                        <!-- Jika pengguna memiliki gambar profil -->
-                        <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}" alt="User Profile"
-                            class="rounded-circle" width="30" height="30">
+                    <!-- Jika pengguna memiliki gambar profil -->
+                    <img src="{{ asset('uploads/' . Auth::guard('pelanggan')->user()->gambarCust) }}" alt="User Profile"
+                        class="rounded-circle" width="30" height="30">
                     @else
-                        <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
-                        <i class="fa fa-user"></i>
+                    <!-- Jika tidak ada gambar profil, tampilkan ikon default -->
+                    <i class="fa fa-user"></i>
                     @endif
                 </a>
                 <div id="myLinks" style="display: none;">
                     @if (Auth::guard('pelanggan')->check())
-                        <a href="{{ route('pelanggan.profile') }}" class="nav-link">
-                            {{ Auth::guard('pelanggan')->user()->usernameCust }}
-                        </a>
-                        <a href="{{ route('otp.form') }}" style="font-size: 1rem;">Ubah Password</a>
-                        <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
+                    <a href="{{ route('pelanggan.profile') }}" class="nav-link">
+                        {{ Auth::guard('pelanggan')->user()->usernameCust }}
+                    </a>
+                    <a href="{{ route('otp.form') }}" style="font-size: 1rem;">Ubah Password</a>
+                    <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
                     @else
-                        <a href="{{ route('login.login') }}" class="nav-link">Login</a>
+                    <a href="{{ route('login.login') }}" class="nav-link">Login</a>
                     @endif
                 </div>
             </div>
@@ -314,7 +315,7 @@
     }
 
     // Event listener untuk menangani klik pada pencarian
-    document.addEventListener('click', function (e) {
+    document.addEventListener('click', function(e) {
         if (e.target && e.target.classList.contains('recent-search-item')) {
             e.preventDefault();
             const query = e.target.getAttribute('data-query');
@@ -339,7 +340,7 @@
     }
 
     // Menangani pencarian baru dan menyimpan pencarian ke localStorage
-    document.getElementById('searchBtn').addEventListener('click', function () {
+    document.getElementById('searchBtn').addEventListener('click', function() {
         const query = document.getElementById('searchQuery').value.trim();
         if (query) {
             saveRecentSearch(query); // Simpan pencarian ke localStorage
@@ -350,7 +351,7 @@
     });
 
     // Menampilkan recent searches saat modal dibuka
-    window.onload = function () {
+    window.onload = function() {
         // Mengosongkan input pencarian saat halaman dimuat
         document.getElementById('searchQuery').value = "";
         displayRecentSearches(); // Menampilkan daftar pencarian terbaru saat halaman dimuat
