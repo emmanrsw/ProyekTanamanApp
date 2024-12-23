@@ -34,27 +34,62 @@ class OtpController extends Controller
     }
 
     // Mengirim OTP ke nomor telepon yang terdaftar
+    // public function sendOtp(Request $request)
+    // {
+    //     $idCust = Auth::id();
+    //     $nomorInput = $request->input('nomor');
+
+    //     // Ambil data pelanggan berdasarkan id
+    //     $pelanggan = DB::table('pelanggan')->where('idCust', $idCust)->first();
+    //     // if (!$pelanggan || !$pelanggan->notlpCust) {
+    //     //     return back()->with('error', 'Nomor telepon tidak ditemukan.');
+    //     // }
+    //     $nomor = $pelanggan ? $pelanggan->notlpCust : null;
+    //     // Jika nomor telepon tidak ada di profil, gunakan nomor dari input
+    //     if (!$nomor) {
+    //         if (!$nomorInput) {
+    //             return back()->with('error', 'Harap masukkan nomor telepon untuk menerima OTP.');
+    //         }
+    //         $nomor = $nomorInput;
+    //     }
+    //     // Format nomor telepon agar sesuai dengan standar internasional (+62)
+    //     // 
+    //     $nomor = $this->formatNomorTelepon($nomor);
+
+    //     Log::info('Nomor telepon yang akan digunakan: ' . $nomor);
+
+    //     // Buat OTP secara acak
+    //     $otp = rand(100000, 999999);
+    //     $waktu = Carbon::now();
+
+    //     // Simpan OTP ke dalam database, jika ada OTP sebelumnya, update
+    //     DB::table('otp')->updateOrInsert(
+    //         ['idCust' => $idCust],
+    //         ['otp' => $otp, 'waktu' => $waktu]
+    //     );
+
+    //     // Kirim OTP ke WhatsApp
+    //     $status = $this->sendOtpToWhatsapp($nomor, $otp);
+
+    //     // Berikan respon sesuai dengan status pengiriman OTP
+    //     if ($status) {
+    //         return redirect()->route('otp.verification')->with('status', 'OTP berhasil dikirim.');
+    //     } else {
+    //         return back()->with('error', 'Gagal mengirim OTP. Coba lagi.');
+    //     }
+    // }
     public function sendOtp(Request $request)
     {
         $idCust = Auth::id();
-        $nomorInput = $request->input('nomor');
+        $nomorInput = $request->input('nomor'); // Ambil nomor telepon yang diinputkan pengguna
 
-        // Ambil data pelanggan berdasarkan id
-        $pelanggan = DB::table('pelanggan')->where('idCust', $idCust)->first();
-        // if (!$pelanggan || !$pelanggan->notlpCust) {
-        //     return back()->with('error', 'Nomor telepon tidak ditemukan.');
-        // }
-        $nomor = $pelanggan ? $pelanggan->notlpCust : null;
-        // Jika nomor telepon tidak ada di profil, gunakan nomor dari input
-        if (!$nomor) {
-            if (!$nomorInput) {
-                return back()->with('error', 'Harap masukkan nomor telepon untuk menerima OTP.');
-            }
-            $nomor = $nomorInput;
+        // Validasi nomor telepon
+        if (!$nomorInput) {
+            return back()->with('error', 'Harap masukkan nomor telepon untuk menerima OTP.');
         }
+
         // Format nomor telepon agar sesuai dengan standar internasional (+62)
-        // 
-        $nomor = $this->formatNomorTelepon($nomor);
+        $nomor = $this->formatNomorTelepon($nomorInput);
 
         Log::info('Nomor telepon yang akan digunakan: ' . $nomor);
 
@@ -73,7 +108,7 @@ class OtpController extends Controller
 
         // Berikan respon sesuai dengan status pengiriman OTP
         if ($status) {
-            return redirect()->route('otp.verification')->with('status', 'OTP berhasil dikirim.');
+            return redirect()->route('otp.verification')->with('status', 'OTP berhasil dikirim.')->with('otp_sent', true);
         } else {
             return back()->with('error', 'Gagal mengirim OTP. Coba lagi.');
         }
@@ -197,5 +232,5 @@ class OtpController extends Controller
             return back()->with('error', 'OTP salah.');
         }
     }
-    
+
 }

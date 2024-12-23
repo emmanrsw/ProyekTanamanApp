@@ -103,6 +103,33 @@
         object-fit: contain;
         /* Menghindari pemotongan gambar */
     }
+
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-wrapper .form-control {
+        padding-right: 40px;
+        /* Tambahkan ruang untuk ikon */
+    }
+
+    .input-wrapper i {
+        position: absolute;
+        right: 10px;
+        /* Jarak dari sisi kanan */
+        top: 50%;
+        /* Tempatkan di tengah vertikal */
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #aaa;
+    }
+
+    .input-wrapper i:hover {
+        color: #333;
+        /* Ubah warna saat hover */
+    }
 </style>
 
 <body>
@@ -116,12 +143,12 @@
 
             <!-- Formulir di sebelah kanan -->
             <div class="form-container">
-                <h3>Lupa Username / Password</h3>
+                <h3>Lupa Password</h3>
                 <form action="{{ route('reset-password') }}" method="POST">
                     @csrf
 
                     <div class="form-group mb-3">
-                        <label for="username">Username (optional)</label>
+                        <label for="username">Username</label>
                         <input type="text" name="username" id="username" class="form-control"
                             value="{{ old('username') }}">
                         @error('username')
@@ -130,8 +157,11 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="password">New Password (optional)</label>
-                        <input type="password" name="password" id="password" class="form-control">
+                        <label for="password">New Password</label>
+                        <div class="input-wrapper">
+                            <input type="password" name="password" id="password" class="form-control">
+                            <i class="fa fa-eye" id="togglePassword"></i>
+                        </div>
                         @error('password')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -139,16 +169,45 @@
 
                     <div class="form-group mb-3">
                         <label for="password_confirmation">Confirm New Password</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation"
-                            class="form-control">
+                        <div class="input-wrapper">
+                            <input type="password" name="password_confirmation" id="password_confirmation"
+                                class="form-control">
+                            <i class="fa fa-eye" id="togglePasswordConfirm"></i>
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn btn-custom">Reset Username / Password</button>
+                    <button type="submit" class="btn btn-custom">Reset Password</button>
                 </form>
             </div>
         </div>
     </div>
-
 </body>
+<script>
+    // Ambil elemen input dan ikon
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    const togglePasswordConfirm = document.getElementById('togglePasswordConfirm');
+    const passwordConfirmInput = document.getElementById('password_confirmation');
+
+    // Fungsi untuk toggle visibility password
+    togglePassword.addEventListener('click', function () {
+        const type = passwordInput.type === 'password' ? 'text' : 'password';
+        passwordInput.type = type;
+
+        // Toggle ikon mata
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    togglePasswordConfirm.addEventListener('click', function () {
+        const type = passwordConfirmInput.type === 'password' ? 'text' : 'password';
+        passwordConfirmInput.type = type;
+
+        // Toggle ikon mata
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+    });
+</script>
 
 </html>
