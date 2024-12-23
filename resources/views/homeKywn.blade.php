@@ -12,22 +12,17 @@
         body {
             display: flex;
             font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
         }
 
         .sidebar {
             width: 150px;
-            height: 200vh;
             background: #4B553D;
             padding-top: 20px;
         }
 
         .bg-custom {
             background-color: #f5f7f0;
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 20px;
         }
 
         .nav-link:hover {
@@ -46,18 +41,6 @@
             text-align: center;
         }
 
-        .btn-custom {
-            background-color: #4B553D;
-            color: white;
-            border-radius: 5px;
-            padding: 10px 20px;
-            margin-left: 10px;
-        }
-
-        .action-buttons .btn {
-            margin-left: 10px;
-        }
-
         .navbar {
             text-align: center;
             height: 50px;
@@ -74,6 +57,23 @@
         .highlight {
             color: #4B553D;
             font-weight: bold;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .btn-custom {
+            background-color: #4B553D;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin-left: 10px;
+        }
+
+        .action-buttons .btn {
+            margin-left: 10px;
         }
 
         .table {
@@ -181,7 +181,7 @@
                                         class="img-thumbnail" width="40">
                                     <div class="ml-3 text-left ">
                                         <strong>{{ $item->namaTanaman }}</strong>
-                                        <p class="text-muted">{{ $item->deskripsi }}</p>
+                                        <p class="text-muted">Rp{{ number_format($item->hargaTanaman, 0, ',', '.') }}</p>
                                     </div>
                                 </div>
                             </td>

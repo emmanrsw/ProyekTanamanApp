@@ -128,7 +128,7 @@ class AuthController extends Controller
         // Validasi input dari form
         $validator = Validator::make($request->all(), [
             'username' => 'required|exists:pelanggan,usernameCust', // Validasi username untuk pelanggan
-            'password' => 'required|confirmed|min:8', // Validasi password minimal 8 karakter
+            'password' => 'required|confirmed|min:6', // Validasi password minimal 8 karakter
         ]);
     
         if ($validator->fails()) {

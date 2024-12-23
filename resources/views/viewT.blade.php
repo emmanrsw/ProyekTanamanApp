@@ -21,12 +21,19 @@
             text-align: center;
         }
 
-        .btn-warning {
+        .btn-custom {
+            background-color: #4B553D;
+            color: white;
             margin-top: 20px;
         }
 
+        .btn-custom:hover {
+            background-color: #5a6268;
+            text-decoration: none;
+        }
+
         .logout-btn {
-            background-color:rgb(143, 253, 170);
+            background-color: rgb(12, 44, 10);
             color: white;
             border-radius: 5px;
             padding: 10px 20px;
@@ -35,9 +42,7 @@
             display: inline-flex;
             align-items: center;
         }
-        .logout-btn a{
-            color :#4B553D;
-        }
+
         .logout-btn:hover {
             background-color: #5a6268;
             text-decoration: none;
@@ -52,7 +57,7 @@
 <body>
     <!-- Navbar Container -->
     <nav class="navbar navbar-expand-lg" style="background-color: #4B553D">
-        <div class="container"> 
+        <div class="container">
             <h1 class="navbar-brand mb-0" style="font-weight: bold; font-size: 35px; color: #f4f4f4">Daftar Tanaman</h1>
             <a href="{{ route('homeKywn') }}" class="logout-btn">
                 <i class="fas fa-sign-out-alt"></i> Kembali
@@ -86,7 +91,7 @@
                 @endforeach
             </tbody>
         </table>
-        <a href="{{ route('editTanaman', ['id' => $tanaman->idTanaman]) }}" class="btn btn-warning">Edit Tanaman</a>
+        <a href="{{ route('editTanaman', ['id' => $tanaman->idTanaman]) }}" class="btn btn-custom">Edit Tanaman</a>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

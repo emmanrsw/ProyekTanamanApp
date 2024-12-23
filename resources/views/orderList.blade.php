@@ -11,11 +11,11 @@
         body {
             display: flex;
             font-family: 'Poppins', sans-serif;
+            min-height: 100vh;  /* Agar body memiliki tinggi penuh */
         }
 
         .sidebar {
             width: 150px;
-            height: 200vh;
             background: #4B553D;
             padding-top: 20px;
         }
