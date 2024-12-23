@@ -247,7 +247,7 @@
                     <a href="{{ route('pelanggan.profile') }}" class="nav-link">
                         {{ Auth::guard('pelanggan')->user()->usernameCust }}
                     </a>
-                    <a href="{{ route('otp.form') }}" style="font-size: 1rem;">Ubah Password</a>
+                    <a href="{{ route('otp.send.submit1') }}" style="font-size: 1rem;">Ubah Password</a>
                     <a href="{{ route('logout') }}" style="font-size: 1rem;">Logout</a>
                     @else
                     <a href="{{ route('login.login') }}" class="nav-link">Login</a>

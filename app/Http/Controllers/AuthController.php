@@ -73,6 +73,7 @@ class AuthController extends Controller
             'usernameCust' => 'required|unique:pelanggan,usernameCust',
             'emailCust' => 'required|email|unique:pelanggan,emailCust',
             'alamatCust' => 'required',
+            'notlpCust' => 'required|string|max:15',
             'passwordCust' => 'required|min:6|regex:/[A-Z]/|regex:/[a-z]/|regex:/[0-9]/|regex:/[!@#$%^&*._]/',
             'passwordCust_confirmation' => 'required|min:6|regex:/[A-Z]/|regex:/[a-z]/|regex:/[0-9]/|regex:/[!@#$%^&*._]/',
         ], [
@@ -82,13 +83,14 @@ class AuthController extends Controller
         ]);
 
         if (pelangganModel::where('emailCust', $request->emailCust)->exists() || pelangganModel::where('usernameCust', $request->usernameCust)->exists()) {
-            return redirect()->route('register')->with('error', 'Email atau Usernam sudah terpakai!');
+            return redirect()->route('register')->with('error', 'Email atau Username sudah terpakai!');
         } else if ($request->passwordCust == $request->passwordCust_confirmation) {
             // Proses pendaftaran
             $pelanggan = new pelangganModel();
             $pelanggan->namaCust = $request->input('namaCust');
             $pelanggan->usernameCust = $request->input('usernameCust');
             $pelanggan->emailCust = $request->input('emailCust');
+            $pelanggan->notlpCust = $request->input('notlpCust');
             $pelanggan->passwordCust = Hash::make($request->input('passwordCust'));
             $pelanggan->alamatCust = $request->input('alamatCust');
 

@@ -231,6 +231,10 @@
                 </div>
 
                 <div class="form-group">
+                    <input type="text" class="form-control" id="notlpCust" name="notlpCust" placeholder="Nomor Telepon" value="{{ old('notlp') }}" required>
+                </div>
+
+                <div class="form-group">
                     <div style="position: relative;">
                         <input type="password" class="form-control" id="passwordCust" name="passwordCust" placeholder="Password" required>
                         <div id="passwordError" class="text-danger"></div>

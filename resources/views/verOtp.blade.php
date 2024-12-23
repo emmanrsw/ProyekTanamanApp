@@ -6,87 +6,145 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi OTP</title>
     <style>
-        /* Styling sederhana untuk form */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
         }
 
         .container {
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
 
-        h1 {
+        .header {
+            background-color: #4B553D;
+            color: white;
             text-align: center;
+            padding: 20px;
+            font-size: 22px;
+            font-weight: bold;
         }
 
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+        .content {
+            padding: 30px;
         }
 
-        button {
+        .icon-box {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .icon-box img {
+            width: 120px;
+            height: auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .form-control {
             width: 100%;
             padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        .form-control:focus {
+            border-color: #4B553D;
+            outline: none;
+        }
+
+        .btn-custom {
+            background-color: #4B553D;
+            color: white;
+            padding: 10px 15px;
             border: none;
             border-radius: 5px;
-            background-color: orange;
-            color: white;
+            font-size: 16px;
             cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
         }
 
-        button:hover {
-            background-color: darkorange;
-        }
-
-        .error {
-            color: red;
+        .btn-custom:hover {
+            background-color: #3d4434;
         }
 
         .status {
             color: green;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            .icon-box img {
+                width: 100px;
+            }
         }
     </style>
 </head>
 
 <body>
-
     <div class="container">
-        <h1>Verifikasi OTP</h1>
-
-        <!-- Status pesan -->
-        @if(session('status'))
-        <div class="status">{{ session('status') }}</div>
-        @endif
-        @if(session('error'))
-        <div class="error">{{ session('error') }}</div>
-        @endif
-
-        <!-- Form Input OTP -->
-        <form method="POST" action="{{ route('otp.verify') }}">
-            @csrf
-            <div>
-                <label for="otp">Masukkan OTP yang telah dikirim ke nomor telepon</label>
-                <input type="text" name="otp" id="otp" placeholder="Masukkan 6 digit OTP" required>
+        <div class="header">Verifikasi OTP</div>
+        <div class="content">
+            <!-- Gambar -->
+            <div class="icon-box">
+                <img src="{{ asset('Img/forgot-password.png') }}" alt="OTP Icon">
             </div>
-            <button type="submit">Verifikasi OTP</button>
-        </form>
 
+            <!-- Status pesan -->
+            @if(session('status'))
+                <div class="status">{{ session('status') }}</div>
+            @endif
+            @if(session('error'))
+                <div class="error">{{ session('error') }}</div>
+            @endif
+
+            <!-- Form Input OTP -->
+            <form method="POST" action="{{ route('otp.verify') }}">
+                @csrf
+                <div>
+                    <label for="otp">Masukkan OTP yang telah dikirim ke nomor telepon</label>
+                    <input type="text" name="otp" id="otp" placeholder="Masukkan 6 digit OTP" class="form-control" required>
+                </div>
+                <button type="submit" class="btn-custom">Verifikasi OTP</button>
+            </form>
+        </div>
     </div>
-
 </body>
 
 </html>
