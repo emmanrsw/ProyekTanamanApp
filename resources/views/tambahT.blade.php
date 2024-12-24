@@ -22,7 +22,6 @@
             background-color: white;
             padding: 12px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 0;
         }
 
         .navbar-brand {
@@ -35,23 +34,16 @@
             color: #4B553D;
         }
 
-        .navbar-icons {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-        }
-
         .layout {
             display: flex;
             flex: 1;
         }
 
         .sidebar {
-            width: 220px;
-            background-color: #f8f9fa;
+            width: 200px;
             height: 100vh;
-            padding-top: 0px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background: #4B553D;
+            padding-top: 20px;
         }
 
         .main-content {
@@ -59,13 +51,13 @@
             padding: 20px;
         }
 
-        .form-group img-placeholder {
+        .form-group .img-placeholder {
             border: 2px dashed #ced4da;
-            padding: 40px;
+            padding: 20px;
             text-align: center;
             color: #6c757d;
             cursor: pointer;
-            box-shadow: 1px 3px 10px 1px #000000;
+            box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.1);
         }
 
         .btn-black {
@@ -74,74 +66,82 @@
         }
 
         .btn-black:hover {
-            background-color: #333;
+            background-color: #4B553D;
         }
 
-        .nav-link.active {
-            background-color: #333;
+        .nav-link {
             color: white;
+            font-size: 16px;
+            padding: 10px 15px;
         }
 
         .nav-link:hover {
-            background-color: #e9ecef;
+            background-color: #B1D690;
+            color: black;
+        }
+
+        .nav-link.active {
+            background-color: #B1D690;
+            color: black;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+
+        .img-preview img {
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand"><span>Tanam</span><span class="highlight">.in</span></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </nav>
-
     <div class="layout">
         <div class="sidebar">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">All Products</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Order List</a>
-                </li>
+            <div class="navbar navbar-light bg-custom text-center">
+                <a class="navbar-brand">
+                    Tanam<span class="highlight">.in</span>
+                </a>
+            </div>
+            <ul>
+                <li><a class="nav-link active" href="homeKywn">All Products</a></li>
+                <li><a class="nav-link" href="orderlist">Order List</a></li>
             </ul>
         </div>
 
-        <div class="main-content">
+        <div class="main-content container">
             <h1 class="mb-4">Tambah Tanaman</h1>
             <form method="POST" action="{{ route('simpanTanaman') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
-                    <label for="name">Nama Produk</label>
-                    <input type="text" class="form-control" id="namaTanaman" name="namaTanaman"
-                        placeholder="namaTanaman" required>
+                    <label for="namaTanaman">Nama Produk</label>
+                    <input type="text" class="form-control" id="namaTanaman" name="namaTanaman" placeholder="Nama Tanaman" required>
                 </div>
                 <div class="form-group">
-                    <label for="description">Deskripsi</label>
-                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="deskripsi" required></textarea>
+                    <label for="deskripsi">Deskripsi</label>
+                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Deskripsi Tanaman" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="stock">Stok</label>
-                    <input type="number" class="form-control" id="jmlTanaman" name="jmlTanaman"
-                        placeholder="jmlTanaman" required>
+                    <label for="jmlTanaman">Stok</label>
+                    <input type="number" class="form-control" id="jmlTanaman" name="jmlTanaman" placeholder="Jumlah Stok" required>
                 </div>
                 <div class="form-group">
-                    <label for="price">Harga</label>
-                    <input type="number" class="form-control" id="hargaTanaman" name="hargaTanaman"
-                        placeholder="hargaTanaman" required>
+                    <label for="hargaTanaman">Harga</label>
+                    <input type="number" class="form-control" id="hargaTanaman" name="hargaTanaman" placeholder="Harga" required>
                 </div>
                 <div class="form-group">
-                    <label for="image">Galeri Produk</label>
+                    <label for="gambar">Galeri Produk</label>
                     <div class="img-placeholder" onclick="document.getElementById('gambar').click();">
                         <i class="fas fa-image"></i> Drop your image here, or browse <br> Jpeg, png are allowed
                     </div>
-                    <input type="file" class="form-control-file" id="gambar" name="gambar" style="display:none;"
-                        accept="image/*" required>
+                    <input type="file" class="form-control-file" id="gambar" name="gambar" style="display:none;" accept="image/*" required>
+                    <div class="img-preview mt-3"></div>
                 </div>
                 <div class="form-group d-flex justify-content-between">
                     <button type="submit" class="btn btn-black">Tambahkan</button>
@@ -149,47 +149,22 @@
                 </div>
             </form>
         </div>
+    </div>
 
-        <script>
-            document.getElementById('gambar').addEventListener('change', function() {
-                const file = this.files[0];
-                const imgPlaceholder = document.querySelector('.img-placeholder');
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        imgPlaceholder.innerHTML =
-                            `<img src="${e.target.result}" alt="Preview Gambar" style="width: 20%; height: auto;"/>`;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-            document.querySelector('form').addEventListener('submit', function(event) {
-                event.preventDefault(); // Mencegah form terkirim langsung
-
-                Swal.fire({
-                    title: "Do you want to save the changes?",
-                    showDenyButton: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Save",
-                    denyButtonText: `Don't save`
-                }).then((result) => {
-                    // Jika user klik 'Save'
-                    if (result.isConfirmed) {
-                        Swal.fire("Saved!", "", "success").then(() => {
-                            // Setelah konfirmasi, kirim form
-                            document.querySelector('form').submit(); // Kirim form setelah Swal menutup
-                        });
-                    }
-                    // Jika user klik 'Don't save'
-                    else if (result.isDenied) {
-                        Swal.fire("Changes are not saved", "", "info");
-                    }
-                });
-            });
-        </script>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('gambar').addEventListener('change', function () {
+            const file = this.files[0];
+            const preview = document.querySelector('.img-preview');
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview Gambar"/>`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
