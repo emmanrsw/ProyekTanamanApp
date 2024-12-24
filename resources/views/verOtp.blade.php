@@ -135,7 +135,7 @@
             @endif
 
             <!-- Form Input OTP -->
-            <form method="POST" action="{{ route('otp.verify') }}">
+            <form action="{{ route('otp.verify', parameters: ['idCust' => $idCust]) }}" method="POST">
                 @csrf
                 <div>
                     <label for="otp">Masukkan OTP yang telah dikirim ke nomor telepon</label>

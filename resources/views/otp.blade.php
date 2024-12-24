@@ -146,7 +146,7 @@
                     <button type="submit" class="btn-custom">Kirim OTP</button>
                 </form>
             @else
-                <form method="POST" action="{{ route('otp.verify') }}">
+                <form method="POST" action="{{ route('otp.verification', ['idCust' => $idCust]) }}">
                     @csrf
                     <div class="form-group">
                         <label for="otp">Masukkan OTP</label>

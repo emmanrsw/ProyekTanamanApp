@@ -13,12 +13,10 @@ use App\Models\OTP;
 class OtpController extends Controller
 {
     // Menampilkan halaman form untuk verifikasi OTP
-    public function showOtpForm()
+    public function showOtpForm($idCust)
     {
-        return view('verOtp'); // View untuk halaman verifikasi OTP
+        return view('verOtp', compact('idCust')); // Halaman form verifikasi
     }
-
-
 
     // Menampilkan form untuk kirim OTP
     public function showOtpSendForm()
@@ -164,6 +162,10 @@ class OtpController extends Controller
                 ->where('notlpCust', $nomor)
                 ->first();
 
+            // Ambil idCust
+            $idCust = $user->idCust;
+            // dd($idCust);
+
             // Jika nomor telepon tidak ditemukan, kembalikan pesan error
             if (!$user) {
                 return back()->with('error', 'Nomor telepon tidak terdaftar.');
@@ -185,8 +187,11 @@ class OtpController extends Controller
 
         // Respon setelah mengirim OTP
         if ($status) {
-            return redirect()->route('otp.verification')
+            // dd($user->idCust);
+            return redirect()->route('otp.verification', ['idCust' => $idCust])
                 ->with('status', 'OTP berhasil dikirim.');
+            // return redirect()->route('otp.verification')
+            //     ->with('status', 'OTP berhasil dikirim.');
         } else {
             return back()->with('error', 'Gagal mengirim OTP. Coba lagi.');
         }
@@ -195,17 +200,25 @@ class OtpController extends Controller
     // Memformat nomor telepon agar sesuai dengan format internasional (+62)
     private function formatNomorTelepon($nomor)
     {
+        // $nomor = preg_replace('/\D/', '', $nomor); // Hapus karakter non-angka
+        // if (substr($nomor, 0, 1) === '0') {
+        //     return '+62' . substr($nomor, 1); // Ganti 0 di awal dengan +62
+        // }
+        // if (substr($nomor, 0, 2) === '62') {
+        //     return '+' . $nomor; // Tambahkan "+" jika dimulai dengan 62
+        // }
+        // if (substr($nomor, 0, 3) !== '+62') {
+        //     return '+62' . $nomor; // Tambahkan +62 jika belum ada
+        // }
+        // return $nomor;
         $nomor = preg_replace('/\D/', '', $nomor); // Hapus karakter non-angka
-        if (substr($nomor, 0, 1) === '0') {
-            return '+62' . substr($nomor, 1); // Ganti 0 di awal dengan +62
+        if (substr($nomor, 0, 3) === '628') {
+            return '0' . substr($nomor, 3); // Ganti 62 di awal dengan 0
         }
         if (substr($nomor, 0, 2) === '62') {
-            return '+' . $nomor; // Tambahkan "+" jika dimulai dengan 62
+            return '0' . substr($nomor, 2); // Ganti 62 di awal dengan 0
         }
-        if (substr($nomor, 0, 3) !== '+62') {
-            return '+62' . $nomor; // Tambahkan +62 jika belum ada
-        }
-        return $nomor;
+        return $nomor; // Jika format sudah 08, biarkan
     }
 
     // Mengirim OTP ke WhatsApp menggunakan API eksternal
@@ -280,14 +293,17 @@ class OtpController extends Controller
     //     }
     // }
 
-    public function verifyOtp(Request $request)
+    public function verifyOtp(Request $request, $idCust)
     {
-        $idCust = Auth::id();
-        $otpInput = $request->input('otp');
+        // $idCust = $request->input('idCust');
+        // $idCust = Auth::id();
+        $otpInput = intval($request->input('otp'));
 
         // Ambil OTP yang sudah tersimpan di database
-        $otpRecord = DB::table('otp')->where('idCust', $idCust)->first();
-
+        $otpRecord = DB::table('otp')
+            ->where('idCust', $idCust)
+            ->first();
+        // dd($idCust);
         // Cek apakah OTP ada di database
         if (!$otpRecord) {
             return back()->with('error', 'OTP tidak ditemukan.');
